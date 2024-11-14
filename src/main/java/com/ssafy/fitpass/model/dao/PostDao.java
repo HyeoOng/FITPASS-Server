@@ -9,7 +9,7 @@ public interface PostDao {
      * 글을 등록하는 메서드입니다.
      *
      * @param post
-     * @return 결과
+     * @return 등록된 행 수 (등록 성공 : 1)
      */
     int insertPost(Post post);
 
@@ -17,7 +17,7 @@ public interface PostDao {
      * 글을 조회하는 메서드입니다.
      *
      * @param postId
-     * @return 글
+     * @return postId에 해당하는 글
      */
     Post selectOne(int postId);
 
@@ -32,7 +32,7 @@ public interface PostDao {
      * 글을 수정하는 메서드입니다.
      *
      * @param post
-     * @return 결과
+     * @return 수정된 행 수 (수정 성공 : 1)
      */
     int updatePost(Post post);
 
@@ -40,7 +40,7 @@ public interface PostDao {
      * 글을 삭제하는 메서드입니다.
      *
      * @param postId
-     * @return 결과
+     * @return 삭제된 행 수 (삭제 성공 : 1)
      */
     int deletePost(int postId);
 

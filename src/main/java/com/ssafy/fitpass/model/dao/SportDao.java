@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface SportDao {
     /**
-     * 스포츠를 저장하는 메서드입니다.
+     * 스포츠를 등록하는 메서드입니다.
      *
      * @param sport
-     * @return 결과
+     * @return 등록된 행 수 (등록 성공 : 1)
      */
     int insertSport(Sport sport);
 
@@ -17,7 +17,7 @@ public interface SportDao {
      * 스포츠 정보를 수정하는 메서드입니다.
      *
      * @param sport
-     * @return 결과
+     * @return 수정된 행 수 (수정 성공 : 1)
      */
     int updateSport(Sport sport);
 
@@ -32,7 +32,7 @@ public interface SportDao {
      * 스포츠를 삭제하는 메서드입니다.
      *
      * @param sportCode
-     * @return 결과
+     * @return 삭제된 행 수 (수정 성공 : 1)
      */
     int deleteSport(int sportCode);
 }
