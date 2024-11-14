@@ -5,14 +5,14 @@
 <mapper namespace="com.ssafy.fitpass.model.dao.UserSecuDao">
 
     <insert id="insertInfo" parameterType="Map">
-        INSERT INTO Security (userId, salt)
+        INSERT INTO Security (user_id, salt)
         VALUES (#{userId}, #{salt});
     </insert>
 
     <select id="selectSalt" parameterType="int" resultType="String">
         SELECT salt
         FROM Security
-        WHERE userId = #{userId};
+        WHERE user_id = #{userId};
     </select>
 
 </mapper>
