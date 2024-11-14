@@ -4,7 +4,7 @@ public class Place {
     private int placeId;
     private String placeName;
     private int regionCode;
-    private double latitude, logitude;
+    private double latitude, longitude;
 
     public int getPlaceId() {
         return placeId;
@@ -22,8 +22,8 @@ public class Place {
         return latitude;
     }
 
-    public double getLogitude() {
-        return logitude;
+    public double getLongitude() {
+        return longitude;
     }
 
     public void setPlaceId(int placeId) {
@@ -42,8 +42,8 @@ public class Place {
         this.latitude = latitude;
     }
 
-    public void setLogitude(double logitude) {
-        this.logitude = logitude;
+    public void setLongitude(double logitude) {
+        this.longitude = logitude;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Place {
                 ", placeName='" + placeName + '\'' +
                 ", regionCode=" + regionCode +
                 ", latitude=" + latitude +
-                ", logitude=" + logitude +
+                ", logitude=" + longitude +
                 '}';
     }
 }
