@@ -11,14 +11,14 @@ public interface UserDao {
      * 회원 가입시 사용되는 메서드입니다.
      *
      * @param user
-     * @return 결과
+     * @return 등록된 행 수 (등록 성공 : 1)
      */
     int insertUser(User user);
 
     /**
      * 로그인시 사용되는 메서드입니다.
      *
-     * @param map
+     * @param map (이메일, 비밀번호 필요)
      * @return 회원
      */
     RetUser selectOne(Map<String, String> map);
@@ -27,7 +27,7 @@ public interface UserDao {
      * 회원 정보를 조회하는 메서드입니다.
      *
      * @param userId
-     * @return 회원
+     * @return userId에 해당하는 회원
      */
     RetUser selectOne(String userId);
 
@@ -42,7 +42,7 @@ public interface UserDao {
      * 회원 정보를 수정하는 메서드입니다.
      *
      * @param user
-     * @return 결과
+     * @return 수정된 행 수 (수정 성공 : 1)
      */
     int updateUser(User user);
 
@@ -50,7 +50,7 @@ public interface UserDao {
      * 회원을 삭제하는 메서드입니다.
      *
      * @param userId
-     * @return 결과
+     * @return 삭제된 행 수 (삭제 성공 : 1)
      */
     int deleteUser(int userId);
 
@@ -58,7 +58,7 @@ public interface UserDao {
      * 이메일 중복을 확인하는 메서드입니다.
      *
      * @param email
-     * @return 해당 이메일 개수
+     * @return email에 해당하는 이메일 개수
      */
     int checkEmail(String email);
 
@@ -66,7 +66,7 @@ public interface UserDao {
      * 닉네임 중복을 확인하는 메서드입니다.
      *
      * @param nickname
-     * @return 해당 닉네임 개수
+     * @return nickname에 해당하는 닉네임 개수
      */
     int checkNickname(String nickname);
 }
