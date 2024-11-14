@@ -4,6 +4,21 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.fitpass.model.dao.SportDao">
 
+    <insert id="insertSport" parameterType="Sport">
+        INSERT INTO sport (sport_name) VALUES (#{sportName})
+    </insert>
+
+    <update id="updateSport" parameterType="Sport">
+        UPDATE sport SET sport_name=#{sportName} WHERE sport_code=#{sportCode}
+    </update>
+
+    <select id="selectAll" resultType="Sport">
+        SELECT * FROM sport
+    </select>
+
+    <delete id="deleteSport" parameterType="int">
+        DELETE FROM sport WHERE sport_code=#{sportCode}
+    </delete>
 
 
 </mapper>
