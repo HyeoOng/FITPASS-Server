@@ -26,7 +26,7 @@
         SELECT u.*
         FROM User u
         INNER JOIN Friend f ON u.user_id = f.to
-        WHERE f.from = #{to} AND f.status = #{status};
+        WHERE f.from = #{to} AND f.status = 0;
     </select>
 
 

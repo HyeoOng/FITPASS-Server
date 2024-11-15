@@ -38,8 +38,7 @@ public interface FriendDao {
     /***
      * 친구 신청을 받은 목록을 조회하는 메서드입니다.
      * @param to (= userId)
-     * @param status (=false인 사람 조회)
      * @return 나에게 친구 신청 요청을 보낸 사용자 목록 반환
      */
-    public List<User> selectFriendRequest(@Param("to") int to, @Param("status") int status);
+    public List<User> selectFriendRequest(int to);
 }
