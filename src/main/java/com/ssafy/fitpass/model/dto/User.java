@@ -8,8 +8,6 @@ public class User {
     private String email;
     private String password;
     private String nn;
-    private int gender;
-    private Date birthdate;
     private int admin;
     private Date regDate;
     private String profile;
@@ -17,26 +15,22 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String password, String nn, int gender, Date birthdate, int admin, Date regDate, String profile) {
+    public User(String name, String email, String password, String nn, int admin, Date regDate, String profile) {
         setName(name);
         setEmail(email);
         setPassword(password);
         setNn(nn);
-        setGender(gender);
-        setBirthdate(birthdate);
         setAdmin(admin);
         setRegDate(regDate);
         setProfile(profile);
     }
 
-    public User(int userId, String name, String email, String password, String nn, int gender, Date birthdate, int admin, Date regDate, String profile) {
+    public User(int userId, String name, String email, String password, String nn, int admin, Date regDate, String profile) {
         setUserId(userId);
         setName(name);
         setEmail(email);
         setPassword(password);
         setNn(nn);
-        setGender(gender);
-        setBirthdate(birthdate);
         setAdmin(admin);
         setRegDate(regDate);
         setProfile(profile);
@@ -83,22 +77,6 @@ public class User {
         this.nn = nn;
     }
 
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public Date getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
-    }
-
     public int getAdmin() {
         return admin;
     }
@@ -131,8 +109,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nn + '\'' +
-                ", gender=" + gender +
-                ", birthdate=" + birthdate +
                 ", admin=" + admin +
                 ", regDate=" + regDate +
                 ", profile='" + profile + '\'' +
