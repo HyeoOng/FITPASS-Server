@@ -27,4 +27,16 @@
         DELETE FROM post WHERE post_id=#{postId}
     </delete>
 
+    <select id="selectFriendPosts" parameterType="int" resultType="Post">
+        SELECT *
+        FROM Post p
+        WHERE p.user_id IN (
+        SELECT u.user_id
+        FROM User u
+        INNER JOIN Friend f ON (f.from_user = u.user_id OR f.to_user = u.user_id)
+        WHERE (f.from_user = #{userId} OR f.to_user = #{userId})
+        AND f.status = 1
+        AND u.user_id != #{userId})
+        AND p.is_public = 1;
+    </select>
 </mapper>

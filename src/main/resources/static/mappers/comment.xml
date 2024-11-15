@@ -5,8 +5,8 @@
 <mapper namespace="com.ssafy.fitpass.model.dao.CommentDao">
 
     <insert id="insertComment" parameterType="Comment">
-        INSERT INTO Comment (user_id, post_id, content, created_at)
-        VALUES (#{userId}, #{postId}, #{content}, NOW());
+        INSERT INTO Comment (user_id, post_id, comment, created_at, updated_at)
+        VALUES (#{userId}, #{postId}, #{comment}, NOW(), NOW());
     </insert>
 
     <select id="selectAll" parameterType="int" resultType="Comment">
@@ -22,7 +22,7 @@
 
     <update id="updateComment" parameterType="Comment">
         UPDATE Comment
-        SET content = #{content}, updated_at = NOW()
+        SET comment = #{comment}, updated_at = NOW()
         WHERE comment_id = #{commentId};
     </update>
 </mapper>

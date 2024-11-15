@@ -9,11 +9,11 @@ public interface FriendDao {
 
     /***
      *  친구 신청을 보내는 메서드입니다.
-     * @param from(친구 신청을 보내는 사람)
-     * @param to(친구 신청을 받는 사람)
+     * @param fromUser(친구 신청을 보내는 사람)
+     * @param toUser(친구 신청을 받는 사람)
      * @return 등록된 행 수를 반환(정상 등록 : 1)
      */
-    public int insertRequest(@Param("from") int from, @Param("to") int to);
+    public int insertRequest(@Param("fromUser") int fromUser, @Param("toUser") int toUser);
 
     
 
@@ -37,8 +37,8 @@ public interface FriendDao {
 
     /***
      * 친구 신청을 받은 목록을 조회하는 메서드입니다.
-     * @param to (= userId)
+     * @param toUser (= userId)
      * @return 나에게 친구 신청 요청을 보낸 사용자 목록 반환
      */
-    public List<User> selectFriendRequest(int to);
+    public List<User> selectFriendRequest(int toUser);
 }

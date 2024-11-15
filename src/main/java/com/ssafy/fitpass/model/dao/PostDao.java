@@ -50,5 +50,5 @@ public interface PostDao {
      * @param userId
      * @return 친구 공개인 모든 글
      */
-    List<Post> selectAll(int userId);
+    List<Post> selectFriendPosts(int userId);
 }

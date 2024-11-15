@@ -1,13 +1,13 @@
 package com.ssafy.fitpass.model.dto;
 
 public class Friend {
-    private int id, from, to, status;
+    private int id, fromUser, toUser, status;
 
     public Friend() {}
-    public Friend(int from, int to, int status){
-        this.from = from;
-        this.to = to;
-        this.status = status;
+    public Friend(int fromUser, int toUser, int status){
+        setFromUser(fromUser);
+        setToUser(toUser);
+        setStatus(status);
     }
 
     public int getId() {
@@ -16,17 +16,17 @@ public class Friend {
     public void setId(int id) {
         this.id = id;
     }
-    public int getFrom() {
-        return from;
+    public int getFromUser() {
+        return fromUser;
     }
-    public void setFrom(int from) {
-        this.from = from;
+    public void setFromUser(int fromUser) {
+        this.fromUser = fromUser;
     }
-    public int getTo() {
-        return to;
+    public int getToUSer() {
+        return toUser;
     }
-    public void setTo(int to) {
-        this.to = to;
+    public void setToUser(int toUser) {
+        this.toUser = toUser;
     }
     public int getStatus() {
         return status;
@@ -39,8 +39,8 @@ public class Friend {
     public String toString() {
         return "Friend{" +
                 "id=" + id +
-                ", from=" + from +
-                ", to=" + to +
+                ", fromUser=" + fromUser +
+                ", toUser=" + toUser +
                 ", status=" + status +
                 '}';
     }
