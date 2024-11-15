@@ -69,4 +69,20 @@ public interface UserDao {
      * @return nickname에 해당하는 닉네임 개수
      */
     int checkNickname(String nickname);
+
+    /////////////////////Admin//////////////////
+
+    /***
+     * 모든 관리자를 조회하는 메서드입니다.
+     *
+     * @return 관리자 정보를 반환
+     */
+    List<User>  selectAllAdmin();
+
+    /***
+     * 관리자 권한을 추가하는 메서드입니다.
+     * @param userId
+     * @return 수정된 행 수 (정상 수정 : 1)
+     */
+    int updateAdmin(int userId);
 }

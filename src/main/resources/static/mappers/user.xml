@@ -37,4 +37,15 @@
         SELECT * FROM user WHERE nickname=#{nickname}
     </select>
 
+    <!--admin-->
+    <select id="selectAllAdmin" resultType="RetUser">
+        SELECT user_id, email, name, nickname, gender, birthdate, admin, reg_date, profile
+        FROM user
+        WHERE admin IN (1, 2)
+    </select>
+
+    <update id="updateAdmin" parameterType="int">
+        UPDATE user SET admin=1 WHERE user_id=#{userId}
+    </update>
+
 </mapper>
