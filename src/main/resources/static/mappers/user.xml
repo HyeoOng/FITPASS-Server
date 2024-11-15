@@ -9,6 +9,13 @@
         VALUES (#{email}, #{password}, #{name}, #{nickname}, #{gender}, #{birthdate}, 0, now(), #{profile})
     </insert>
 
+    <!--login method-->
+    <select id="selectOne" parameterType="Map" resultType="RetUser">
+        SELECT user_id, email, name, nickname, gender, birthdate, admin, reg_date, profile
+        FROM user
+        WHERE email=#{email} AND password=#{password}
+    </select>
+
     <select id="selectOne" parameterType="int" resultType="RetUser">
         SELECT user_id, email, name, nickname, gender, birthdate, admin, reg_date, profile
         FROM user WHERE user_id=#{userId}
