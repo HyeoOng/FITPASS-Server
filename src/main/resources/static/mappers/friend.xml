@@ -3,7 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.fitpass.model.dao.FriendDao">
+    <insert id="insertRequest" parameterType="int">
+        INSERT INTO Friend (from, to, status)
+        VALUES (#{from}, #{to}, 1), (#{to}, #{from}, 0);
+    </insert>
 
+    <update id="updateRequestStatus" parameterType="int">
+        UPDATE Friend SET status = 1
+        WHERE from = #{currUser} AND to = #{requestId};
+    </update>
+
+    <select id="selectFriends" parameterType="int" resultType="User">
+        SELECT u.*
+        FROM User u
+        INNER JOIN Friend f ON (f.from = u.user_id OR f.to = u.user_id)
+        WHERE (f.from = #{userId} OR f.to = #{userId})
+        AND f.status = 1
+        AND u.user_id != #{userId}
+    </select>
+
+    <select id="selectFriendRequest" parameterType="int" resultType="User">
+        SELECT u.*
+        FROM User u
+        INNER JOIN Friend f ON u.user_id = f.to
+        WHERE f.from = #{to} AND f.status = #{status};
+    </select>
 
 
 </mapper>
