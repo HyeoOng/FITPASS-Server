@@ -7,7 +7,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String nickname;
+    private String nn;
     private int gender;
     private Date birthdate;
     private int admin;
@@ -17,11 +17,11 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String password, String nickname, int gender, Date birthdate, int admin, Date regDate, String profile) {
+    public User(String name, String email, String password, String nn, int gender, Date birthdate, int admin, Date regDate, String profile) {
         setName(name);
         setEmail(email);
         setPassword(password);
-        setNickname(nickname);
+        setNn(nn);
         setGender(gender);
         setBirthdate(birthdate);
         setAdmin(admin);
@@ -29,12 +29,12 @@ public class User {
         setProfile(profile);
     }
 
-    public User(int userId, String name, String email, String password, String nickname, int gender, Date birthdate, int admin, Date regDate, String profile) {
+    public User(int userId, String name, String email, String password, String nn, int gender, Date birthdate, int admin, Date regDate, String profile) {
         setUserId(userId);
         setName(name);
         setEmail(email);
         setPassword(password);
-        setNickname(nickname);
+        setNn(nn);
         setGender(gender);
         setBirthdate(birthdate);
         setAdmin(admin);
@@ -75,12 +75,12 @@ public class User {
         this.password = password;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getNn() {
+        return nn;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setNn(String nn) {
+        this.nn = nn;
     }
 
     public int getGender() {
@@ -130,7 +130,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
+                ", nickname='" + nn + '\'' +
                 ", gender=" + gender +
                 ", birthdate=" + birthdate +
                 ", admin=" + admin +

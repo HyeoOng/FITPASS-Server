@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class RetUser {
     public int userId;
-    public String email, name, nickname;
+    public String email, name, nn;
     public int gender;
     public Date birthdate, regDate;
     public int admin;
@@ -24,8 +24,8 @@ public class RetUser {
         this.name = name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setNn(String nn) {
+        this.nn = nn;
     }
 
     public void setGender(int gender) {
@@ -60,8 +60,8 @@ public class RetUser {
         return name;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getNn() {
+        return nn;
     }
 
     public int getGender() {
@@ -90,7 +90,7 @@ public class RetUser {
                 "userId=" + userId +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
+                ", nickname='" + nn + '\'' +
                 ", gender=" + gender +
                 ", birthdate=" + birthdate +
                 ", regDate=" + regDate +

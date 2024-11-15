@@ -5,30 +5,30 @@
 <mapper namespace="com.ssafy.fitpass.model.dao.UserDao">
 
     <insert id="insertUser" parameterType="User">
-        INSERT INTO user (email, password, name, nickname, gender, birthdate, admin, reg_date, profile)
-        VALUES (#{email}, #{password}, #{name}, #{nickname}, #{gender}, #{birthdate}, 0, now(), #{profile})
+        INSERT INTO user (email, password, name, nn, gender, birthdate, admin, reg_date, profile)
+        VALUES (#{email}, #{password}, #{name}, #{nn}, #{gender}, #{birthdate}, 0, now(), #{profile})
     </insert>
 
     <!--login method-->
     <select id="selectOne" parameterType="Map" resultType="RetUser">
-        SELECT user_id, email, name, nickname, gender, birthdate, admin, reg_date, profile
+        SELECT user_id, email, name, nn, gender, birthdate, admin, reg_date, profile
         FROM user
         WHERE email=#{email} AND password=#{password}
     </select>
 
     <select id="selectOne" parameterType="int" resultType="RetUser">
-        SELECT user_id, email, name, nickname, gender, birthdate, admin, reg_date, profile
+        SELECT user_id, email, name, nn, gender, birthdate, admin, reg_date, profile
         FROM user WHERE user_id=#{userId}
     </select>
 
     <select id="selectAll" resultType="RetUser">
-        SELECT user_id, email, name, nickname, gender, birthdate, admin, reg_date, profile
+        SELECT user_id, email, name, nn, gender, birthdate, admin, reg_date, profile
         FROM user
     </select>
 
     <update id="updateUser" parameterType="User">
         UPDATE user
-        SET email=#{email}, name=#{name}, nickname=#{nickname}, gender=#{gender}, birthdate=#{birthdate}, profile=#{profile}
+        SET email=#{email}, name=#{name}, nn=#{nn}, gender=#{gender}, birthdate=#{birthdate}, profile=#{profile}
         WHERE user_id=#{userId}
     </update>
 
@@ -40,13 +40,13 @@
         SELECT * FROM user WHERE email=#{email}
     </select>
 
-    <select id="checkNN" parameterType="String">
-        SELECT * FROM user WHERE nickname=#{nickname}
+    <select id="checkNn" parameterType="String">
+        SELECT * FROM user WHERE nn=#{nn}
     </select>
 
     <!--admin-->
     <select id="selectAllAdmin" resultType="RetUser">
-        SELECT user_id, email, name, nickname, gender, birthdate, admin, reg_date, profile
+        SELECT user_id, email, name, nn, gender, birthdate, admin, reg_date, profile
         FROM user
         WHERE admin IN (1, 2)
     </select>

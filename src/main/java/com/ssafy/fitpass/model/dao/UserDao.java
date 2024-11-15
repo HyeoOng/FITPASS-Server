@@ -68,7 +68,7 @@ public interface UserDao {
      * @param nickname
      * @return nickname에 해당하는 닉네임 개수
      */
-    int checkNickname(String nickname);
+    int checkNn(String nickname);
 
     /////////////////////Admin//////////////////
 
