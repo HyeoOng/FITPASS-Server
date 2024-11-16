@@ -1,0 +1,29 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.fitpass.model.dao.PhotoDao">
+    
+    <insert id="insertPhoto" parameterType="Photo">
+        INSERT INTO PostPhoto (upload_file_name, store_file_name, save_folder)
+        VALUES (#{uploadFileName}, #{storeFileName}, #{saveFolder})
+    </insert>
+    
+    <insert id="insertProfile" parameterType="map">
+        INSERT INTO Profile (user_id, upload_file_name, store_file_name, save_folder)
+        VALUES (#{userId}, #{photo.uploadFileName}, #{photo.storeFileName}, #{photo.saveFolder})
+    </insert>
+    
+    <update id="updatePostPhoto" parameterType="Photo">
+        UPDATE PostPhoto SET upload_file_name=#{uploadFileName}, store_file_name=#{storeFileName}, save_folder=#{saveFolder}
+        WHERE id=#{photo.id}
+    </update>
+
+    <update id="udateProfile" parameterType="map">
+        UPDATE Profile SET upload_file_name=#{photo.uploadFileName}, store_file_name=#{photo.StoreFileName}, save_folder=#{photo.saveFolder}
+        WHERE id=#{photo.id} AND user_id=#{userId}
+    </update>
+    
+
+
+</mapper>
