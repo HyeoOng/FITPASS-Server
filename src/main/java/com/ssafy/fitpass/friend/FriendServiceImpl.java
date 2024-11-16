@@ -1,9 +1,11 @@
 package com.ssafy.fitpass.friend;
 
 import com.ssafy.fitpass.user.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class FriendServiceImpl implements FriendService {
 
     FriendDao friendDao;
