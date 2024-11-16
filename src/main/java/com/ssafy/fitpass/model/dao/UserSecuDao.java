@@ -1,7 +1,10 @@
 package com.ssafy.fitpass.model.dao;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import java.util.Map;
 
+@Mapper
 public interface UserSecuDao {
     /***
      * 사용자 ID와 암호화에 사용되는 Salt를 등록하는 메서드입니다.

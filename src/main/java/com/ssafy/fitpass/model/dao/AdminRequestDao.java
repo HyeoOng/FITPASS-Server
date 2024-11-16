@@ -1,7 +1,9 @@
 package com.ssafy.fitpass.model.dao;
 
 import com.ssafy.fitpass.model.dto.AdminRequest;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface AdminRequestDao {
     /**
      * 관리자에게 요청을 보내는 메서드입니다.
