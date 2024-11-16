@@ -52,4 +52,11 @@ public interface PostDao {
      * @return 친구 공개인 모든 글
      */
     List<Post> selectFriendPosts(int userId);
+
+    /***
+     * userId 사용자가 작성한 글(전체 공개)을 모두 조회하는 메서드입니다.
+     * @param userId
+     * @return
+     */
+    List<Post> selectUserPost(int userId);
 }

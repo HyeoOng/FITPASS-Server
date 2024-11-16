@@ -22,10 +22,10 @@ public interface FriendDao {
     /***
      * 친구 신청을 수락(친구 신청 수락 = status를 false -> true로 변환)하는 메서드입니다.
      * @param currUser (현재 유저)
-     * @param requestId (현재 유저에게 요청을 보낸 아이디)
+     * @param toUser (현재 유저에게 요청을 보낸 아이디)
      * @return 변환된 행 수 반환(정상 등록 : 1)
      */
-    public int updateRequestStatus(@Param("currUser") int currUser, @Param("requestId") int requestId);
+    public int updateRequestStatus(@Param("currUser") int currUser, @Param("toUser") int toUser);
 
     // 현재 어떤 상태인지 status 값 반환
     // public int selectOne(int from, int to);
@@ -43,4 +43,14 @@ public interface FriendDao {
      * @return 나에게 친구 신청 요청을 보낸 사용자 목록 반환
      */
     public List<User> selectFriendRequest(int toUser);
+
+    /***
+     * 내가(from) 다른 사용자(to)에게 친구 신청을 받은 적이 있는지 확인하는 메서드입니다.
+     * @param fromUser
+     * @param toUser
+     * @return 친구 신청을 받았다면 1 아니라면 0을 반환
+     */
+    public int selectOne(@Param("fromUser") int fromUser, @Param("toUser") int toUser);
+
+
 }

@@ -25,11 +25,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public boolean removeComment(int commentId) {
-        return false;
+        return commentDao.deleteComment(commentId) == 1;
     }
 
     @Override
     public boolean modifyComment(Comment comment) {
-        return false;
+        return commentDao.updateComment(comment) == 1;
     }
 }

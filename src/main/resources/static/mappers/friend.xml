@@ -3,18 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.fitpass.friend.FriendDao">
-    <insert id="insertRequest" parameterType="int">
+    <insert id="insertRequest" parameterType="map">
         INSERT INTO Friend (from_user, to_user, status)
         VALUES (#{fromUser}, #{toUser}, 1), (#{toUser}, #{fromUser}, 0);
     </insert>
 
-    <update id="updateRequestStatus" parameterType="int">
+    <update id="updateRequestStatus" parameterType="map">
         UPDATE Friend SET status = 1
-        WHERE from_user = #{currUser} AND to_user = #{requestId};
+        WHERE from_user = #{currUser} AND to_user = #{toUser};
     </update>
 
-    <select id="selectFriends" parameterType="int" resultType="User">
-        SELECT u.*
+    <select id="selectFriends" parameterType="int" resultType="RetUser">
+        SELECT user_id, email, name, nn, admin, reg_date, profile
         FROM User u
         INNER JOIN Friend f ON (f.from_user = u.user_id OR f.to_user = u.user_id)
         WHERE (f.from_user = #{userId} OR f.to_user = #{userId})
@@ -22,11 +22,16 @@
         AND u.user_id != #{userId}
     </select>
 
-    <select id="selectFriendRequest" parameterType="int" resultType="User">
-        SELECT u.*
+    <select id="selectFriendRequest" parameterType="int" resultType="RetUser">
+        SELECT user_id, email, name, nn, admin, reg_date, profile
         FROM User u
         INNER JOIN Friend f ON u.user_id = f.to_user
         WHERE f.from_user = #{toUser} AND f.status = 0;
+    </select>
+
+    <select id="selectOne" parameterType="map">
+        SELECT * FROM friend
+        WHERE from_user = #{fromUser} AND to_user = #{toUser} AND status = 0
     </select>
 
 
