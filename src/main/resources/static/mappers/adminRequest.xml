@@ -1,0 +1,17 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.fitpass.model.dao.AdminRequestDao">
+
+    <insert id="insertRequest" parameterType="AdminRequest">
+        INSERT INTO AdminRequest (user_id, title, content)
+        VALUES (#{userId}, #{title}, #{content});
+    </insert>
+
+    <delete id="deleteRequest" parameterType="int">
+        DELETE FROM AdminRequest
+        WHERE request_id = #{requestId};
+    </delete>
+
+</mapper>
