@@ -1,9 +1,11 @@
 package com.ssafy.fitpass.model.dao;
 
 import com.ssafy.fitpass.model.dto.Post;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface PostDao {
     /**
      * 글을 등록하는 메서드입니다.

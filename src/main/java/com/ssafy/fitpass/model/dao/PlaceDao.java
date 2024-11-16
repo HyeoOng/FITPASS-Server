@@ -1,9 +1,11 @@
 package com.ssafy.fitpass.model.dao;
 
 import com.ssafy.fitpass.model.dto.Place;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface PlaceDao {
 
     /***

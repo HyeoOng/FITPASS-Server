@@ -13,7 +13,8 @@ public class Post {
     private Date updatedAt;
     private int exerciseDuration;
     private String content;
-
+    private int isPublic;
+    private String photoUrl;
 
     public Post() {
     }
@@ -30,7 +31,8 @@ public class Post {
         setContent(content);
     }
 
-    public Post(int postId, int userId, int placeId, int photoId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content) {
+
+    public Post(int postId, int userId, int placeId, int photoId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content, int isPublic) {
         setPostId(postId);
         setUserId(userId);
         setPlaceId(placeId);
@@ -41,6 +43,22 @@ public class Post {
         setUpdatedAt(updatedAt);
         setExerciseDuration(exerciseDuration);
         setContent(content);
+        setIsPublic(isPublic);
+    }
+
+    public Post(int postId, int userId, int placeId, int photoId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content, int isPublic, String photoUrl) {
+        setPostId(postId);
+        setUserId(userId);
+        setPlaceId(placeId);
+        setPhotoId(photoId);
+        setSportCode(sportCode);
+        setTitle(title);
+        setCreatedAt(createdAt);
+        setUpdatedAt(updatedAt);
+        setExerciseDuration(exerciseDuration);
+        setContent(content);
+        setIsPublic(isPublic);
+        setPhotoUrl(photoUrl);
     }
 
     // getter와 setter
@@ -124,6 +142,22 @@ public class Post {
         this.content = content;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public int getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(int isPublic) {
+        this.isPublic = isPublic;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -137,6 +171,8 @@ public class Post {
                 ", updatedAt=" + updatedAt +
                 ", exerciseDuration=" + exerciseDuration +
                 ", content='" + content + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
+                ", isPublic=" + isPublic +
                 '}';
     }
 }

@@ -2,10 +2,12 @@ package com.ssafy.fitpass.model.dao;
 
 import com.ssafy.fitpass.model.dto.RetUser;
 import com.ssafy.fitpass.model.dto.User;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;
 
+@Mapper
 public interface UserDao {
     /**
      * 회원 가입시 사용되는 메서드입니다.

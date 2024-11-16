@@ -10,11 +10,20 @@
     </insert>
 
     <select id="selectOne" parameterType="int" resultType="Post">
-        SELECT * FROM post WHERE post_id=#{postId}
+        SELECT p.post_id, p.user_id, p.place_id, p.photo_id, p.sport_code, p.title, p.created_at, p.updated_at, p.exercise_duration, p.content, pp.photo_url
+        FROM post as p
+        LEFT JOIN PostPhoto as pp
+        ON p.photo_id = pp.id
+        WHERE post_id=#{postId}
+
     </select>
 
     <select id="selectAll" resultType="Post">
-        SELECT * FROM post WHERE is_public=0
+        SELECT p.post_id, p.user_id, p.place_id, p.photo_id, p.sport_code, p.title, p.created_at, p.updated_at, p.exercise_duration, p.content, pp.photo_url
+        FROM post as p
+        LEFT JOIN PostPhoto as pp
+        ON p.photo_id = pp.id
+        WHERE is_public=0
     </select>
 
     <update id="updatePost" parameterType="Post">
@@ -28,15 +37,21 @@
     </delete>
 
     <select id="selectFriendPosts" parameterType="int" resultType="Post">
-        SELECT *
+        SELECT p.post_id, p.user_id, p.place_id, p.photo_id, p.sport_code, p.title,
+        p.created_at, p.updated_at, p.exercise_duration, p.content, pp.photo_url
         FROM Post p
+        LEFT JOIN PostPhoto pp
+        ON p.photo_id = pp.id
         WHERE p.user_id IN (
         SELECT u.user_id
         FROM User u
-        INNER JOIN Friend f ON (f.from_user = u.user_id OR f.to_user = u.user_id)
+        INNER JOIN Friend f
+        ON (f.from_user = u.user_id OR f.to_user = u.user_id)
         WHERE (f.from_user = #{userId} OR f.to_user = #{userId})
         AND f.status = 1
-        AND u.user_id != #{userId})
+        AND u.user_id != #{userId}
+        )
         AND p.is_public = 1;
     </select>
+
 </mapper>
