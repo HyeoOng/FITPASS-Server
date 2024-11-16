@@ -1,8 +1,10 @@
 package com.ssafy.fitpass.model.dao;
 
 import com.ssafy.fitpass.model.dto.Photo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface PhotoDao {
     /***
      * PostPhoto 테이블에 photo 정보를 등록하는 메서드입니다.
