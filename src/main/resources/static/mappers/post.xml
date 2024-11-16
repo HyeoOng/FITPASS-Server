@@ -18,12 +18,12 @@
 
     </select>
 
-    <select id="selectAll" resultType="Post">
+    <select id="selectAll" resultType="Post" parameterType="int">
         SELECT p.post_id, p.user_id, p.place_id, p.photo_id, p.sport_code, p.title, p.created_at, p.updated_at, p.exercise_duration, p.content, pp.photo_url
         FROM post as p
         LEFT JOIN PostPhoto as pp
         ON p.photo_id = pp.id
-        WHERE is_public=0
+        WHERE is_public=0 AND p.post_id=#{postId}
     </select>
 
     <update id="updatePost" parameterType="Post">

@@ -16,7 +16,6 @@ public interface CommentDao {
 
     /***
      * 한 게시글(postId)의 모든 댓글을 조회하는 메서드입니다.
-     * @param postId
      * @return postId 글에 작성된 댓글 목록 반환
      */
     public List<Comment> selectAll(int postId);
