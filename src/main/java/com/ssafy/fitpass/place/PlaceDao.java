@@ -1,6 +1,5 @@
-package com.ssafy.fitpass.model.dao;
+package com.ssafy.fitpass.place;
 
-import com.ssafy.fitpass.model.dto.Place;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

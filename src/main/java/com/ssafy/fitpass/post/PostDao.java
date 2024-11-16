@@ -1,6 +1,5 @@
-package com.ssafy.fitpass.model.dao;
+package com.ssafy.fitpass.post;
 
-import com.ssafy.fitpass.model.dto.Post;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

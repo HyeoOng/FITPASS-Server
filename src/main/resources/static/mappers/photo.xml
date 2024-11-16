@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.fitpass.model.dao.PhotoDao">
+<mapper namespace="com.ssafy.fitpass.photo.PhotoDao">
     
     <insert id="insertPhoto" parameterType="Photo">
         INSERT INTO PostPhoto (upload_file_name, store_file_name, save_folder)

@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.model.dto;
+package com.ssafy.fitpass.friend;
 
 public class Friend {
     private int id, fromUser, toUser, status;

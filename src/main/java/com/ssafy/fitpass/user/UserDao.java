@@ -1,7 +1,5 @@
-package com.ssafy.fitpass.model.dao;
+package com.ssafy.fitpass.user;
 
-import com.ssafy.fitpass.model.dto.RetUser;
-import com.ssafy.fitpass.model.dto.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

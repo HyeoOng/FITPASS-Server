@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.fitpass.model.dao.FriendDao">
+<mapper namespace="com.ssafy.fitpass.friend.FriendDao">
     <insert id="insertRequest" parameterType="int">
         INSERT INTO Friend (from_user, to_user, status)
         VALUES (#{fromUser}, #{toUser}, 1), (#{toUser}, #{fromUser}, 0);

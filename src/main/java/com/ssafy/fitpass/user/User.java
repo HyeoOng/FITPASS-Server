@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.model.dto;
+package com.ssafy.fitpass.user;
 
 import java.util.Date;
 

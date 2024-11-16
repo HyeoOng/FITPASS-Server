@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.model.dto;
+package com.ssafy.fitpass.sport;
 
 public class Sport {
     private int sportCode;

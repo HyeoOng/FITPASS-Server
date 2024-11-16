@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.model.dto;
+package com.ssafy.fitpass.request;
 
 public class AdminRequest {
     private int rqId, userId;

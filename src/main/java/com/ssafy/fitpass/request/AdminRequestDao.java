@@ -1,6 +1,5 @@
-package com.ssafy.fitpass.model.dao;
+package com.ssafy.fitpass.request;
 
-import com.ssafy.fitpass.model.dto.AdminRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

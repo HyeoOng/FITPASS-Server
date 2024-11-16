@@ -1,6 +1,5 @@
-package com.ssafy.fitpass.model.dao;
+package com.ssafy.fitpass.photo;
 
-import com.ssafy.fitpass.model.dto.Photo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

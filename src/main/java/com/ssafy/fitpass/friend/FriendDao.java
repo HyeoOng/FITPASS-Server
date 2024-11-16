@@ -1,6 +1,6 @@
-package com.ssafy.fitpass.model.dao;
+package com.ssafy.fitpass.friend;
 
-import com.ssafy.fitpass.model.dto.User;
+import com.ssafy.fitpass.user.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.fitpass.model.dao.PostDao">
+<mapper namespace="com.ssafy.fitpass.post.PostDao">
 
     <insert id="insertPost" parameterType="Post">
         INSERT INTO post (user_id, place_id, sport_code, photo_id, title, create_at, updated_at, exercise_duration, content, is_public)
