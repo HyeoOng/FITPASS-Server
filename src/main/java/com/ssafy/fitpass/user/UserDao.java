@@ -29,14 +29,14 @@ public interface UserDao {
      * @param userId
      * @return userId에 해당하는 회원
      */
-    RetUser selectOne(String userId);
+    RetUser selectOne(int userId);
 
     /**
      * 모든 회원 정보를 조회하는 메서드입니다.
      *
      * @return 모든 회원
      */
-    List<User> selectAll();
+    List<RetUser> selectAll();
 
     /**
      * 회원 정보를 수정하는 메서드입니다.
@@ -77,7 +77,7 @@ public interface UserDao {
      *
      * @return 관리자 정보를 반환
      */
-    List<User>  selectAllAdmin();
+    List<RetUser>  selectAllAdmin();
 
     /***
      * 관리자 권한을 추가하는 메서드입니다.
