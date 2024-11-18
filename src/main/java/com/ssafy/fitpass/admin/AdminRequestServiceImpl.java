@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.request;
+package com.ssafy.fitpass.admin;
 
 import org.springframework.stereotype.Service;
 

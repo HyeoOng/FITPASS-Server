@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.request;
+package com.ssafy.fitpass.admin;
 
 public class AdminRequest {
     private int rqId, userId;

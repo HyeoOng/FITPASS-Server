@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.request;
+package com.ssafy.fitpass.admin;
 
 public interface AdminRequestService {
     boolean createRequest(AdminRequest adminRequest);
