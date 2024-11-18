@@ -18,18 +18,5 @@ public class PlaceServiceImpl implements PlaceService {
         return placeDao.selectAll(userId);
     }
 
-    @Override
-    public Place getPlace(int postId) {
-        return placeDao.selectOne(postId);
-    }
 
-    @Override
-    public int getPlaceId(int kakaoMapId) {
-        return placeDao.selectOneByKakaoMapId(kakaoMapId);
-    }
-
-    @Override
-    public boolean createPlace(Place place) {
-        return placeDao.insertPlace(place)==1;
-    }
 }
