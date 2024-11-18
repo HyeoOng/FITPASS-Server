@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.post;
 
+import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.place.Place;
 
 import java.util.List;
@@ -16,4 +17,7 @@ public interface PostService {
     Place getPlace(int postId);
     int getPlaceId(int kakaoMapId);
     boolean createPlace(Place place);
+
+    boolean createPostPhoto(Photo photo);
+    boolean modifyPostPhoto(Photo photo);
 }

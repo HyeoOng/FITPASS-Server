@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.post;
 
+import com.ssafy.fitpass.photo.Photo;
+import com.ssafy.fitpass.photo.PhotoDao;
 import com.ssafy.fitpass.place.Place;
 import com.ssafy.fitpass.place.PlaceDao;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ public class PostServiceImpl implements PostService {
 
     PostDao postDao;
     PlaceDao placeDao;
+    PhotoDao photoDao;
 
-    public PostServiceImpl(PostDao postDao, PlaceDao placeDao) {
+    public PostServiceImpl(PostDao postDao, PlaceDao placeDao, PhotoDao photoDao) {
         this.postDao = postDao;
         this.placeDao = placeDao;
+        this.photoDao = photoDao;
     }
 
     @Override
@@ -66,4 +70,15 @@ public class PostServiceImpl implements PostService {
     public boolean createPlace(Place place) {
         return placeDao.insertPlace(place)==1;
     }
+
+    @Override
+    public boolean createPostPhoto(Photo photo) {
+        return photoDao.insertPostPhoto(photo)==1;
+    }
+
+    @Override
+    public boolean modifyPostPhoto(Photo photo) {
+        return photoDao.updatePostPhoto(photo)==1;
+    }
+
 }
