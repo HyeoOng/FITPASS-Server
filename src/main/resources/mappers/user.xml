@@ -4,29 +4,29 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.fitpass.user.UserDao">
 
-    <insert id="insertUser" parameterType="User">
+    <insert id="insertUser" parameterType="com.ssafy.fitpass.user.User">
         INSERT INTO user (email, password, name, nn, admin, reg_date, profile)
         VALUES (#{email}, #{password}, #{name}, #{nn}, 0, now(), #{profile})
     </insert>
 
     <!--login method-->
-    <select id="selectOne" parameterType="Map" resultType="RetUser">
+    <select id="selectOne" parameterType="Map" resultType="com.ssafy.fitpass.user.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date, profile
         FROM user
         WHERE email=#{email} AND password=#{password}
     </select>
 
-    <select id="selectOne" parameterType="int" resultType="RetUser">
+    <select id="selectOne" parameterType="int" resultType="com.ssafy.fitpass.user.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date, profile
         FROM user WHERE user_id=#{userId}
     </select>
 
-    <select id="selectAll" resultType="RetUser">
+    <select id="selectAll" resultType="com.ssafy.fitpass.user.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date, profile
         FROM user
     </select>
 
-    <update id="updateUser" parameterType="User">
+    <update id="updateUser" parameterType="com.ssafy.fitpass.user.User">
         UPDATE user
         SET email=#{email}, name=#{name}, nn=#{nn}, profile=#{profile}
         WHERE user_id=#{userId}
@@ -36,7 +36,7 @@
         DELETE FROM user WHERE user_id=#{userId}
     </delete>
 
-    <select id="checkEmail" parameterType="string">
+    <select id="checkEmail" parameterType="String">
         SELECT * FROM user WHERE email=#{email}
     </select>
 
@@ -45,7 +45,7 @@
     </select>
 
     <!--admin-->
-    <select id="selectAllAdmin" resultType="RetUser">
+    <select id="selectAllAdmin" resultType="com.ssafy.fitpass.user.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date, profile
         FROM user
         WHERE admin IN (1, 2)
