@@ -3,8 +3,13 @@ package com.ssafy.fitpass.place;
 public class Place {
     private int placeId;
     private String placeName;
-    private int regionCode;
+    private String placeAddress;
+    private int kakaoMapId;
     private double latitude, longitude;
+
+    public int getKakaoMapId() { return kakaoMapId; }
+
+    public void setKakaoMapId(int kakaoMapId) { this.kakaoMapId = kakaoMapId; }
 
     public int getPlaceId() {
         return placeId;
@@ -14,8 +19,8 @@ public class Place {
         return placeName;
     }
 
-    public int getRegionCode() {
-        return regionCode;
+    public String getPlaceAddress() {
+        return placeAddress;
     }
 
     public double getLatitude() {
@@ -34,8 +39,8 @@ public class Place {
         this.placeName = placeName;
     }
 
-    public void setRegionCode(int regionCode) {
-        this.regionCode = regionCode;
+    public void setPlaceAddress(String placeAddress) {
+        this.placeAddress = placeAddress;
     }
 
     public void setLatitude(double latitude) {
@@ -51,7 +56,7 @@ public class Place {
         return "Place{" +
                 "placeId=" + placeId +
                 ", placeName='" + placeName + '\'' +
-                ", regionCode=" + regionCode +
+                ", placeAddress=" + placeAddress +
                 ", latitude=" + latitude +
                 ", logitude=" + longitude +
                 '}';
