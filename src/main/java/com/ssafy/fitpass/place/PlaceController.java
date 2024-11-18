@@ -9,7 +9,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,6 @@ public class PlaceController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "KakaoAK {Kakao_REST_API_KEY}");
-        // headers.set("Content-Type", "application/json;charset=UTF-8");
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         String baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + keyword;
