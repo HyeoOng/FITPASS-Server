@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.post;
 
+import com.ssafy.fitpass.place.Place;
+
 import java.util.List;
 
 public interface PostService {
@@ -10,4 +12,8 @@ public interface PostService {
     boolean modifyPost(Post post);
     boolean removePost(int postId);
     List<Post> getFriendPosts(int userId);
+
+    Place getPlace(int postId);
+    int getPlaceId(int kakaoMapId);
+    boolean createPlace(Place place);
 }

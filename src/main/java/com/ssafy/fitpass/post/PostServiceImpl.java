@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.post;
 
+import com.ssafy.fitpass.place.Place;
+import com.ssafy.fitpass.place.PlaceDao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,9 +10,11 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     PostDao postDao;
+    PlaceDao placeDao;
 
-    public PostServiceImpl(PostDao postDao) {
+    public PostServiceImpl(PostDao postDao, PlaceDao placeDao) {
         this.postDao = postDao;
+        this.placeDao = placeDao;
     }
 
     @Override
@@ -46,5 +50,20 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getFriendPosts(int userId) {
         return postDao.selectFriendPosts(userId);
+    }
+
+    @Override
+    public Place getPlace(int postId) {
+        return placeDao.selectOne(postId);
+    }
+
+    @Override
+    public int getPlaceId(int kakaoMapId) {
+        return placeDao.selectOneByKakaoMapId(kakaoMapId);
+    }
+
+    @Override
+    public boolean createPlace(Place place) {
+        return placeDao.insertPlace(place)==1;
     }
 }

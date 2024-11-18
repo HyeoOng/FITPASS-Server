@@ -4,7 +4,5 @@ import java.util.List;
 
 public interface PlaceService {
     List<Place> getAllPlaces(int userId);
-    Place getPlace(int postId);
-    int getPlaceId(int kakaoMapId);
-    boolean createPlace(Place place);
+
 }

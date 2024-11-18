@@ -19,7 +19,7 @@ public class PostController {
     @PostMapping
     public Map<String, String> createPost(@RequestBody Post post){
         Map<String, String> response = new HashMap<>();
-
+//        postService.createPlace()
         if(postService.createPost(post)){
             response.put("msg", "글을 성공적으로 등록하였습니다.");
         }else {
