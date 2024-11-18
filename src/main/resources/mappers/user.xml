@@ -10,7 +10,7 @@
     </insert>
 
     <!--login method-->
-    <select id="selectOne" parameterType="Map" resultType="com.ssafy.fitpass.user.RetUser">
+    <select id="login" parameterType="Map" resultType="com.ssafy.fitpass.user.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date, profile
         FROM user
         WHERE email=#{email} AND password=#{password}

@@ -21,7 +21,7 @@ public interface UserDao {
      * @param map (이메일, 비밀번호 필요)
      * @return 회원
      */
-    RetUser selectOne(Map<String, String> map);
+    RetUser login(Map<String, String> map);
 
     /**
      * 회원 정보를 조회하는 메서드입니다.
