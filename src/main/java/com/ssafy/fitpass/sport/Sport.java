@@ -30,6 +30,9 @@ public class Sport {
     }
 
     public void setSportName(String sportName) {
+        if (sportName == null || sportName.trim().isEmpty()) {
+            throw new IllegalArgumentException("스포츠 이름 오류");
+        }
         this.sportName = sportName;
     }
 
