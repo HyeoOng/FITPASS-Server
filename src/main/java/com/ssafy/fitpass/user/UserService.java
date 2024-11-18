@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.user;
 
+import com.ssafy.fitpass.photo.Photo;
+
 import java.util.List;
 
 public interface UserService {
@@ -14,4 +16,7 @@ public interface UserService {
     boolean getNN(String nickname);
     List<RetUser> getAllAdmin();
     boolean modifyAdmin(int userId);
+    boolean createProfile(int userId, Photo photo);
+    boolean modifyProfile(int userId, Photo photo);
+
 }

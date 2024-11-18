@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.user;
 
+import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.util.OpenCrypt;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +77,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean modifyAdmin(int userId) {
         return userDao.updateAdmin(userId) == 1;
+    }
+
+    @Override
+    public boolean createProfile(int userId, Photo photo) {
+        return false;
+    }
+
+    @Override
+    public boolean modifyProfile(int userId, Photo photo) {
+        return false;
     }
 }
