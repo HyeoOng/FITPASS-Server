@@ -35,13 +35,13 @@ public class PostController {
         // 글 등록 전에는 항상 장소와 photo를 먼저 등록해야 한다..
         // 1. 장소 먼저 등록
         // 1-1. 장소 테이블에 등록되어 있는지 확인한다.
-        int placeId = postService.getPlaceId(place.getKakaoMapId());
+        int placeId = postService.getPlaceId(place);
         if(placeId==-1){ // 등록된 장소가 아닌 경우 -> 장소를 먼저 테이블에 등록
             if(!postService.createPost(post)){
                 response.put("msg_place", "장소를 등록하는 것을 실패하였습니다.");
                 return response;
             }
-            placeId = postService.getPlaceId(place.getKakaoMapId()); // 등록된 placeId 다시 가져오기
+            placeId = postService.getPlaceId(place); // 등록된 placeId 다시 가져오기
         }
 
         // 2. 글을 등록한다.

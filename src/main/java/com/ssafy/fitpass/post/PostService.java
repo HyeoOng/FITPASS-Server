@@ -16,7 +16,7 @@ public interface PostService {
     int getPostId(Post post);
 
     Place getPlace(int postId);
-    int getPlaceId(int kakaoMapId);
+    int getPlaceId(Place place);
     boolean createPlace(Place place);
 
     boolean createPostPhoto(Photo photo);
