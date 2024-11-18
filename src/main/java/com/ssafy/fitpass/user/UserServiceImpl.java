@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         int result = userDao.insertUser(user);
 
         Map<String,String> info = new HashMap<>();
-        info.put("id", user.getEmail());
+        info.put("email", user.getEmail());
         info.put("salt", salt);
         userSecuDao.insertInfo(info);
         return result == 1;

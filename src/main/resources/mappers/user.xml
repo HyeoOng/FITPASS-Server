@@ -5,8 +5,8 @@
 <mapper namespace="com.ssafy.fitpass.user.UserDao">
 
     <insert id="insertUser" parameterType="com.ssafy.fitpass.user.User">
-        INSERT INTO user (email, password, name, nn, admin, reg_date, profile)
-        VALUES (#{email}, #{password}, #{name}, #{nn}, 0, now(), #{profile})
+        INSERT INTO user (email, password, name, nn, admin, reg_date)
+        VALUES (#{email}, #{password}, #{name}, #{nn}, 0, now())
     </insert>
 
     <!--login method-->
