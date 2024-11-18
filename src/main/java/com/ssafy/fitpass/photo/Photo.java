@@ -1,16 +1,17 @@
 package com.ssafy.fitpass.photo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Photo {
-    private int id;
+    private int id, postId;
     private String uploadFileName, storeFileName, saveFolder;
+    private MultipartFile file;
 
     public Photo() {}
 
-    public Photo(String uploadFileName, String storeFileName, String saveFolder) {
-        setSaveFolder(saveFolder);
-        setStoreFileName(storeFileName);
-        setUploadFileName(uploadFileName);
-    }
+    public void setPostId(int postId) { this.postId = postId; }
+
+    public int getPostId() { return postId;}
 
     public void setId(int id) {
         this.id = id;
@@ -42,6 +43,13 @@ public class Photo {
 
     public String getSaveFolder() {
         return saveFolder;
+    }
+
+    public MultipartFile getFile() { return file;}
+
+    public void setFile(MultipartFile file) {
+        setUploadFileName(file.getOriginalFilename());
+        this.file = file;
     }
 
     @Override

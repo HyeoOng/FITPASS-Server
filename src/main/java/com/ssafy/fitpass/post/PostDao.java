@@ -59,4 +59,6 @@ public interface PostDao {
      * @return
      */
     List<Post> selectUserPost(int userId);
+
+    int selectPostId(Post post);
 }
