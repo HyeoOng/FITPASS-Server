@@ -34,4 +34,18 @@ public interface PhotoDao {
      * @return
      */
     int updateProfile(@Param("userId") int userId, @Param("photo")Photo photo);
+
+    /***
+     * 등록된 사진의 photoId를 가지고 오는 메서드입니다.
+     * @param photo
+     * @return photoId
+     */
+    int selectPhotoId(Photo photo);
+
+    /***
+     * 등록된 사용자의 프로필 사진의 ID를 가지고 오는 메서드입니다. (아직 mapper에 구현안헀는데 필요하면 구현하고 괄호 지워주세요..)
+     * @param userId
+     * @return
+     */
+    int selectPhotoIdbyUserId(int userId);
 }

@@ -81,4 +81,13 @@ public class PostServiceImpl implements PostService {
         return photoDao.updatePostPhoto(photo)==1;
     }
 
+    @Override
+    public int getPhotoId(Photo photo) {
+        return photoDao.selectPhotoId(photo);
+    }
+
+    @Override
+    public int getProfileId(int userId) {
+        return photoDao.selectPhotoIdbyUserId(userId);
+    }
 }

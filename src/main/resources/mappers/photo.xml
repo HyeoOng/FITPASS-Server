@@ -16,13 +16,18 @@
     
     <update id="updatePostPhoto" parameterType="Photo">
         UPDATE PostPhoto SET upload_file_name=#{uploadFileName}, store_file_name=#{storeFileName}, save_folder=#{saveFolder}
-        WHERE id=#{photo.id}
+        WHERE id=#{id}
     </update>
 
     <update id="udateProfile" parameterType="map">
         UPDATE Profile SET upload_file_name=#{photo.uploadFileName}, store_file_name=#{photo.StoreFileName}, save_folder=#{photo.saveFolder}
         WHERE id=#{photo.id} AND user_id=#{userId}
     </update>
+
+    <select id="selectPhotoId" parameterType="Photo">
+        SELECT photo_id FROM PostPhoto
+        WHERE id=#{id} AND upload_file_name=#{uploadFileName} AND store_file_name=#{storeFileName} AND save_folder=#{saveFolder}
+    </select>
     
 
 
