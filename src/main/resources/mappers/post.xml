@@ -5,30 +5,30 @@
 <mapper namespace="com.ssafy.fitpass.post.PostDao">
 
     <insert id="insertPost" parameterType="Post">
-        INSERT INTO post (user_id, place_id, sport_code, photo_id, title, created_at, updated_at, exercise_duration, content, is_public)
-        VALUES (#{userId}, #{placeId}, #{sportCode}, #{photoId}, #{title}, now(), now(), #{exerciseDuration}, #{content}, #{isPublic})
+        INSERT INTO post (user_id, place_id, sport_code, title, created_at, updated_at, exercise_duration, content, is_public)
+        VALUES (#{userId}, #{placeId}, #{sportCode}, #{title}, now(), now(), #{exerciseDuration}, #{content}, #{isPublic})
     </insert>
 
     <select id="selectOne" parameterType="int" resultType="Post">
-        SELECT p.post_id, p.user_id, p.place_id, p.photo_id, p.sport_code, p.title, p.created_at, p.updated_at, p.exercise_duration, p.content, pp.photo_url, p.is_public
-        FROM post as p
-        LEFT JOIN PostPhoto as pp
-        ON p.photo_id = pp.id
+        SELECT post_id, user_id, place_id, sport_code, title, created_at, updated_at
+        , exercise_duration, content, is_public,
+        (SELECT save_folder FROM PostPhoto WHERE post_id = p.post_id LIMIT 1) as photo_url
+        FROM post p
         WHERE post_id=#{postId}
 
     </select>
 
     <select id="selectAll" resultType="Post">
-        SELECT p.post_id, p.user_id, p.place_id, p.photo_id, p.sport_code, p.title, p.created_at, p.updated_at, p.exercise_duration, p.content, p.is_public, pp.photo_url
-        FROM post as p
-        LEFT JOIN PostPhoto as pp
-        ON p.photo_id = pp.id
+        SELECT post_id, user_id, place_id, sport_code, title, created_at, updated_at
+        , exercise_duration, content, is_public,
+        (SELECT save_folder FROM PostPhoto WHERE post_id = p.post_id LIMIT 1) as photo_url
+        FROM post p
         WHERE is_public=0
     </select>
 
     <update id="updatePost" parameterType="Post">
         UPDATE post
-        SET place_id=#{placeId}, sport_code=#{sportCode}, photo_id=#{photoId}, title=#{title}, updated_at=now(), exercise_duration=#{exerciseDuration}, content=#{content}, is_public=#{isPublic}
+        SET place_id=#{placeId}, sport_code=#{sportCode}, title=#{title}, updated_at=now(), exercise_duration=#{exerciseDuration}, content=#{content}, is_public=#{isPublic}
         WHERE post_id = #{postId}
     </update>
 
@@ -37,12 +37,11 @@
     </delete>
 
     <select id="selectFriendPosts" parameterType="int" resultType="Post">
-        SELECT p.post_id, p.user_id, p.place_id, p.photo_id, p.sport_code, p.title, p.is_public,
-        p.created_at, p.updated_at, p.exercise_duration, p.content, pp.photo_url
-        FROM Post p
-        LEFT JOIN PostPhoto pp
-        ON p.photo_id = pp.id
-        WHERE p.user_id IN (
+        SELECT post_id, user_id, place_id, sport_code, title, created_at, updated_at
+        , exercise_duration, content, is_public,
+        (SELECT save_folder FROM PostPhoto WHERE post_id = p.post_id LIMIT 1) as photo_url
+        FROM post p
+        WHERE user_id IN (
         SELECT u.user_id
         FROM User u
         INNER JOIN Friend f
@@ -51,13 +50,22 @@
         AND f.status = 1
         AND u.user_id != #{userId}
         )
-        AND p.is_public = 1;
+        AND is_public = 1;
     </select>
 
     <select id="selectUserPost" parameterType="int" resultType="Post">
-        SELECT post_id, user_id, place_id, photo_id, sport_code, title, content, created_at, updated_at, exercise_duration, photo_url
-        FROM Post p left join PostPhoto pp on p.post_id = pp.id
-        WHERE p.user_id = #{userId} AND p.is_public = 0
+        SELECT post_id, user_id, place_id, sport_code, title, created_at, updated_at
+        , exercise_duration, content, is_public,
+        (SELECT save_folder FROM PostPhoto WHERE post_id = p.post_id LIMIT 1) as photo_url
+        FROM post p
+        WHERE user_id = #{userId} AND is_public = 0
+    </select>
+
+    <select id="selectPostId" parameterType="Post" resultType="int">
+        SELECT post_id FROM post
+        WHERE user_id = #{userId} AND title = #{title} AND content = #{content} AND sport_code = #{sportCode} AND exercise_duration = #{exerciseDuration}
+        ORDER BY created_at DESC
+        LIMIT 1;
     </select>
 
 </mapper>

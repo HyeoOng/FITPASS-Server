@@ -13,6 +13,7 @@ public interface PostService {
     boolean modifyPost(Post post);
     boolean removePost(int postId);
     List<Post> getFriendPosts(int userId);
+    int getPostId(Post post);
 
     Place getPlace(int postId);
     int getPlaceId(int kakaoMapId);

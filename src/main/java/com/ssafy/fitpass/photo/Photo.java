@@ -1,15 +1,24 @@
 package com.ssafy.fitpass.photo;
 
 public class Photo {
-    private int id;
+    private int id, postId;
     private String uploadFileName, storeFileName, saveFolder;
 
     public Photo() {}
 
-    public Photo(String uploadFileName, String storeFileName, String saveFolder) {
+    public Photo(String uploadFileName, String storeFileName, String saveFolder, int postId) {
         setSaveFolder(saveFolder);
+        setPostId(postId);
         setStoreFileName(storeFileName);
         setUploadFileName(uploadFileName);
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
+
+    public int getPostId() {
+        return postId;
     }
 
     public void setId(int id) {
