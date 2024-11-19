@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.interceptor;
 
+import com.ssafy.fitpass.user.RetUser;
 import com.ssafy.fitpass.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            User user = (User) session.getAttribute("user");
+            RetUser user = (RetUser) session.getAttribute("user");
             if (user != null) {
                 System.out.println("logined 상태입니다.");
                 return true;
