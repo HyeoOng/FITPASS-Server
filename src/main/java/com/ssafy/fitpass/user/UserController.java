@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.user;
 
+import com.ssafy.fitpass.auth.JwtUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -16,41 +17,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
-    public Map<String, String> signup(@RequestBody User user) {
 
-        Map<String, String> map = new HashMap<>();
-
-        try {
-            boolean result = userService.signup(user);
-            if(result) {
-                map.put("msg", "success");
-            } else {
-                map.put("msg", "fail");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("msg", e.getMessage());
-        }
-        return map;
-    }
-
-    @PostMapping("/login")
-    public Map<String, String> login(@RequestBody User user) {
-        Map<String, String> map = new HashMap<>();
-        RetUser loginedUser = userService.login(user);
-        if (loginedUser != null) {
-            map.put("msg", "success");
-        } else {
-            map.put("msg", "fail");
-        }
-        return map;
-    }
-
-    @GetMapping("/logout")
-    public void logout() {
-
-    }
 
     @GetMapping
     public List<RetUser> getAllUsers() {

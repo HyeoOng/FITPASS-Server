@@ -11,7 +11,7 @@
 
     <!--login method-->
     <select id="login" parameterType="Map" resultType="com.ssafy.fitpass.user.RetUser">
-        SELECT user_id, email, name, nn, admin, reg_date, profile
+        SELECT user_id, email, name, nn, admin, reg_date
         FROM user
         WHERE email=#{email} AND password=#{password}
     </select>

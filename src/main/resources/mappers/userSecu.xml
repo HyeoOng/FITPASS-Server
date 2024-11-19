@@ -9,10 +9,10 @@
         VALUES (#{email}, #{salt});
     </insert>
 
-    <select id="selectSalt" parameterType="int" resultType="String">
+    <select id="selectSalt" parameterType="String" resultType="String">
         SELECT salt
         FROM Security
-        WHERE user_id = #{userId};
+        WHERE user_id = #{userEmail};
     </select>
 
 </mapper>

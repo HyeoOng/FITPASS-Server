@@ -14,8 +14,8 @@ public interface UserSecuDao {
 
     /***
      * userId의 salt값을 반환하는 메서드입니다.
-     * @param userId
+     * @param userEmail
      * @return salt 값을 반환
      */
-    public String selectSalt(int userId);
+    public String selectSalt(String userEmail);
 }
