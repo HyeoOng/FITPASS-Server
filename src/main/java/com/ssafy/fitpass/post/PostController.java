@@ -32,9 +32,15 @@ public class PostController {
     public Map<String, String> createPost(@RequestPart("post") Post post,
                                           @RequestPart("place") Place place,
                                           @RequestPart("file") MultipartFile file) {
-        Photo photo = new Photo();
-        photo.setFile(file);
         Map<String, String> response = new HashMap<>();
+
+        Photo photo = new Photo();
+        if(!file.isEmpty())photo.setFile(file);
+        else {
+            response.put("msg", "사진 이상");
+            return response;
+        }
+
         // 글 등록 전에는 항상 장소와 photo를 먼저 등록해야 한다..
         // 1. 장소 먼저 등록
         // 1-1. 장소 테이블에 등록되어 있는지 확인한다.
@@ -56,7 +62,7 @@ public class PostController {
             int postId = postService.getPostId(post);
             photo.setPostId(postId);
             // 2-2-2. 업로드 파일명을 이용해 UUID를 만들어 storeFileName으로 지정
-            String storeName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // UUID와 원래 파일명을 결합하여 고유 이름 생성
+            String storeName = photoService.generateStoreFileName(photo.getUploadFileName());
             // 2-2-3. 사진을 저장하는 폴더 경로 지정
             String saveFolder = "/post/" + postId + "/" + storeName;
             // 2-2-4. photo 객체에 담아 사진 등록
@@ -86,7 +92,7 @@ public class PostController {
         return postService.getPost(postId);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public List<Post> getUserPosts(@PathVariable int userId){
         return postService.getUserPosts(userId);
     }
@@ -108,8 +114,10 @@ public class PostController {
     }
 
     @PostMapping("/delete")
-    public Map<String, String> removePost(@RequestBody int postId){
+    public Map<String, String> removePost(@RequestBody Map<String, Integer> requestBody){
         Map<String, String> response = new HashMap<>();
+
+        int postId = requestBody.get("postId");
         if(postService.removePost(postId)){
             response.put("msg", "글을 성공적으로 삭제하였습니다.");
         }else{

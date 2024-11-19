@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/loc")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PlaceController {
 
     PlaceService placeService;
@@ -29,7 +30,7 @@ public class PlaceController {
 
     @PostMapping("/search")
     public List<Place> searchPlace(@RequestBody String keywordJson) {
-        // System.out.println("keywordJson: "+keywordJson);
+        System.out.println("keywordJson: "+keywordJson);
 
         // keywordJson에서 "keyword" 값을 추출
         ObjectMapper keywordMapper = new ObjectMapper();
@@ -45,7 +46,7 @@ public class PlaceController {
         System.out.println("keyword: " + keyword);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "KakaoAK {Kakao_REST_API_KEY}");
+        headers.set("Authorization", "KakaoAK 9fef9c43ffd4340c40f0a1e672d06559");
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         String baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + keyword;

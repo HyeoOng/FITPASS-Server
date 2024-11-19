@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Service
 public class PhotoService {
@@ -27,5 +30,22 @@ public class PhotoService {
 
         // 4. 저장된 파일의 절대 경로 반환
         // return filePath.toString();
+    }
+    
+    // 사진을 실제 서버에 저장하는 이름을 생성해주는 메서드
+    public static String generateStoreFileName(String originalFilename) {
+        // 파일 확장자 추출
+        String extension = "";
+        int dotIndex = originalFilename.lastIndexOf(".");
+        if (dotIndex > 0 && dotIndex < originalFilename.length() - 1) {
+            extension = originalFilename.substring(dotIndex); // 확장자 포함 (예: ".jpg")
+        }
+
+        // 현재 날짜 가져오기 (yyyyMMdd 형식)
+        LocalDate today = LocalDate.now();
+        String formattedDate = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        // UUID 기반 새 파일 이름 생성
+        return UUID.randomUUID().toString() + formattedDate + extension;
     }
 }
