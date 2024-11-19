@@ -4,9 +4,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.fitpass.photo.PhotoDao">
     
-    <insert id="insertPhoto" parameterType="Photo">
-        INSERT INTO PostPhoto (upload_file_name, store_file_name, save_folder)
-        VALUES (#{uploadFileName}, #{storeFileName}, #{saveFolder})
+    <insert id="insertPostPhoto" parameterType="Photo">
+        INSERT INTO PostPhoto (upload_file_name, store_file_name, save_folder, post_id)
+        VALUES (#{uploadFileName}, #{storeFileName}, #{saveFolder}, #{postId})
     </insert>
     
     <insert id="insertProfile" parameterType="map">
@@ -19,7 +19,7 @@
         WHERE id=#{id}
     </update>
 
-    <update id="udateProfile" parameterType="map">
+    <update id="updateProfile" parameterType="map">
         UPDATE Profile SET upload_file_name=#{photo.uploadFileName}, store_file_name=#{photo.StoreFileName}, save_folder=#{photo.saveFolder}
         WHERE id=#{photo.id} AND user_id=#{userId}
     </update>

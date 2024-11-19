@@ -32,6 +32,12 @@ public class PostController {
     public Map<String, String> createPost(@RequestPart("post") Post post,
                                           @RequestPart("place") Place place,
                                           @RequestPart("file") MultipartFile file) {
+        System.out.println("data 잘 받았는지 확인해보자-------------------");
+        System.out.println(post);
+        System.out.println(place);
+        // System.out.println(file.getOriginalFilename());
+        System.out.println("------------------------------------------");
+
         Map<String, String> response = new HashMap<>();
 
         Photo photo = new Photo();
@@ -41,16 +47,18 @@ public class PostController {
             return response;
         }
 
-        // 글 등록 전에는 항상 장소와 photo를 먼저 등록해야 한다..
+        // 글 등록 전에는 항상 장소를 먼저 등록해야 한다..
         // 1. 장소 먼저 등록
         // 1-1. 장소 테이블에 등록되어 있는지 확인한다.
         int placeId = postService.getPlaceId(place);
+        System.out.println("placeId: "+placeId);
         if(placeId==-1){ // 등록된 장소가 아닌 경우 -> 장소를 먼저 테이블에 등록
-            if(!postService.createPost(post)){
+            if(!postService.createPlace(place)){
                 response.put("msg_place", "장소를 등록하는 것을 실패하였습니다.");
                 return response;
             }
             placeId = postService.getPlaceId(place); // 등록된 placeId 다시 가져오기
+            System.out.println("내가 등록한 placeId: "+placeId);
         }
 
         // 2. 글을 등록한다.
@@ -68,6 +76,7 @@ public class PostController {
             // 2-2-4. photo 객체에 담아 사진 등록
             photo.setStoreFileName(storeName);
             photo.setSaveFolder(saveFolder);
+            System.out.println(photo);
             
             if(postService.createPostPhoto(photo)){
                 // 2-2-5. 실제 서버에 사진 저장(src/main/webapp/WEB-INF/post/postId)

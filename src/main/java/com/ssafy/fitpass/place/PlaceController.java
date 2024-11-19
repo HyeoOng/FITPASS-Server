@@ -30,7 +30,7 @@ public class PlaceController {
 
     @PostMapping("/search")
     public List<Place> searchPlace(@RequestBody String keywordJson) {
-        System.out.println("keywordJson: "+keywordJson);
+        // System.out.println("keywordJson: "+keywordJson);
 
         // keywordJson에서 "keyword" 값을 추출
         ObjectMapper keywordMapper = new ObjectMapper();
@@ -43,7 +43,7 @@ public class PlaceController {
         }
 
         // "keyword" 값만 출력
-        System.out.println("keyword: " + keyword);
+        // System.out.println("keyword: " + keyword);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "KakaoAK 9fef9c43ffd4340c40f0a1e672d06559");
