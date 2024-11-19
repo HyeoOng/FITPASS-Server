@@ -17,18 +17,18 @@
     </select>
 
     <select id="selectOne" parameterType="int" resultType="com.ssafy.fitpass.user.RetUser">
-        SELECT user_id, email, name, nn, admin, reg_date, profile
+        SELECT user_id, email, name, nn, admin, reg_date
         FROM user WHERE user_id=#{userId}
     </select>
 
     <select id="selectAll" resultType="com.ssafy.fitpass.user.RetUser">
-        SELECT user_id, email, name, nn, admin, reg_date, profile
+        SELECT user_id, email, name, nn, admin, reg_date
         FROM user
     </select>
 
     <update id="updateUser" parameterType="com.ssafy.fitpass.user.User">
         UPDATE user
-        SET email=#{email}, name=#{name}, nn=#{nn}, profile=#{profile}
+        SET email=#{email}, name=#{name}, nn=#{nn}
         WHERE user_id=#{userId}
     </update>
 
@@ -46,7 +46,7 @@
 
     <!--admin-->
     <select id="selectAllAdmin" resultType="com.ssafy.fitpass.user.RetUser">
-        SELECT user_id, email, name, nn, admin, reg_date, profile
+        SELECT user_id, email, name, nn, admin, reg_date
         FROM user
         WHERE admin IN (1, 2)
     </select>
