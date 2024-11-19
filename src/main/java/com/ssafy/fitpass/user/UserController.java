@@ -1,6 +1,7 @@
 package com.ssafy.fitpass.user;
 
-import com.ssafy.fitpass.auth.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,6 +18,52 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping("/signup")
+    public Map<String, String> signup(@RequestBody User user) {
+
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            boolean result = userService.signup(user);
+            if(result) {
+                map.put("msg", "success");
+            } else {
+                map.put("msg", "fail");
+            }
+        } catch (IllegalArgumentException e) {
+            map.put("msg", e.getMessage());
+        } catch (Exception e) {
+            map.put("msg", e.getMessage());
+        }
+        return map;
+    }
+
+    @PostMapping("/login")
+    public Map<String, String> login(@RequestBody User user, HttpServletRequest request) {
+        Map<String, String> map = new HashMap<>();
+
+        RetUser loginedUser = userService.login(user);
+        if (loginedUser != null) {
+            request.getSession().setAttribute("user", loginedUser);
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "fail");
+        }
+        return map;
+    }
+
+    @GetMapping("/logout")
+    public Map<String, String> logout(HttpServletRequest request) {
+        Map<String, String> map = new HashMap<>();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "fail");
+        }
+        return map;
+    }
 
 
     @GetMapping

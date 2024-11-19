@@ -13,7 +13,7 @@ public interface UserDao {
      * @param user
      * @return 등록된 행 수 (등록 성공 : 1)
      */
-    int insertUser(User user);
+    int insertUser(RetUser user);
 
     /**
      * 로그인시 사용되는 메서드입니다.

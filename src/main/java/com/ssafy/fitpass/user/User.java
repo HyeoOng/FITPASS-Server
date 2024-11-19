@@ -36,12 +36,15 @@ public class User {
         setProfile(profile);
     }
 
-    // getter와 setter
+    // Getter와 Setter
     public int getUserId() {
         return userId;
     }
 
     public void setUserId(int userId) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("userId는 0보다 커야 합니다.");
+        }
         this.userId = userId;
     }
 
@@ -50,6 +53,9 @@ public class User {
     }
 
     public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("이름은 공백이 될 수 없습니다.");
+        }
         this.name = name;
     }
 
@@ -58,6 +64,9 @@ public class User {
     }
 
     public void setEmail(String email) {
+        if (email == null || !email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            throw new IllegalArgumentException("올바른 이메일 형식을 입력하세요.");
+        }
         this.email = email;
     }
 
@@ -66,6 +75,25 @@ public class User {
     }
 
     public void setPassword(String password) {
+        if (password == null) {
+            throw new IllegalArgumentException("비밀번호는 null일 수 없습니다.");
+        }
+        if (password.length() < 5) {
+            throw new IllegalArgumentException("비밀번호는 최소 5자리 이상이어야 합니다.");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            System.out.println(password);
+            throw new IllegalArgumentException("비밀번호는 최소 하나의 대문자를 포함해야 합니다.");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            throw new IllegalArgumentException("비밀번호는 최소 하나의 소문자를 포함해야 합니다.");
+        }
+        if (!password.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("비밀번호는 최소 하나의 숫자를 포함해야 합니다.");
+        }
+        if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+            throw new IllegalArgumentException("비밀번호는 최소 하나의 특수 문자를 포함해야 합니다.");
+        }
         this.password = password;
     }
 
@@ -74,6 +102,12 @@ public class User {
     }
 
     public void setNn(String nn) {
+        if (nn == null || nn.trim().isEmpty()) {
+            throw new IllegalArgumentException("닉네임은 공백이 될 수 없습니다.");
+        }
+        if (nn.length() < 2) {
+            throw new IllegalArgumentException("닉네임은 최소 2글자 이상이어야 합니다.");
+        }
         this.nn = nn;
     }
 

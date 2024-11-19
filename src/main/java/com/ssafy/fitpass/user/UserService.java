@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface UserService {
 
+    boolean signup(User user);
+    RetUser login(User user);
     List<RetUser> getAllUsers();
     RetUser getUser(int userId);
     boolean modifyUser(User user);
