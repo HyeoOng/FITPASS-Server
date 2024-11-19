@@ -33,5 +33,5 @@ public interface PlaceDao {
      * @param place
      * @return placeId를 반환.
      */
-    public int selectPlaceId(Place place);
+    public Integer selectPlaceId(Place place);
 }

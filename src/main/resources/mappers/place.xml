@@ -21,9 +21,9 @@
         VALUES (#{placeName}, #{placeAddress}, #{latitude}, #{longitude}, #{kakaoMapId})
     </insert>
 
-    <select id="selectPlaceId" parameterType="Place" resultType="int">
+    <select id="selectPlaceId" parameterType="Place" resultType="Integer">
         SELECT place_id FROM place
-        WHERE kakao_map_id = #{kakaoMapId} AND latitude = #{latitude} AND longitude = #{longitude}
+        WHERE kakao_map_id = #{kakaoMapId}
     </select>
 
 </mapper>
