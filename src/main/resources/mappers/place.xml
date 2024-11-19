@@ -7,7 +7,7 @@
     <select id="selectAll" parameterType="int" resultType="Place">
         SELECT *
         FROM Place
-        WHERE user_id = #{userId};
+        WHERE place_id IN (SELECT post_id FROM post WHERE user_id = #{userId});
     </select>
 
     <select id="selectOne" parameterType="int" resultType="Place">
@@ -21,9 +21,9 @@
         VALUES (#{placeName}, #{placeAddress}, #{latitude}, #{longitude}, #{kakaoMapId})
     </insert>
 
-    <select id="selectOneByKakaoMapId" parameterType="int" resultType="int">
+    <select id="selectPlaceId" parameterType="Place" resultType="int">
         SELECT place_id FROM place
-        WHERE kakao_map_id = #{kakaoMapId}
+        WHERE kakao_map_id = #{kakaoMapId} AND latitude = #{latitude} AND longitude = #{longitude}
     </select>
 
 </mapper>

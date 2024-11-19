@@ -6,7 +6,6 @@ public class Post {
     private int postId;
     private int userId;
     private int placeId;
-    private int photoId;
     private int sportCode;
     private String title;
     private Date createdAt;
@@ -19,10 +18,9 @@ public class Post {
     public Post() {
     }
 
-    public Post(int userId, int placeId, int photoId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content) {
+    public Post(int userId, int placeId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content) {
         setUserId(userId);
         setPlaceId(placeId);
-        setPhotoId(photoId);
         setSportCode(sportCode);
         setTitle(title);
         setCreatedAt(createdAt);
@@ -32,11 +30,10 @@ public class Post {
     }
 
 
-    public Post(int postId, int userId, int placeId, int photoId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content, int isPublic) {
+    public Post(int postId, int userId, int placeId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content, int isPublic) {
         setPostId(postId);
         setUserId(userId);
         setPlaceId(placeId);
-        setPhotoId(photoId);
         setSportCode(sportCode);
         setTitle(title);
         setCreatedAt(createdAt);
@@ -46,11 +43,10 @@ public class Post {
         setIsPublic(isPublic);
     }
 
-    public Post(int postId, int userId, int placeId, int photoId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content, int isPublic, String photoUrl) {
+    public Post(int postId, int userId, int placeId, int sportCode, String title, Date createdAt, Date updatedAt, int exerciseDuration, String content, int isPublic, String photoUrl) {
         setPostId(postId);
         setUserId(userId);
         setPlaceId(placeId);
-        setPhotoId(photoId);
         setSportCode(sportCode);
         setTitle(title);
         setCreatedAt(createdAt);
@@ -84,14 +80,6 @@ public class Post {
 
     public void setPlaceId(int placeId) {
         this.placeId = placeId;
-    }
-
-    public int getPhotoId() {
-        return photoId;
-    }
-
-    public void setPhotoId(int photoId) {
-        this.photoId = photoId;
     }
 
     public int getSportCode() {
@@ -164,7 +152,6 @@ public class Post {
                 "postId=" + postId +
                 ", userId=" + userId +
                 ", placeId=" + placeId +
-                ", photoId=" + photoId +
                 ", sportCode=" + sportCode +
                 ", title='" + title + '\'' +
                 ", createdAt=" + createdAt +

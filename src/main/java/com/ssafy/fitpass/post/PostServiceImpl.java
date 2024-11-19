@@ -57,13 +57,22 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public int getPostId(Post post){
+        return postDao.selectPostId(post);
+    }
+
+    @Override
     public Place getPlace(int postId) {
         return placeDao.selectOne(postId);
     }
 
     @Override
-    public int getPlaceId(int kakaoMapId) {
-        return placeDao.selectOneByKakaoMapId(kakaoMapId);
+    public int getPlaceId(Place place) {
+        int result = placeDao.selectPlaceId(place);
+        if(result == 0){
+            return -1;
+        }
+        return result;
     }
 
     @Override

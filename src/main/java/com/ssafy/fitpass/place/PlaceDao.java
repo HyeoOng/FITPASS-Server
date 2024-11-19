@@ -14,8 +14,6 @@ public interface PlaceDao {
      */
     public List<Place> selectAll(int userId);
 
-
-
     /***
      * 게시글(postId)에 작성된 장소 정보를 조회하는 메서드입니다.
      * @param postId
@@ -31,9 +29,9 @@ public interface PlaceDao {
     public int insertPlace(Place place);
 
     /***
-     * kakaoMapId를 통해 placeId를 조회하는 메서드입니다.
-     * @param kakaoMapId
+     * placeId를 조회하는 메서드입니다.
+     * @param place
      * @return placeId를 반환.
      */
-    public int selectOneByKakaoMapId(int kakaoMapId);
+    public int selectPlaceId(Place place);
 }
