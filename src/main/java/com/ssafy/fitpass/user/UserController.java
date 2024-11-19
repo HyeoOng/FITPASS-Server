@@ -10,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin("http://localhost:5173")
 public class UserController {
 
     private final UserService userService;
@@ -39,13 +40,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody User user, HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> login(@RequestBody User user, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
 
         RetUser loginedUser = userService.login(user);
         if (loginedUser != null) {
             request.getSession().setAttribute("user", loginedUser);
             map.put("msg", "success");
+            map.put("userId", loginedUser.getUserId());
+            map.put("nickname", loginedUser.getNn());
         } else {
             map.put("msg", "fail");
         }
