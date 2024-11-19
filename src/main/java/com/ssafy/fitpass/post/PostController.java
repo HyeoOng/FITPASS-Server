@@ -1,6 +1,7 @@
 package com.ssafy.fitpass.post;
 
 import com.ssafy.fitpass.photo.Photo;
+import com.ssafy.fitpass.photo.PhotoService;
 import com.ssafy.fitpass.place.Place;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +21,10 @@ import java.util.UUID;
 public class PostController {
 
     PostService postService;
+    PhotoService photoService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, PhotoService photoService) {
+        this.photoService = photoService;
         this.postService = postService;
     }
 
@@ -63,7 +66,7 @@ public class PostController {
             if(postService.createPostPhoto(photo)){
                 // 2-2-5. 실제 서버에 사진 저장(src/main/webapp/WEB-INF/post/postId)
                 try {
-                    saveFile(file, postId, storeName);
+                    photoService.saveFile(file, postId, storeName, "post/");
                 } catch (IOException e) {
                     response.put("msg", "파일 저장에 실패하였습니다. 잠시 후 다시 시도해주세요.");
                     return response; // 실패 시 바로 반환
@@ -120,21 +123,5 @@ public class PostController {
         return postService.getFriendPosts(userId);
     }
 
-    // 실제 파일을 서버에 저장하는 메서드
-    public String saveFile(MultipartFile file, int postId, String fileName) throws IOException {
-        // 1. 파일 저장 경로 생성
-        Path folderPath = Paths.get("src/main/webapp/WEB-INF/post/" + postId);  // 저장할 폴더 경로
-        Path filePath = folderPath.resolve(fileName);  // 파일명으로 저장할 경로
 
-        // 2. 디렉토리가 존재하지 않으면 생성
-        if (!Files.exists(folderPath)) {
-            Files.createDirectories(folderPath);  // 폴더가 없으면 생성
-        }
-
-        // 3. 파일을 지정한 경로에 저장
-        file.transferTo(filePath);  // 파일을 해당 경로에 저장
-
-        // 4. 저장된 파일의 절대 경로 반환
-        return filePath.toString();
-    }
 }
