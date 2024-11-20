@@ -38,11 +38,22 @@ public class FriendController {
         return friends;
     }
 
+    @GetMapping("/request/{userId}")
+    public List<RetUser> getFriendsRequest(@PathVariable int userId) {
+        List<RetUser> friends = friendService.getFriendRequests(userId);
+        return friends;
+    }
+
     @PostMapping("/delete")
     public Map<String, String> deleteFriend(@RequestBody Friend friend) {
-        Map<String, String> result = new HashMap<>();
-        result.put("status", "success");
-        return result;
+        Map<String, String> map = new HashMap<>();
+        boolean result = friendService.deleteFriend(friend.getFromUser(), friend.getToUSer());
+        if (result) {
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "fail");
+        }
+        return map;
     }
 
 }

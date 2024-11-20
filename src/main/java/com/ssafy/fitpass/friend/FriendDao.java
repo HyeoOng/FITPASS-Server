@@ -54,4 +54,12 @@ public interface FriendDao {
     public int selectOne(@Param("fromUser") int fromUser, @Param("toUser") int toUser);
 
 
+    /**
+     * 친구를 삭제하는 메서드입니다.
+     *
+     * @param fromUser
+     * @param toUser
+     * @return 삭제된 행 수 (삭제된 행 수가 2라면 정상 수행)
+     */
+    int deleteFriend(@Param("fromUser") int fromUser, @Param("toUser") int toUser);
 }
