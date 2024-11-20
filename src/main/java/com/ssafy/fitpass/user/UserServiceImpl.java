@@ -67,6 +67,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean modifyUser(User user) {
+//        RetUser originalUser = getUser(user.getUserId());
+//        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+//            user.setEmail(user.getEmail());
+//        }
+//        if (user.getNn() == null || user.getNn().isEmpty()) {
+//            user.setNn(user.getNn());
+//        }
+//        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+//            user.setPassword(originalUser.getPassword());
+//        }
+//        if (user.getName() == null || user.getName().isEmpty()) {
+//            user.setName(originalUser.getName());
+//        }
         return userDao.updateUser(user) == 1;
     }
 

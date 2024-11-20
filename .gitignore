@@ -4,6 +4,9 @@
 ### application.properties
 application.properties
 
+### WEB-INF
+src/main/webapp/WEB-INF
+
 ### Eclipse ###
 .metadata
 bin/
