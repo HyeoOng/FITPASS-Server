@@ -34,5 +34,10 @@
         WHERE from_user = #{fromUser} AND to_user = #{toUser} AND status = 0;
     </select>
 
+    <delete id="deleteFriend" parameterType="int">
+        DELETE FROM friend
+        WHERE (from_user = #{fromUser} AND to_user = #{toUser} AND status = 1)
+        OR (from_user = #{toUser} AND to_user = #{fromUser} AND status = 1);
+    </delete>
 
 </mapper>

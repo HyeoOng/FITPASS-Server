@@ -38,4 +38,9 @@ public class FriendServiceImpl implements FriendService {
     public List<RetUser> getFriendRequests(int userId) {
         return friendDao.selectFriendRequest(userId);
     }
+
+    @Override
+    public boolean deleteFriend(int from, int to) {
+        return friendDao.deleteFriend(from, to) == 2;
+    }
 }
