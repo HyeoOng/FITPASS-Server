@@ -85,4 +85,12 @@ public interface UserDao {
      * @return 수정된 행 수 (정상 수정 : 1)
      */
     int updateAdmin(int userId);
+
+    /**
+     * 닉네임에 해당하는 유저를 반환하는 메서드입니다.
+     *
+     * @param nn
+     * @return 닉네임에 관련된 모든 유저
+     */
+    List<RetUser> selectAllByNn(String nn);
 }

@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.friend;
 
+import com.ssafy.fitpass.user.RetUser;
 import com.ssafy.fitpass.user.User;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +17,21 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public boolean sendFriendRequest(int from, int to) {
-        if(friendDao.selectOne(from, to)==1){ // 친구 신청을 받은 상태라면
-            return friendDao.updateRequestStatus(from ,to)==1;
+        Integer result = friendDao.selectOne(to, from);  // selectOne 결과를 Integer로 받음
+        if (result != null && result == 1) {  // 친구 신청을 받은 상태라면
+            return friendDao.updateRequestStatus(from, to) == 1;
         }
-        // 친구 신청을 받지 않았다면 .. 2번 요청을 보내게 된다.
-        return friendDao.insertRequest(from, to)==2;
+        // 친구 신청을 받지 않았다면 2번 요청을 보내게 된다.
+        return friendDao.insertRequest(from, to) == 2;
     }
 
     @Override
-    public List<User> getFriends(int userId) {
+    public List<RetUser> getFriends(int userId) {
         return friendDao.selectFriends(userId);
     }
 
     @Override
-    public List<User> getFriendRequests(int userId) {
+    public List<RetUser> getFriendRequests(int userId) {
         return friendDao.selectFriendRequest(userId);
     }
 }

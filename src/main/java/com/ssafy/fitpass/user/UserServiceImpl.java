@@ -4,10 +4,7 @@ import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.util.OpenCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -117,4 +114,11 @@ public class UserServiceImpl implements UserService {
     public boolean modifyProfile(int userId, Photo photo) {
         return false;
     }
+
+    @Override
+    public List<RetUser> getUserByNn(String nn) {
+        List<RetUser> list = userDao.selectAllByNn(nn);
+        return list;
+    }
+
 }

@@ -55,4 +55,10 @@
         UPDATE user SET admin=1 WHERE user_id=#{userId}
     </update>
 
+    <select id="selectAllByNn" parameterType="String" resultType="com.ssafy.fitpass.user.RetUser">
+        SELECT user_id, email, name, nn, admin, reg_date
+        FROM user
+        WHERE nn LIKE #{nn};
+    </select>
+
 </mapper>

@@ -106,4 +106,10 @@ public class UserController {
     public boolean nnCheck(String nickname) {
         return userService.getNN(nickname);
     }
+
+    @GetMapping("/search")
+    public List<RetUser> getUsersByNN(@RequestParam String nn) {
+        nn = "%" + nn + "%";
+        return userService.getUserByNn(nn);
+    }
 }

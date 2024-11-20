@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.friend;
 
+import com.ssafy.fitpass.user.RetUser;
 import com.ssafy.fitpass.user.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,14 +36,14 @@ public interface FriendDao {
      * @param userId 
      * @return userId와 친구인 모든 사용자 정보 반환
      */
-    public List<User> selectFriends(int userId);
+    public List<RetUser> selectFriends(int userId);
 
     /***
      * 친구 신청을 받은 목록을 조회하는 메서드입니다.
      * @param toUser (= userId)
      * @return 나에게 친구 신청 요청을 보낸 사용자 목록 반환
      */
-    public List<User> selectFriendRequest(int toUser);
+    public List<RetUser> selectFriendRequest(int toUser);
 
     /***
      * 내가(from) 다른 사용자(to)에게 친구 신청을 받은 적이 있는지 확인하는 메서드입니다.
