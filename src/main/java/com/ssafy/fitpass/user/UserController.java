@@ -109,7 +109,6 @@ public class UserController {
 
     @GetMapping("/search")
     public List<RetUser> getUsersByNN(@RequestParam String nn) {
-        nn = "%" + nn + "%";
         return userService.getUserByNn(nn);
     }
 }

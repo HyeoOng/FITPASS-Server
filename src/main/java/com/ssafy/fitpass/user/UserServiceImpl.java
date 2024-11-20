@@ -117,6 +117,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<RetUser> getUserByNn(String nn) {
+        nn = "%" + nn + "%";
         List<RetUser> list = userDao.selectAllByNn(nn);
         return list;
     }
