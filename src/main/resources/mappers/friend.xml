@@ -14,24 +14,24 @@
     </update>
 
     <select id="selectFriends" parameterType="int" resultType="RetUser">
-        SELECT user_id, email, name, nn, admin, reg_date, profile
+        SELECT DISTINCT u.user_id, u.email, u.name, u.nn, u.admin, u.reg_date
         FROM User u
-        INNER JOIN Friend f ON (f.from_user = u.user_id OR f.to_user = u.user_id)
-        WHERE (f.from_user = #{userId} OR f.to_user = #{userId})
-        AND f.status = 1
-        AND u.user_id != #{userId}
+        INNER JOIN Friend f1 ON f1.from_user = #{userId} AND f1.status = 1
+        INNER JOIN Friend f2 ON f2.from_user = f1.to_user AND f2.to_user = #{userId} AND f2.status = 1
+        WHERE u.user_id = f1.to_user;
     </select>
 
+
     <select id="selectFriendRequest" parameterType="int" resultType="RetUser">
-        SELECT user_id, email, name, nn, admin, reg_date, profile
+        SELECT user_id, email, name, nn, admin, reg_date
         FROM User u
         INNER JOIN Friend f ON u.user_id = f.to_user
         WHERE f.from_user = #{toUser} AND f.status = 0;
     </select>
 
-    <select id="selectOne" parameterType="map">
-        SELECT * FROM friend
-        WHERE from_user = #{fromUser} AND to_user = #{toUser} AND status = 0
+    <select id="selectOne" parameterType="int">
+        SELECT COUNT(*) FROM friend
+        WHERE from_user = #{fromUser} AND to_user = #{toUser} AND status = 0;
     </select>
 
 
