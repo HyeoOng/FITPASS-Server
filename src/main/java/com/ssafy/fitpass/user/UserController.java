@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
+import java.rmi.MarshalledObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,13 +99,42 @@ public class UserController {
     }
 
     @PostMapping("/emailCheck")
-    public boolean emailCheck(String email) {
-        return userService.getEmail(email);
+    public Map<String, String> emailCheck(@RequestBody Map<String, String> requestData) {
+        Map<String, String> map = new HashMap<>();
+        // 프론트에서 받아온 json 형식에서 email 값 꺼내기
+        String email = requestData.get("email");
+        // 이메일 값이 null이거나 공백일 경우
+        if (email == null || email.isBlank()) {
+            map.put("msg", "fail1");
+        } else { // 아닐 경우
+            boolean isDuplicate = userService.getEmail(email); // 이메일 중복 체크
+            if(isDuplicate) { // 중복인 경우
+                map.put("msg", "fail2");
+            } else { // 아닐 경우
+                map.put("msg", "success");
+            }
+        }
+
+        return map;
     }
 
     @PostMapping("/nnCheck")
-    public boolean nnCheck(String nickname) {
-        return userService.getNN(nickname);
+    public Map<String, String> nnCheck(@RequestBody Map<String, String> requestData) {
+        Map<String, String> map = new HashMap<>();
+        // 프론트에서 받아온 json 형식에서 nn 값 꺼내기
+        String nickname = requestData.get("nn");
+        // nn이 null이거나 공백이라면,
+        if (nickname == null || nickname.isBlank()) {
+            map.put("msg", "fail1");
+        } else { // 값이 제대로 존재할 경우
+            boolean isDuplicate = userService.getNN(nickname); // 중복된 닉네임인지 확인
+            if(isDuplicate) { // 중복일 경우
+                map.put("msg", "fail2");
+            } else { // 아닐 경우
+                map.put("msg", "success");
+            }
+        }
+        return map;
     }
 
     @GetMapping("/search")
