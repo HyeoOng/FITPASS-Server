@@ -11,10 +11,10 @@ public interface PostService {
     boolean createPost(Post post);
     Post getPost(int postId);
     Page<Post> getUserPosts(int userId, Pageable pageable);
-    List<Post> getAllUserPosts();
+    Page<Post> getAllUserPosts(Pageable pageable);
     boolean modifyPost(Post post);
     boolean removePost(int postId);
-    List<Post> getFriendPosts(int userId);
+    Page<Post> getFriendPosts(int userId, Pageable pageable);
     int getPostId(Post post);
 
     Place getPlace(int postId);

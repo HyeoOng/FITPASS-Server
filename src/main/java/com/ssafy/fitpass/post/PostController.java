@@ -3,6 +3,9 @@ package com.ssafy.fitpass.post;
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
 import com.ssafy.fitpass.place.Place;
+import com.ssafy.fitpass.user.RetUser;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -101,21 +104,21 @@ public class PostController {
     }
 
     // 사용자 글 조회
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user")
     public Page<Post> getUserPosts(
-            @PathVariable int userId,
             @RequestParam(defaultValue = "0") int page, // 요청 페이지 번호 (기본값: 0)
-            @RequestParam(defaultValue = "8") int size // 페이지당 게시글 개수 (기본값: 8)
+            @RequestParam(defaultValue = "8") int size, // 페이지당 게시글 개수 (기본값: 8)
+            HttpServletRequest request
     ){
+        HttpSession session = request.getSession(false);
+        RetUser retUser = (RetUser) session.getAttribute("user");
+        int userId = retUser.getUserId();
+
+        System.out.println("userId: "+userId + ", page: "+page+", size: "+size);
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postPage = postService.getUserPosts(userId, pageable);
 //        return postService.getUserPosts(userId, page, size);
         return postPage;
-    }
-
-    @GetMapping
-    public List<Post> getAllUserPosts(){
-        return postService.getAllUserPosts();
     }
 
     @PostMapping("/update")
@@ -143,9 +146,30 @@ public class PostController {
     }
 
     @GetMapping("/friend")
-    public List<Post> getFriendPosts(@RequestParam int userId){
-        return postService.getFriendPosts(userId);
+    public Page<Post> getFriendPosts(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int page, // 요청 페이지 번호 (기본값: 0)
+            @RequestParam(defaultValue = "16") int size // 페이지당 게시글 개수 (기본값: 16)
+    ){
+        HttpSession session = request.getSession(false);
+        RetUser retUser = (RetUser) session.getAttribute("user");
+        int userId = retUser.getUserId();
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage = postService.getFriendPosts(userId, pageable);
+
+        return postPage;
     }
 
+    @GetMapping
+    public Page<Post> getAllUserPosts(
+            @RequestParam(defaultValue = "0") int page, // 요청 페이지 번호 (기본값: 0)
+            @RequestParam(defaultValue = "16") int size // 페이지당 게시글 개수 (기본값: 16)
+    ){
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage = postService.getAllUserPosts(pageable);
+        return postPage;
+    }
 
 }

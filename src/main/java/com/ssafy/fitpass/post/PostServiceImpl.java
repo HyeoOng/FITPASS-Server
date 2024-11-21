@@ -40,13 +40,18 @@ public class PostServiceImpl implements PostService {
         int size = pageable.getPageSize();
 
         List<Post> postList = postDao.selectUserPost(userId, offset, size);
-        int total = postDao.totalPostNum();
+        int total = postDao.totalMyPostNum(userId);
         return new PageImpl<>(postList, pageable, total);
     }
 
     @Override
-    public List<Post> getAllUserPosts() {
-        return postDao.selectAll();
+    public Page<Post> getAllUserPosts(Pageable pageable) {
+        int offset = pageable.getPageNumber() * pageable.getPageSize();
+        int size = pageable.getPageSize();
+
+        List<Post> postList = postDao.selectAll(offset, size);
+        int total = postDao.totalPostNum();
+        return new PageImpl<>(postList, pageable, total);
     }
 
     @Override
@@ -60,8 +65,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getFriendPosts(int userId) {
-        return postDao.selectFriendPosts(userId);
+    public Page<Post> getFriendPosts(int userId, Pageable pageable) {
+        int offset = pageable.getPageNumber() * pageable.getPageSize();
+        int size = pageable.getPageSize();
+
+        List<Post> postList = postDao.selectFriendPosts(userId, offset, size);
+        int total = postDao.totalMyFriendsPostNum(userId);
+        return new PageImpl<>(postList, pageable, total);
     }
 
     @Override
