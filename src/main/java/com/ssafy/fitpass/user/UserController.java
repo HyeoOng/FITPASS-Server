@@ -27,7 +27,6 @@ public class UserController {
         try {
             boolean result = userService.signup(user);
             if(result) {
-
                 map.put("msg", "success");
             } else {
                 map.put("msg", "fail");
