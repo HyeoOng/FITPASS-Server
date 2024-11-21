@@ -53,6 +53,14 @@ public interface FriendDao {
      */
     public int selectOne(@Param("fromUser") int fromUser, @Param("toUser") int toUser);
 
+    /**
+     * 친구 요청을 삭제하는 메서드입니다.
+     *
+     * @param requestId (요청을 보낸 유저 아이디)
+     * @param currUserId (현재 로그인한 유저 아이디)
+     * @return 삭제된 행 수 (삭제된 행 수가 2라면 정상 수행)
+     */
+    int deleteFriendRequest(@Param("requestId") int requestId, @Param("currUserId") int currUserId);
 
     /**
      * 친구를 삭제하는 메서드입니다.

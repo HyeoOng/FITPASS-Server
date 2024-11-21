@@ -44,6 +44,19 @@ public class FriendController {
         return friends;
     }
 
+    @PostMapping("/request/delete")
+    public Map<String, String> deleteFriendRequest(@RequestBody Friend friend) {
+        Map<String, String> map = new HashMap<>();
+        System.out.println("delete from: " + friend.getFromUser());
+        boolean result = friendService.deleteFriendRequest(friend.getFromUser(), friend.getToUSer());
+        if (result) {
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "fail");
+        }
+        return map;
+    }
+
     @PostMapping("/delete")
     public Map<String, String> deleteFriend(@RequestBody Friend friend) {
         Map<String, String> map = new HashMap<>();

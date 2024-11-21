@@ -37,11 +37,11 @@
     </delete>
 
     <select id="checkEmail" parameterType="String">
-        SELECT * FROM user WHERE email=#{email}
+        SELECT COUNT(*) FROM user WHERE email=#{email}
     </select>
 
     <select id="checkNn" parameterType="String">
-        SELECT * FROM user WHERE nn=#{nn}
+        SELECT COUNT(*) FROM user WHERE nn=#{nn}
     </select>
 
     <!--admin-->

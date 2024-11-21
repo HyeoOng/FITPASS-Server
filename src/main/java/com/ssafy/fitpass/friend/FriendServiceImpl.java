@@ -1,7 +1,6 @@
 package com.ssafy.fitpass.friend;
 
 import com.ssafy.fitpass.user.RetUser;
-import com.ssafy.fitpass.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +36,12 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public List<RetUser> getFriendRequests(int userId) {
         return friendDao.selectFriendRequest(userId);
+    }
+
+    @Override
+    public boolean deleteFriendRequest(int requestId, int currUserId) {
+        System.out.println("requestId " + requestId);
+        return friendDao.deleteFriendRequest(requestId, currUserId) == 2;
     }
 
     @Override
