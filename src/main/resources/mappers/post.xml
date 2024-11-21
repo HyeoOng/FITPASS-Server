@@ -24,6 +24,8 @@
         (SELECT save_folder FROM PostPhoto WHERE post_id = p.post_id LIMIT 1) as photo_url
         FROM post p
         WHERE is_public=0
+        ORDER BY created_at DESC
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <update id="updatePost" parameterType="Post">
@@ -50,7 +52,9 @@
         AND f.status = 1
         AND u.user_id != #{userId}
         )
-        AND is_public = 1;
+        AND is_public in (0, 1)
+        ORDER BY created_at DESC
+        LIMIT #{size} OFFSET #{offset};
     </select>
 
     <select id="selectUserPost" parameterType="int" resultType="Post">
@@ -71,7 +75,26 @@
     </select>
 
     <select id="totalPostNum" resultType="int">
-        SELECT COUNT(*) FROM post
+        SELECT COUNT(*) FROM post WHERE is_public = 0
+    </select>
+
+    <select id="totalMyPostNum" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM post WHERE user_id = #{userId}
+    </select>
+
+    <select id="totalMyFriendsPostNum" resultType="int" parameterType="int">
+        SELECT COUNT(*)
+        FROM post p
+        WHERE user_id IN (
+        SELECT u.user_id
+        FROM User u
+        INNER JOIN Friend f
+        ON (f.from_user = u.user_id OR f.to_user = u.user_id)
+        WHERE (f.from_user = #{userId} OR f.to_user = #{userId})
+        AND f.status = 1
+        AND u.user_id != #{userId}
+        )
+        AND is_public in (0, 1)
     </select>
 
 </mapper>

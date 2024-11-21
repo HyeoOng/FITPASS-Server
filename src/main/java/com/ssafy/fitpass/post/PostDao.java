@@ -28,7 +28,7 @@ public interface PostDao {
      *
      * @return 전체 공개인 모든 글
      */
-    List<Post> selectAll();
+    List<Post> selectAll(@Param("offset") int offset, @Param("size") int size);
 
     /**
      * 글을 수정하는 메서드입니다.
@@ -52,7 +52,7 @@ public interface PostDao {
      * @param userId
      * @return 친구 공개인 모든 글
      */
-    List<Post> selectFriendPosts(int userId);
+    List<Post> selectFriendPosts(@Param("userId") int userId, @Param("offset") int offset, @Param("size") int size);
 
     /***
      * userId 사용자가 작성한 글(전체 공개)을 모두 조회하는 메서드입니다.
@@ -64,4 +64,8 @@ public interface PostDao {
     int selectPostId(Post post);
 
     int totalPostNum();
+
+    int totalMyPostNum(int userId);
+
+    int totalMyFriendsPostNum(int userId);
 }
