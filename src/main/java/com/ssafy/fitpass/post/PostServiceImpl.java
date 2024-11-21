@@ -32,7 +32,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getUserPosts(int userId) {
+    public List<Post> getUserPosts(int userId, int page, int size) {
+        int offset = (page-1) * size;
+//        Pageable pageable = PageRequest.of(page, size); // 페이지 요청 객체 생성
+//        Page<Post> postPage = postService.getUserPosts(userId, pageable);
         return postDao.selectUserPost(userId);
     }
 
