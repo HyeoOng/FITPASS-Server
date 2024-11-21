@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.user;
 
+import com.ssafy.fitpass.auth.MailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final MailService mailService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MailService mailService) {
         this.userService = userService;
+        this.mailService = mailService;
     }
 
     @PostMapping("/signup")
@@ -27,7 +30,14 @@ public class UserController {
         try {
             boolean result = userService.signup(user);
             if(result) {
-                map.put("msg", "success");
+                String verificationLink = "http://localhost:8080/api/users/verify?email=" + user.getEmail();
+                try {
+                    mailService.sendVerificationEmail(user.getEmail(), verificationLink);
+                } catch (Exception e) {
+                    map.put("error", e.getMessage());
+                    return map;
+                }
+                map.put("msg", "회원가입 완료! 이메일 인증 링크를 확인하세요");
             } else {
                 map.put("msg", "fail");
             }
@@ -37,6 +47,12 @@ public class UserController {
             map.put("msg", e.getMessage());
         }
         return map;
+    }
+
+    @GetMapping("/verify")
+    public String verifyUser(@RequestParam String email) {
+        // 3. 이메일 인증 완료 처리 (인증 상태를 true로 업데이트)
+        return "이메일 인증이 완료되었습니다.";
     }
 
     @PostMapping("/login")
