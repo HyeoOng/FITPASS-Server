@@ -3,6 +3,9 @@ package com.ssafy.fitpass.post;
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
 import com.ssafy.fitpass.place.Place;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,12 +102,15 @@ public class PostController {
 
     // 사용자 글 조회
     @GetMapping("/user/{userId}")
-    public List<Post> getUserPosts(
+    public Page<Post> getUserPosts(
             @PathVariable int userId,
             @RequestParam(defaultValue = "0") int page, // 요청 페이지 번호 (기본값: 0)
             @RequestParam(defaultValue = "8") int size // 페이지당 게시글 개수 (기본값: 8)
     ){
-        return postService.getUserPosts(userId, page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage = postService.getUserPosts(userId, pageable);
+//        return postService.getUserPosts(userId, page, size);
+        return postPage;
     }
 
     @GetMapping
