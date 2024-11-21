@@ -4,6 +4,9 @@ import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoDao;
 import com.ssafy.fitpass.place.Place;
 import com.ssafy.fitpass.place.PlaceDao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,11 +35,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getUserPosts(int userId, int page, int size) {
-        int offset = (page-1) * size;
-//        Pageable pageable = PageRequest.of(page, size); // 페이지 요청 객체 생성
-//        Page<Post> postPage = postService.getUserPosts(userId, pageable);
-        return postDao.selectUserPost(userId);
+    public Page<Post> getUserPosts(int userId, Pageable pageable) {
+        int offset = pageable.getPageNumber() * pageable.getPageSize();
+        int size = pageable.getPageSize();
+
+        List<Post> postList = postDao.selectUserPost(userId, offset, size);
+        int total = postDao.totalPostNum();
+        return new PageImpl<>(postList, pageable, total);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ssafy.fitpass.post;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -58,7 +59,9 @@ public interface PostDao {
      * @param userId
      * @return
      */
-    List<Post> selectUserPost(int userId);
+    List<Post> selectUserPost(@Param("userId") int userId, @Param("offset") int offset, @Param("size") int size);
 
     int selectPostId(Post post);
+
+    int totalPostNum();
 }
