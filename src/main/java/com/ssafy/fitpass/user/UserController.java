@@ -39,12 +39,6 @@ public class UserController {
         return map;
     }
 
-    @GetMapping("/verify")
-    public String verifyUser(@RequestParam String email) {
-        // 3. 이메일 인증 완료 처리 (인증 상태를 true로 업데이트)
-        return "이메일 인증이 완료되었습니다.";
-    }
-
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody User user, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
