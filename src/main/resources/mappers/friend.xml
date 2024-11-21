@@ -34,6 +34,12 @@
         WHERE from_user = #{fromUser} AND to_user = #{toUser} AND status = 0;
     </select>
 
+    <delete id="deleteFriendRequest" parameterType="int">
+        DELETE FROM friend
+        WHERE (from_user = #{requestId} AND to_user = #{currUserId} AND status = 1)
+        OR (from_user = #{currUserId} AND to_user = #{requestId} AND status = 0);
+    </delete>
+
     <delete id="deleteFriend" parameterType="int">
         DELETE FROM friend
         WHERE (from_user = #{fromUser} AND to_user = #{toUser} AND status = 1)
