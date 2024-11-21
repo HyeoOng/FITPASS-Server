@@ -6,15 +6,10 @@ import com.ssafy.fitpass.place.Place;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/post")
@@ -27,7 +22,8 @@ public class PostController {
         this.photoService = photoService;
         this.postService = postService;
     }
-
+    
+    // 글 등록
     @PostMapping
     public Map<String, String> createPost(@RequestPart("post") Post post,
                                           @RequestPart("place") Place place,
@@ -101,9 +97,14 @@ public class PostController {
         return postService.getPost(postId);
     }
 
+    // 사용자 글 조회
     @GetMapping("/user/{userId}")
-    public List<Post> getUserPosts(@PathVariable int userId){
-        return postService.getUserPosts(userId);
+    public List<Post> getUserPosts(
+            @PathVariable int userId,
+            @RequestParam(defaultValue = "0") int page, // 요청 페이지 번호 (기본값: 0)
+            @RequestParam(defaultValue = "8") int size // 페이지당 게시글 개수 (기본값: 8)
+    ){
+        return postService.getUserPosts(userId, page, size);
     }
 
     @GetMapping
