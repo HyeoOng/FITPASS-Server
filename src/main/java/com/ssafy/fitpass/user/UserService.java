@@ -17,5 +17,5 @@ public interface UserService {
     boolean createProfile(int userId, Photo photo);
     boolean modifyProfile(int userId, Photo photo);
     List<RetUser> getUserByNn(String nn);
-
+    int getUserId(String nn);
 }
