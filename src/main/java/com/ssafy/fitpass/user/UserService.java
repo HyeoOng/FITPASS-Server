@@ -14,8 +14,6 @@ public interface UserService {
     boolean removeUser(int userId);
     boolean getEmail(String email);
     boolean getNN(String nickname);
-    List<RetUser> getAllAdmin();
-    boolean modifyAdmin(int userId);
     boolean createProfile(int userId, Photo photo);
     boolean modifyProfile(int userId, Photo photo);
     List<RetUser> getUserByNn(String nn);

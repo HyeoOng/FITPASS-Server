@@ -96,16 +96,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<RetUser> getAllAdmin() {
-        return userDao.selectAllAdmin();
-    }
-
-    @Override
-    public boolean modifyAdmin(int userId) {
-        return userDao.updateAdmin(userId) == 1;
-    }
-
-    @Override
     public boolean createProfile(int userId, Photo photo) {
         return false;
     }

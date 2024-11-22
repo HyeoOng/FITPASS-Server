@@ -2,6 +2,7 @@ package com.ssafy.fitpass.config;
 
 import com.ssafy.fitpass.interceptor.AdminInterceptor;
 import com.ssafy.fitpass.interceptor.LoginInterceptor;
+import com.ssafy.fitpass.interceptor.SuperAdminInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,16 +17,19 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final LoginInterceptor loginInterceptor;
     private final AdminInterceptor adminInterceptor;
+    private final SuperAdminInterceptor superAdminInterceptor;
 
     /**
      * WebConfig 생성자입니다. 인터셉터 객체를 주입받아 초기화합니다.
      *
      * @param loginInterceptor 로그인 관련 요청을 처리하는 인터셉터
      * @param adminInterceptor 관리자 권한 요청을 처리하는 인터셉터
+     * @param superAdminInterceptor 최고 관리자 권한 요청을 처리하는 인터셉터
      */
-    public WebConfig(LoginInterceptor loginInterceptor, AdminInterceptor adminInterceptor) {
+    public WebConfig(LoginInterceptor loginInterceptor, AdminInterceptor adminInterceptor, SuperAdminInterceptor superAdminInterceptor) {
         this.loginInterceptor = loginInterceptor;
         this.adminInterceptor = adminInterceptor;
+        this.superAdminInterceptor = superAdminInterceptor;
     }
 
     /**
@@ -46,8 +50,14 @@ public class WebConfig implements WebMvcConfigurer {
 
         // 관리자 인터셉터 등록
         registry.addInterceptor(adminInterceptor)
+                .addPathPatterns("/api/admin") // 모든 관리자 목록 볼 수 있음
                 .addPathPatterns("/api/sport/**") // /api/sport/ 하위 경로에 대해 적용
                 .excludePathPatterns("/api/sport"); // /api/sport 경로는 제외
+
+        // 최고 관리자 인터셉터 등록
+        registry.addInterceptor(superAdminInterceptor)
+                .addPathPatterns("/api/admin/create") // 관리자 권한 부여
+                .addPathPatterns("/api/admin/delete"); // 관리자 권한 삭제
     }
 
     /**
