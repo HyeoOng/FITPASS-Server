@@ -86,8 +86,11 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public Map<String, String> modifyUser(@RequestBody User user) {
+    public Map<String, String> modifyUser(@RequestBody User user, HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
+        HttpSession session = request.getSession(false);
+        int userId = ((RetUser) session.getAttribute("user")).getUserId();
+        user.setUserId(userId);
         boolean result = userService.modifyUser(user);
         if(result) {
             map.put("msg", "success");
