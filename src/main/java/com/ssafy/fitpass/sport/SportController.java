@@ -16,7 +16,7 @@ public class SportController {
         this.sportService = sportService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public Map<String, String> createSport(@RequestBody Sport sport) {
         Map<String, String> map = new HashMap<>();
 

@@ -23,6 +23,9 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
         }
         System.out.println("logined 상태가 아닙니다.");
+        // 한글 메시지 처리
+        response.setContentType("text/plain;charset=UTF-8");
+        response.getWriter().write("로그인해주세요.");
         return false;
     }
 }
