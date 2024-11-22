@@ -122,4 +122,9 @@ public class UserServiceImpl implements UserService {
         return list;
     }
 
+    @Override
+    public int getUserId(String nn) {
+        return userDao.selectUserId(nn);
+    }
+
 }

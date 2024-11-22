@@ -93,4 +93,6 @@ public interface UserDao {
      * @return 닉네임에 관련된 모든 유저
      */
     List<RetUser> selectAllByNn(String nn);
+
+    int selectUserId(String nn);
 }

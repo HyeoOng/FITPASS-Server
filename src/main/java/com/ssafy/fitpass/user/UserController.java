@@ -1,9 +1,13 @@
 package com.ssafy.fitpass.user;
 
+import com.ssafy.fitpass.photo.Photo;
+import com.ssafy.fitpass.photo.PhotoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,20 +18,44 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final PhotoService photoService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PhotoService photoService) {
         this.userService = userService;
+        this.photoService = photoService;
     }
 
     @PostMapping("/signup")
-    public Map<String, String> signup(@RequestBody User user) {
-
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> signup(@RequestPart("user") User user, @RequestPart("file") MultipartFile file) {
+        System.out.println("data 잘 받았는지 확인해보자-------------------");
+        System.out.println(user);
+        System.out.println(file);
+        // System.out.println(file.getOriginalFilename());
+        System.out.println("------------------------------------------");
+        Map<String, Object> map = new HashMap<>();
 
         try {
             boolean result = userService.signup(user);
             if(result) {
+                int userId = userService.getUserId(user.getNn());
+                Photo photo = new Photo();
+                if(!file.isEmpty())photo.setFile(file);
+                else {
+                    map.put("msg", "사진 이상");
+                    return map;
+                }
 
+                String storeName = photoService.generateStoreFileName(photo.getUploadFileName());
+                String saveFolder = "/profile/" + userId + "/" + storeName;
+                photo.setStoreFileName(storeName);
+                photo.setSaveFolder(saveFolder);
+
+                try {
+                    photoService.saveFile(file, userId, storeName, "profile/");
+                } catch (IOException e) {
+                    map.put("msg", "파일 저장에 실패하였습니다. 잠시 후 다시 시도해주세요.");
+                    return map; // 실패 시 바로 반환
+                }
                 map.put("msg", "success");
             } else {
                 map.put("msg", "fail");
