@@ -2,6 +2,9 @@ package com.ssafy.fitpass.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -66,6 +69,21 @@ public class UserController {
             map.put("msg", "fail");
         }
         return map;
+    }
+
+    @GetMapping("/curr")
+    public ResponseEntity<?> curr(HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            RetUser retUser = (RetUser) session.getAttribute("user");
+            response.put("login", true);
+            response.put("user", retUser);
+            return ResponseEntity.ok(response);
+        }
+        response.put("login", false);
+        response.put("user", null);
+        return ResponseEntity.ok(response);
     }
 
 
