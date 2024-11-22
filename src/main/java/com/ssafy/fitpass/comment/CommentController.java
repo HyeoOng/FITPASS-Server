@@ -1,5 +1,8 @@
 package com.ssafy.fitpass.comment;
 
+import com.ssafy.fitpass.user.RetUser;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -7,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/cmt")
 public class CommentController {
 
     CommentService commentService;
@@ -16,9 +19,14 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/")
-    public Map<String, String> createComment(@RequestBody Comment comment) {
+    @PostMapping
+    public Map<String, String> createComment(@RequestBody Comment comment, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        RetUser retUser = (RetUser) session.getAttribute("user");
+        comment.setUserId(retUser.getUserId());
+
         Map<String, String> response = new HashMap<>();
+        System.out.println("잘 들어옴: " + comment);
         if(commentService.createComment(comment)){
             response.put("msg", "댓글을 성공적으로 등록하였습니다.");
         }else {
@@ -27,7 +35,7 @@ public class CommentController {
         return response;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<Comment> getCommentsbyPost(@RequestParam int postId) {
         return commentService.getCommentsByPost(postId);
     }

@@ -34,4 +34,11 @@ public interface PlaceDao {
      * @return placeId를 반환.
      */
     public Integer selectPlaceId(Place place);
+
+    /***
+     * placeId를 통해 상호명을 얻는 메서드입니다.
+     * @param placeId
+     * @return 상호명
+     */
+    String selectPlaceName(int placeId);
 }

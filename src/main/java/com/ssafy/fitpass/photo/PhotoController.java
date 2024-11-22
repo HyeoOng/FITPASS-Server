@@ -89,7 +89,7 @@ public class PhotoController {
             }
             Resource resource = null;
             if (Files.exists(file) && Files.isReadable(file)) {
-                System.out.println("어떤 경로일려나..: " + file.toUri());
+                // System.out.println("어떤 경로일려나..: " + file.toUri());
                 resource = new UrlResource(file.toUri());
                 HttpHeaders headers = new HttpHeaders();
                 try {
@@ -97,7 +97,7 @@ public class PhotoController {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println("잘 반환함");
+                // System.out.println("잘 반환함");
                 return new ResponseEntity<>(resource, headers, HttpStatus.OK);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not found");

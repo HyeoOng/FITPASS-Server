@@ -18,5 +18,10 @@ public class PlaceServiceImpl implements PlaceService {
         return placeDao.selectAll(userId);
     }
 
+    @Override
+    public String getPlaceName(int placeId) {
+        return placeDao.selectPlaceName(placeId);
+    }
+
 
 }

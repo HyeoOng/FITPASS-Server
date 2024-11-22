@@ -28,6 +28,11 @@ public class PlaceController {
         return placeService.getAllPlaces(usersId);
     }
 
+    @GetMapping("/name/{placeId}")
+    public String getPlaceName(@PathVariable("placeId") int placeId) {
+        return placeService.getPlaceName(placeId);
+    }
+
     @PostMapping("/search")
     public List<Place> searchPlace(@RequestBody String keywordJson) {
         // System.out.println("keywordJson: "+keywordJson);

@@ -26,4 +26,8 @@
         WHERE kakao_map_id = #{kakaoMapId}
     </select>
 
+    <select id="selectPlaceName" parameterType="int" resultType="string">
+        SELECT place_name FROM place WHERE place_id=#{placeId}
+    </select>
+
 </mapper>
