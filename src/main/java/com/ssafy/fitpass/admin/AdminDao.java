@@ -1,9 +1,11 @@
 package com.ssafy.fitpass.admin;
 
 import com.ssafy.fitpass.user.RetUser;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface AdminDao {
     /**
      * 모든 관리자를 조회하는 메서드입니다.
