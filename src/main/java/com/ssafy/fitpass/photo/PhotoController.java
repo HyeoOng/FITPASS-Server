@@ -25,46 +25,6 @@ public class PhotoController {
 
     static private final String BASE_PATH = "src/main/webapp/WEB-INF";
 
-//    @PostMapping
-//    public ResponseEntity<?> displayPhoto(@RequestBody String photoUrlJson) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        String photoUrl = "";
-//
-//        try{
-//            JsonNode jsonNode = mapper.readTree(photoUrlJson);
-//            photoUrl = jsonNode.get("photoUrl").asText();
-//        } catch (JsonMappingException e) {
-//            throw new RuntimeException(e);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        System.out.println("입력받은 값: " + photoUrl);
-//
-//        Path file = Paths.get(BASE_PATH, photoUrl).normalize();
-//        System.out.println("파일이 존재하는지 확일한 위치: " + file.toAbsolutePath().toString());
-//        if (!file.startsWith(BASE_PATH)) {
-//            System.out.println("경로를 탈출했어요.");
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("hacker"); // 경로 탈출 방지
-//        }
-//        Resource resource = new FileSystemResource(file.toAbsolutePath().toString());
-//
-//        if(!resource.exists()){
-//            System.out.println("파일을 찾지 못했어요.");
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not found");
-//        }
-//        System.out.println("파일을 찾았습니다!!!!!!!!!!!!!!!!");
-//        HttpHeaders headers = new HttpHeaders();
-//        try {
-//            headers.add("Content-Type", Files.probeContentType(file));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.out.println("완료");
-//        return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
-//
-//    }
-
     @PostMapping
     public ResponseEntity<?> getImage(@RequestBody String imageUrlJson){
 
