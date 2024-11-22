@@ -60,9 +60,9 @@
         FROM user
         WHERE nn LIKE #{nn};
     </select>
-
     <select id="selectUserId" resultType="int" parameterType="string">
         SELECT user_id FROM user WHERE nn = #{nn}
     </select>
+
 
 </mapper>
