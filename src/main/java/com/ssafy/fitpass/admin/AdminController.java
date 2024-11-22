@@ -32,11 +32,12 @@ public class AdminController {
     /**
      * 유저에게 관리자 권한을 부여하는 API입니다. (최고관리자만 가능)
      *
-     * @param userId (관리자 권한을 부여할 유저의 아이디)
+     * @param requestData (관리자 권한을 부여할 유저의 아이디)
      * @return 결과 메시지가 담긴 Map("success" 또는 "fail")
      */
     @PostMapping("/create")
-    public Map<String, String> createAdmin(@RequestBody int userId) {
+    public Map<String, String> createAdmin(@RequestBody Map<String, String> requestData) {
+        int userId = Integer.parseInt(requestData.get("userId"));
         boolean result = adminService.createAdmin(userId);  // 서비스에서 관리자 권한을 부여하는 로직 호출
         Map<String, String> map = new HashMap<>();  // 결과 메시지를 담을 Map 객체 초기화
         if (result) {
@@ -50,11 +51,12 @@ public class AdminController {
     /**
      * 유저에게서 관리자 권한을 삭제하는 API입니다. (최고 관리자만 가능)
      *
-     * @param userId (관리자 권한을 삭제할 유저의 아이디)
+     * @param requestData (관리자 권한을 삭제할 유저의 아이디)
      * @return 결과 메시지가 담긴 Map("success" 또는 "fail")
      */
     @PostMapping("/delete")
-    public Map<String, String> deleteAdmin(@RequestBody int userId) {
+    public Map<String, String> deleteAdmin(@RequestBody Map<String, String> requestData) {
+        int userId = Integer.parseInt(requestData.get("userId"));
         boolean result = adminService.deleteAdmin(userId);  // 서비스에서 관리자 권한을 삭제하는 로직 호출
         Map<String, String> map = new HashMap<>();  // 결과 메시지를 담을 Map 객체 초기화
         if (result) {
