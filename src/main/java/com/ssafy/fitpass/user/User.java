@@ -91,7 +91,7 @@ public class User {
         if (!password.matches(".*\\d.*")) {
             throw new IllegalArgumentException("비밀번호는 최소 하나의 숫자를 포함해야 합니다.");
         }
-        if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+        if (!password.matches(".*[!@#$%^&*(),.?:].*")) {
             throw new IllegalArgumentException("비밀번호는 최소 하나의 특수 문자를 포함해야 합니다.");
         }
         this.password = password;
