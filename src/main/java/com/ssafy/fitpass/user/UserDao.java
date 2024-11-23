@@ -24,14 +24,6 @@ public interface UserDao {
     RetUser login(Map<String, String> map);
 
     /**
-     * 해당 이메일을 사용하는 유저를 확인하는 메서드입니다.
-     *
-     * @param email
-     * @return 해당 email에 해당하는 회원
-     */
-    RetUser checkUserExist(String email);
-
-    /**
      * 회원 정보를 조회하는 메서드입니다.
      *
      * @param userId

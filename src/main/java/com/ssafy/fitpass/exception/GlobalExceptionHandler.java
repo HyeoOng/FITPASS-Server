@@ -1,5 +1,8 @@
 package com.ssafy.fitpass.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -22,6 +25,14 @@ public class GlobalExceptionHandler {
         map.put("msg", e.getMessage());
         return map;
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        Map<String, String> map = new HashMap<>();
+        map.put("msg", e.getMessage());
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(RuntimeException.class)
     public Map<String, String> handleRuntimeException(RuntimeException e) {

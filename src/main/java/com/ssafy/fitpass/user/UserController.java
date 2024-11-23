@@ -75,11 +75,6 @@ public class UserController {
         Map<String, Object> map = new HashMap<>();
         String email = user.getEmail();
 
-        if (!userService.isUserExist(email)) {
-            map.put("msg", "잘못된 이메일 또는 비밀번호입니다.");
-            return map;
-        }
-
         if (loginAttemptService.isBlocked(email)) {
             map.put("msg", "로그인 시도 횟수 초과로 인해 차단되었습니다.");
             return map;

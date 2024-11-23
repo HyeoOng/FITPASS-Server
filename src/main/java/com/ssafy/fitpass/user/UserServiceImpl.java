@@ -66,21 +66,10 @@ public class UserServiceImpl implements UserService {
             }
             return retUser;
         } catch (DataAccessException e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("로그인 중 데이터베이스 오류가 발생했습니다.");
         }
     }
-
-    @Override
-    public boolean isUserExist(String email) {
-        try {
-            return userDao.checkUserExist(email) != null;
-        } catch (DataAccessException e) {
-            throw new RuntimeException("사용자 존재 여부 확인 중 데이터베이스 오류가 발생했습니다.");
-        } catch (Exception e) {
-            throw new RuntimeException("사용자 존재 여부 확인 중 예상치 못한 오류가 발생했습니다.");
-        }
-    }
-
 
     @Override
     public List<RetUser> getAllUsers() {
