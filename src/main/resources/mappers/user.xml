@@ -16,6 +16,12 @@
         WHERE email=#{email} AND password=#{password}
     </select>
 
+    <select id="checkUserExist" parameterType="String" resultType="com.ssafy.fitpass.user.RetUser">
+        SELECT *
+        FROM user
+        WHERE email = #{email};
+    </select>
+
     <select id="selectOne" parameterType="int" resultType="com.ssafy.fitpass.user.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date
         FROM user WHERE user_id=#{userId}
@@ -44,22 +50,12 @@
         SELECT COUNT(*) FROM user WHERE nn=#{nn}
     </select>
 
-    <!--admin-->
-    <select id="selectAllAdmin" resultType="com.ssafy.fitpass.user.RetUser">
-        SELECT user_id, email, name, nn, admin, reg_date
-        FROM user
-        WHERE admin IN (1, 2)
-    </select>
-
-    <update id="updateAdmin" parameterType="int">
-        UPDATE user SET admin=1 WHERE user_id=#{userId}
-    </update>
-
     <select id="selectAllByNn" parameterType="String" resultType="com.ssafy.fitpass.user.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date
         FROM user
         WHERE nn LIKE #{nn};
     </select>
+
     <select id="selectUserId" resultType="int" parameterType="string">
         SELECT user_id FROM user WHERE nn = #{nn}
     </select>

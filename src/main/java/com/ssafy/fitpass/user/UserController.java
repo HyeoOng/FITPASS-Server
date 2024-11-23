@@ -19,10 +19,12 @@ public class UserController {
 
     private final UserService userService;
     private final PhotoService photoService;
+    private final LoginAttemptService loginAttemptService;
 
-    public UserController(UserService userService, PhotoService photoService) {
+    public UserController(UserService userService, PhotoService photoService, LoginAttemptService loginAttemptService) {
         this.userService = userService;
         this.photoService = photoService;
+        this.loginAttemptService = loginAttemptService;
     }
 
     @PostMapping("/signup")
@@ -68,15 +70,20 @@ public class UserController {
         return map;
     }
 
-    @GetMapping("/verify")
-    public String verifyUser(@RequestParam String email) {
-        // 3. 이메일 인증 완료 처리 (인증 상태를 true로 업데이트)
-        return "이메일 인증이 완료되었습니다.";
-    }
-
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody User user, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
+        String email = user.getEmail();
+
+        if (!userService.isUserExist(email)) {
+            map.put("msg", "잘못된 이메일 또는 비밀번호입니다.");
+            return map;
+        }
+
+        if (loginAttemptService.isBlocked(email)) {
+            map.put("msg", "로그인 시도 횟수 초과로 인해 차단되었습니다.");
+            return map;
+        }
 
         RetUser loginedUser = userService.login(user);
         if (loginedUser != null) {
@@ -84,8 +91,12 @@ public class UserController {
             map.put("msg", "success");
             map.put("userId", loginedUser.getUserId());
             map.put("nickname", loginedUser.getNn());
+            loginAttemptService.resetAttempts(email); // 로그인 성공 시 시도 횟수 초기화
         } else {
+            loginAttemptService.increaseAttempts(email);
             map.put("msg", "fail");
+            map.put("remainingAttempts",
+                    loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(email));
         }
         return map;
     }

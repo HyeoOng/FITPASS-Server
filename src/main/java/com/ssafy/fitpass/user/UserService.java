@@ -8,6 +8,7 @@ public interface UserService {
 
     boolean signup(User user);
     RetUser login(User user);
+    boolean isUserExist(String email);
     List<RetUser> getAllUsers();
     RetUser getUser(int userId);
     boolean modifyUser(User user);
