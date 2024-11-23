@@ -13,7 +13,7 @@
     <update id="createAdmin" parameterType="int">
         UPDATE user
         SET admin = 1
-        WHERE user_id = #{userId};
+        WHERE user_id = #{userId} and admin = 0;
     </update>
 
     <update id="deleteAdmin" parameterType="int">
