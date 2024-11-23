@@ -56,8 +56,9 @@ public class SportController {
     }
 
     @PostMapping("/delete")
-    public Map<String, String> deleteSport(@RequestBody int sportCode) {
+    public Map<String, String> deleteSport(@RequestBody Map<String, String> requestData) {
         Map<String, String> map = new HashMap<>();
+        int sportCode = Integer.parseInt(requestData.get("sportCode"));
         boolean result = sportService.removeSport(sportCode);
         if (result) {
             map.put("msg", "success");
