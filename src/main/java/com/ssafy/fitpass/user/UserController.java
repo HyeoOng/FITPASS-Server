@@ -51,14 +51,19 @@ public class UserController {
                 String saveFolder = "/profile/" + userId + "/" + storeName;
                 photo.setStoreFileName(storeName);
                 photo.setSaveFolder(saveFolder);
-
-                try {
-                    photoService.saveFile(file, userId, storeName, "profile/");
-                } catch (IOException e) {
-                    map.put("msg", "파일 저장에 실패하였습니다. 잠시 후 다시 시도해주세요.");
-                    return map; // 실패 시 바로 반환
+                
+                if(userService.createProfile(userId, photo)){
+                    try {
+                        photoService.saveFile(file, userId, storeName, "profile/");
+                    } catch (IOException e) {
+                        map.put("msg", "파일 저장에 실패하였습니다. 잠시 후 다시 시도해주세요.");
+                        return map; // 실패 시 바로 반환
+                    }
+                    map.put("msg", "success");
+                }else{
+                    map.put("msg", "프로필 등록 실패");
                 }
-                map.put("msg", "success");
+                
             } else {
                 map.put("msg", "fail");
             }

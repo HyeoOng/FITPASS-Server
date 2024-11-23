@@ -1,9 +1,13 @@
 package com.ssafy.fitpass.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.fitpass.interceptor.AdminInterceptor;
 import com.ssafy.fitpass.interceptor.LoginInterceptor;
 import com.ssafy.fitpass.interceptor.SuperAdminInterceptor;
+import com.ssafy.fitpass.util.HtmlCharacterEscape;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -67,10 +71,20 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        System.out.println("잘 설정되고 있음");
         registry.addMapping("/**") // 모든 경로에 대해 CORS 허용
-                .allowedOrigins("http://localhost:5173") // 특정 오리진 허용 (프론트엔드 서버 주소)
+                .allowedOrigins("http://localhost:5173", "http://localhost:5173/") // 특정 오리진 허용 (프론트엔드 서버 주소)
                 .allowedMethods("*") // 모든 HTTP 메서드 허용 (GET, POST, PUT, DELETE 등)
                 .allowedHeaders("*") // 모든 요청 헤더 허용
                 .allowCredentials(true); // 쿠키 및 세션 정보 허용
+        System.out.println("잘 설정되고 있음2");
     }
+
+//    @Bean
+//    public MappingJackson2HttpMessageConverter jsonEscapeConverter(){
+//        ObjectMapper copy = new ObjectMapper();
+//        copy.getFactory().setCharacterEscapes(new HtmlCharacterEscape());
+//        System.out.println("***************");
+//        return new MappingJackson2HttpMessageConverter(copy);
+//    }
 }

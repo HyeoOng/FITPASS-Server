@@ -1,6 +1,7 @@
 package com.ssafy.fitpass.user;
 
 import com.ssafy.fitpass.photo.Photo;
+import com.ssafy.fitpass.photo.PhotoDao;
 import com.ssafy.fitpass.util.OpenCrypt;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final UserSecuDao userSecuDao;
+    private final PhotoDao photoDao;
 
-    public UserServiceImpl(UserDao userDao, UserSecuDao userSecuDao) {
+    public UserServiceImpl(UserDao userDao, UserSecuDao userSecuDao, PhotoDao photoDao) {
         this.userDao = userDao;
         this.userSecuDao = userSecuDao;
+        this.photoDao = photoDao;
     }
 
     @Override
@@ -148,7 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean createProfile(int userId, Photo photo) {
-        return false;
+        return photoDao.insertProfile(userId, photo) == 1;
     }
 
     @Override
