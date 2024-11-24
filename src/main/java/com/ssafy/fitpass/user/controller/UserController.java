@@ -132,6 +132,7 @@ public class UserController {
             map.put("msg", "success");
             map.put("userId", loginedUser.getUserId());
             map.put("nickname", loginedUser.getNn());
+            map.put("admin", loginedUser.getAdmin());
         } catch (IllegalArgumentException e) {
             map.put("msg", e.getMessage());
             if (e.getMessage().equals("잘못된 이메일 또는 비밀번호입니다.")) {
