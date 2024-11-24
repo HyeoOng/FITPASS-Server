@@ -242,6 +242,7 @@ public class UserController {
             map.put("login", true);
         }else{
             map.put("login", false);
+            map.put("user", null);
         }
 
         return map;

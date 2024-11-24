@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.post;
 
+import com.ssafy.fitpass.ai.service.AiService;
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
 import com.ssafy.fitpass.place.Place;
@@ -22,10 +23,12 @@ public class PostController {
 
     PostService postService;
     PhotoService photoService;
+    AiService aiService;
 
-    public PostController(PostService postService, PhotoService photoService) {
+    public PostController(PostService postService, PhotoService photoService, AiService aiService) {
         this.photoService = photoService;
         this.postService = postService;
+        this.aiService = aiService;
     }
     
     // 글 등록
@@ -45,6 +48,13 @@ public class PostController {
         if(!file.isEmpty())photo.setFile(file);
         else {
             response.put("msg", "사진 이상");
+            return response;
+        }
+
+        // Post 객체의 title과 content 검증
+        if (!aiService.isContentAppropriate(post.getContent()) || !aiService.isContentAppropriate(post.getTitle())) {
+//            throw new IllegalArgumentException("비난, 혐오, 욕설이 포함된 글은 작성할 수 없습니다.");
+            response.put("msg", "fail with ai");
             return response;
         }
 
