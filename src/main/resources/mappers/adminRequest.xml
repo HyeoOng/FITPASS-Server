@@ -10,7 +10,10 @@
     </insert>
 
     <select id="selectAllRequests" resultType="AdminRequest">
-        SELECT * FROM AdminRequest
+        SELECT req_id, a.user_id, nn, title, content
+        FROM AdminRequest a
+        INNER JOIN user u
+        ON a.user_id = u.user_id;
     </select>
 
     <delete id="deleteRequest" parameterType="int">

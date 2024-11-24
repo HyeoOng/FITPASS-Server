@@ -2,7 +2,7 @@ package com.ssafy.fitpass.admin;
 
 public class AdminRequest {
     private int reqId, userId;
-    private String title, content;
+    private String title, content, nn;
 
     public AdminRequest() {
     }
@@ -18,6 +18,14 @@ public class AdminRequest {
         setUserId(userId);
         setTitle(title);
         setContent(content);
+    }
+
+    public AdminRequest(int reqId, int userId, String title, String content, String nn) {
+        setReqId(reqId);
+        setUserId(userId);
+        setTitle(title);
+        setContent(content);
+        setNn(nn);
     }
 
     public int getReqId() {
@@ -61,6 +69,14 @@ public class AdminRequest {
         this.content = content;
     }
 
+    public String getNn() {
+        return nn;
+    }
+
+    public void setNn(String nn) {
+        this.nn = nn;
+    }
+
     @Override
     public String toString() {
         return "AdminRequest{" +
@@ -68,6 +84,7 @@ public class AdminRequest {
                 ", userId=" + userId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", nn='" + nn + '\'' +
                 '}';
     }
 }
