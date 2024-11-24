@@ -1,31 +1,31 @@
 package com.ssafy.fitpass.admin;
 
 public class AdminRequest {
-    private int rqId, userId;
+    private int reqId, userId;
     private String title, content;
 
     public AdminRequest() {
     }
 
     public AdminRequest(int userId, String title, String content) {
-        setRqId(userId);
+        setUserId(userId);
         setTitle(title);
         setContent(content);
     }
 
-    public AdminRequest(int rqId, int userId, String title, String content) {
-        setRqId(rqId);
-        setRqId(userId);
+    public AdminRequest(int reqId, int userId, String title, String content) {
+        setReqId(reqId);
+        setUserId(userId);
         setTitle(title);
         setContent(content);
     }
 
-    public int getRqId() {
-        return rqId;
+    public int getReqId() {
+        return reqId;
     }
 
-    public void setRqId(int rqId) {
-        this.rqId = rqId;
+    public void setReqId(int rqId) {
+        this.reqId = rqId;
     }
 
     public int getUserId() {
@@ -33,6 +33,9 @@ public class AdminRequest {
     }
 
     public void setUserId(int userId) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("User ID는 0보다 커야 합니다.");
+        }
         this.userId = userId;
     }
 
@@ -41,6 +44,9 @@ public class AdminRequest {
     }
 
     public void setTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("Title은 비어있을 수 없습니다.");
+        }
         this.title = title;
     }
 
@@ -49,13 +55,16 @@ public class AdminRequest {
     }
 
     public void setContent(String content) {
+        if (content == null || content.trim().isEmpty()) {
+            throw new IllegalArgumentException("Content는 비어있을 수 없습니다.");
+        }
         this.content = content;
     }
 
     @Override
     public String toString() {
-        return "Request{" +
-                "rqId=" + rqId +
+        return "AdminRequest{" +
+                "reqId=" + reqId +
                 ", userId=" + userId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +

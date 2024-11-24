@@ -1,11 +1,12 @@
 package com.ssafy.fitpass.admin;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ssafy.fitpass.user.RetUser;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,8 +20,12 @@ public class AdminRequestController {
     }
 
     @PostMapping("/create")
-    public Map<String, String> create(@RequestBody AdminRequest adminRequest) {
+    public Map<String, String> create(@RequestBody AdminRequest adminRequest, HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
+        HttpSession session = request.getSession(false);
+        int userId = ((RetUser) session.getAttribute("user")).getUserId();
+        System.out.println(userId);
+        adminRequest.setUserId(userId);
         boolean result = adminRequestService.createRequest(adminRequest);
         if(result) {
             map.put("msg", "success");
@@ -28,6 +33,11 @@ public class AdminRequestController {
             map.put("msg", "fail");
         }
         return map;
+    }
+
+    @GetMapping
+    public List<AdminRequest> getAllAdminRequest() {
+        return adminRequestService.getAllRequests();
     }
 
     @PostMapping("/remove")

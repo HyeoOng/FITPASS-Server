@@ -5,9 +5,13 @@
 <mapper namespace="com.ssafy.fitpass.admin.AdminRequestDao">
 
     <insert id="insertRequest" parameterType="AdminRequest">
-        INSERT INTO AdminRequest (user_id, title, content)
-        VALUES (#{userId}, #{title}, #{content});
+        INSERT INTO AdminRequest (user_id, title, content, created_at)
+        VALUES (#{userId}, #{title}, #{content}, NOW());
     </insert>
+
+    <select id="selectAllRequests" resultType="AdminRequest">
+        SELECT * FROM AdminRequest
+    </select>
 
     <delete id="deleteRequest" parameterType="int">
         DELETE FROM AdminRequest

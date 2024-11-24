@@ -1,15 +1,24 @@
 package com.ssafy.fitpass.interceptor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.fitpass.user.RetUser;
-import com.ssafy.fitpass.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
+
+    private final ObjectMapper objectMapper;
+
+    public LoginInterceptor(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -29,9 +38,15 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         System.out.println("logined 상태가 아닙니다.");
-        response.setContentType("text/plain;charset=UTF-8");
-        response.getWriter().write("로그인해주세요.");
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        // 메시지를 맵으로 생성
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("msg", "로그인해주세요");
+
+        // 맵을 JSON 문자열로 변환 후 반환
+        response.getWriter().write(objectMapper.writeValueAsString(responseMap));
         return false;
     }
 }
-

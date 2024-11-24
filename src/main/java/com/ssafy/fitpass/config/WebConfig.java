@@ -42,6 +42,7 @@ public class WebConfig implements WebMvcConfigurer {
         // 로그인 인터셉터 등록
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/api/*") // 모든 /api/* 경로에 대해 적용
+                .addPathPatterns("/api/admin/request/create") // 관리자 요청 경로에 적용
                 .excludePathPatterns("/api/users/signup") // 회원가입 요청은 제외
                 .excludePathPatterns("/api/users/login") // 로그인 요청은 제외
                 .excludePathPatterns("/api/users/logout") // 로그아웃 요청은 제외
@@ -51,6 +52,8 @@ public class WebConfig implements WebMvcConfigurer {
         // 관리자 인터셉터 등록
         registry.addInterceptor(adminInterceptor)
                 .addPathPatterns("/api/admin") // 모든 관리자 목록 볼 수 있음
+                .addPathPatterns("/api/admin/request") // 관리자 요청 보는 경로에 적용
+                .addPathPatterns("/api/admin/request/delete") // 관리자 요청 지우는 경로에 적용
                 .addPathPatterns("/api/sport/**") // /api/sport/ 하위 경로에 대해 적용
                 .excludePathPatterns("/api/sport"); // /api/sport 경로는 제외
 
