@@ -76,19 +76,25 @@ public class PhotoController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("server");
     }
 
-    @GetMapping
-    public ResponseEntity<?> getProfileImage(HttpServletRequest request){
+    @GetMapping("/{user_id}")
+    public ResponseEntity<?> getProfileImage(HttpServletRequest request, @PathVariable("user_id") int user_id){
+        System.out.println("누구 사진: "+user_id);
         HttpSession session = request.getSession(false);
         if(session == null){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("null session");
         }
-
-        RetUser retUser = (RetUser) session.getAttribute("user");
-        if(retUser == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("null user");
+        if(user_id == 0){
+            RetUser retUser = (RetUser) session.getAttribute("user");
+            if(retUser == null){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("null user");
+            }
+            user_id = retUser.getUserId();
         }
-        int user_id = retUser.getUserId();
+
         String profileUrl = photoService.getProfileFolderNameByUserId(user_id);
+        if(profileUrl == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("profile not found");
+        }
 
         try{
             Path file = Paths.get(BASE_PATH, profileUrl).normalize();
