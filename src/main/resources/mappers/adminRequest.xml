@@ -15,7 +15,7 @@
 
     <delete id="deleteRequest" parameterType="int">
         DELETE FROM AdminRequest
-        WHERE request_id = #{requestId};
+        WHERE req_id = #{requestId};
     </delete>
 
 </mapper>
