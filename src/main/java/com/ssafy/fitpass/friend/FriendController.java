@@ -1,6 +1,6 @@
 package com.ssafy.fitpass.friend;
 
-import com.ssafy.fitpass.user.RetUser;
+import com.ssafy.fitpass.user.dto.RetUser;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

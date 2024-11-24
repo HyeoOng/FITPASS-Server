@@ -1,8 +1,7 @@
 package com.ssafy.fitpass.admin;
 
-import com.ssafy.fitpass.user.RetUser;
+import com.ssafy.fitpass.user.dto.RetUser;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

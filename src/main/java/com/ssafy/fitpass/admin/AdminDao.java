@@ -1,6 +1,6 @@
 package com.ssafy.fitpass.admin;
 
-import com.ssafy.fitpass.user.RetUser;
+import com.ssafy.fitpass.user.dto.RetUser;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

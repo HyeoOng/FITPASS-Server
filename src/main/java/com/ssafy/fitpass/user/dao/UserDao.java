@@ -1,5 +1,8 @@
-package com.ssafy.fitpass.user;
+package com.ssafy.fitpass.user.dao;
 
+import com.ssafy.fitpass.user.dto.RetUser;
+import com.ssafy.fitpass.user.dto.SignupUserDto;
+import com.ssafy.fitpass.user.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,7 +16,7 @@ public interface UserDao {
      * @param user
      * @return 등록된 행 수 (등록 성공 : 1)
      */
-    int insertUser(RetUser user);
+    int insertUser(User user);
 
     /**
      * 로그인시 사용되는 메서드입니다.
@@ -22,6 +25,8 @@ public interface UserDao {
      * @return 회원
      */
     RetUser login(Map<String, String> map);
+
+    int selectUserByEmail(String email);
 
     /**
      * 회원 정보를 조회하는 메서드입니다.

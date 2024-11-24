@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.user;
+package com.ssafy.fitpass.user.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 

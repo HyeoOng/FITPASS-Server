@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.user;
+package com.ssafy.fitpass.user.service;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

@@ -1,53 +1,26 @@
-package com.ssafy.fitpass.user;
+package com.ssafy.fitpass.user.dto;
 
 import java.util.Date;
 
-public class User {
-    private int userId;
+public class SignupUserDto {
     private String name;
     private String email;
     private String password;
     private String nn;
-    private int admin;
-    private Date regDate;
     private String profile;
 
-    public User() {
+    public SignupUserDto() {
     }
 
-    public User(String name, String email, String password, String nn, int admin, Date regDate, String profile) {
+    public SignupUserDto(String name, String email, String password, String nn, int admin, String profile) {
         setName(name);
         setEmail(email);
         setPassword(password);
         setNn(nn);
-        setAdmin(admin);
-        setRegDate(regDate);
-        setProfile(profile);
-    }
-
-    public User(int userId, String name, String email, String password, String nn, int admin, Date regDate, String profile) {
-        setUserId(userId);
-        setName(name);
-        setEmail(email);
-        setPassword(password);
-        setNn(nn);
-        setAdmin(admin);
-        setRegDate(regDate);
         setProfile(profile);
     }
 
     // Getter와 Setter
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        if (userId <= 0) {
-            throw new IllegalArgumentException("userId는 0보다 커야 합니다.");
-        }
-        this.userId = userId;
-    }
-
     public String getName() {
         return name;
     }
@@ -111,21 +84,6 @@ public class User {
         this.nn = nn;
     }
 
-    public int getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(int admin) {
-        this.admin = admin;
-    }
-
-    public Date getRegDate() {
-        return regDate;
-    }
-
-    public void setRegDate(Date regDate) {
-        this.regDate = regDate;
-    }
 
     public String getProfile() {
         return profile;
@@ -138,13 +96,10 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nn + '\'' +
-                ", admin=" + admin +
-                ", regDate=" + regDate +
                 ", profile='" + profile + '\'' +
                 '}';
     }

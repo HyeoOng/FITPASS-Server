@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.fitpass.admin.AdminDao">
 
-    <select id="selectAllAdmin" resultType="com.ssafy.fitpass.user.RetUser">
+    <select id="selectAllAdmin" resultType="com.ssafy.fitpass.user.dto.RetUser">
         SELECT user_id, email, name, nn, admin, reg_date
         FROM user
         WHERE admin = 1

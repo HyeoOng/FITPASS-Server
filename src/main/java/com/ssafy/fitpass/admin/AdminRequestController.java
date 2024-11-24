@@ -1,6 +1,6 @@
 package com.ssafy.fitpass.admin;
 
-import com.ssafy.fitpass.user.RetUser;
+import com.ssafy.fitpass.user.dto.RetUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;

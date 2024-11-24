@@ -1,15 +1,13 @@
-package com.ssafy.fitpass.user;
+package com.ssafy.fitpass.user.entity;
 
 import java.util.Date;
 
-public class RetUser {
+public class User {
     public int userId;
     public String email, name, nn, password;
     public Date regDate;
     public int admin;
     public String profile;
-
-    public RetUser() {}
 
     public int getUserId() {
         return userId;
@@ -77,15 +75,15 @@ public class RetUser {
 
     @Override
     public String toString() {
-        return "RetUser{" +
+        return "User{" +
                 "userId=" + userId +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", nickname='" + nn + '\'' +
+                ", nn='" + nn + '\'' +
+                ", password='" + password + '\'' +
                 ", regDate=" + regDate +
                 ", admin=" + admin +
                 ", profile='" + profile + '\'' +
                 '}';
     }
 }
-

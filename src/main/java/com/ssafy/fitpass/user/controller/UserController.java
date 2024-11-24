@@ -1,13 +1,16 @@
-package com.ssafy.fitpass.user;
+package com.ssafy.fitpass.user.controller;
 
-import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
+import com.ssafy.fitpass.user.service.LoginAttemptService;
+import com.ssafy.fitpass.user.dto.LoginUserDto;
+import com.ssafy.fitpass.user.dto.PutUserDto;
+import com.ssafy.fitpass.user.dto.RetUser;
+import com.ssafy.fitpass.user.dto.SignupUserDto;
+import com.ssafy.fitpass.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,36 +31,15 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public Map<String, Object> signup(@RequestPart("user") User user, @RequestPart("file") MultipartFile file) {
+    public Map<String, Object> signup(@RequestBody SignupUserDto user) {
         System.out.println("data 잘 받았는지 확인해보자-------------------");
         System.out.println(user);
-        System.out.println(file);
-        // System.out.println(file.getOriginalFilename());
         System.out.println("------------------------------------------");
         Map<String, Object> map = new HashMap<>();
 
         try {
             boolean result = userService.signup(user);
-            if(result) {
-                int userId = userService.getUserId(user.getNn());
-                Photo photo = new Photo();
-                if(!file.isEmpty())photo.setFile(file);
-                else {
-                    map.put("msg", "사진 이상");
-                    return map;
-                }
-
-                String storeName = photoService.generateStoreFileName(photo.getUploadFileName());
-                String saveFolder = "/profile/" + userId + "/" + storeName;
-                photo.setStoreFileName(storeName);
-                photo.setSaveFolder(saveFolder);
-
-                try {
-                    photoService.saveFile(file, userId, storeName, "profile/");
-                } catch (IOException e) {
-                    map.put("msg", "파일 저장에 실패하였습니다. 잠시 후 다시 시도해주세요.");
-                    return map; // 실패 시 바로 반환
-                }
+            if (result) {
                 map.put("msg", "success");
             } else {
                 map.put("msg", "fail");
@@ -70,31 +52,64 @@ public class UserController {
         return map;
     }
 
+//    @PostMapping("/login")
+//    public Map<String, Object> login(@RequestBody LoginUserDto user, HttpServletRequest request) {
+//        Map<String, Object> map = new HashMap<>();
+//        String email = user.getEmail();
+//
+//        // 1. 이메일 존재 여부 확인
+//        if (!userService.isUserExist(email)) {
+//            map.put("msg", "존재하지 않는 이메일입니다.");
+//            return map;
+//        }
+//
+//        if (loginAttemptService.isBlocked(email)) {
+//            map.put("msg", "로그인 시도 횟수 초과로 인해 차단되었습니다.");
+//            return map;
+//        }
+//
+//        RetUser loginedUser = userService.login(user);
+//        if (loginedUser != null) {
+//            request.getSession().setAttribute("user", loginedUser);
+//            map.put("msg", "success");
+//            map.put("userId", loginedUser.getUserId());
+//            map.put("nickname", loginedUser.getNn());
+//            loginAttemptService.resetAttempts(email); // 로그인 성공 시 시도 횟수 초기화
+//        } else {
+//            System.out.println("check:" + email);
+//            loginAttemptService.increaseAttempts(email);
+//            map.put("msg", "fail");
+//            map.put("remainingAttempts",
+//                    loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(email));
+//        }
+//        return map;
+//    }
+
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody User user, HttpServletRequest request) {
+    public Map<String, Object> login(@RequestBody LoginUserDto user, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
-        String email = user.getEmail();
 
-        if (loginAttemptService.isBlocked(email)) {
-            map.put("msg", "로그인 시도 횟수 초과로 인해 차단되었습니다.");
-            return map;
-        }
+        try {
+            RetUser loginedUser = userService.handleLogin(user);
 
-        RetUser loginedUser = userService.login(user);
-        if (loginedUser != null) {
+            // 로그인 성공 시 세션에 사용자 정보 저장
             request.getSession().setAttribute("user", loginedUser);
+
             map.put("msg", "success");
             map.put("userId", loginedUser.getUserId());
             map.put("nickname", loginedUser.getNn());
-            loginAttemptService.resetAttempts(email); // 로그인 성공 시 시도 횟수 초기화
-        } else {
-            loginAttemptService.increaseAttempts(email);
-            map.put("msg", "fail");
-            map.put("remainingAttempts",
-                    loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(email));
+        } catch (IllegalArgumentException e) {
+            map.put("msg", e.getMessage());
+            if (e.getMessage().equals("잘못된 이메일 또는 비밀번호입니다.")) {
+                map.put("remainingAttempts", loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(user.getEmail()));
+            }
+        } catch (Exception e) {
+            map.put("msg", "로그인 중 오류가 발생했습니다.");
         }
+
         return map;
     }
+
 
     @GetMapping("/logout")
     public Map<String, String> logout(HttpServletRequest request) {
@@ -127,7 +142,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public Map<String, String> modifyUser(@RequestBody User user) {
+    public Map<String, String> modifyUser(@RequestBody PutUserDto user) {
         Map<String, String> map = new HashMap<>();
         boolean result = userService.modifyUser(user);
         if(result) {
