@@ -22,11 +22,14 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final UserSecuDao userSecuDao;
     private final LoginAttemptService loginAttemptService;
+    private final PhotoDao photoDao;
 
-    public UserServiceImpl(UserDao userDao, UserSecuDao userSecuDao, LoginAttemptService loginAttemptService) {
+    public UserServiceImpl(UserDao userDao, UserSecuDao userSecuDao, PhotoDao photoDao
+            , LoginAttemptService loginAttemptService) {
         this.userDao = userDao;
         this.userSecuDao = userSecuDao;
         this.loginAttemptService = loginAttemptService;
+        this.photoDao = photoDao;
     }
 
     @Override
@@ -199,12 +202,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean createProfile(int userId, Photo photo) {
-        return false;
+        return photoDao.insertProfile(userId, photo)==1;
     }
 
     @Override
     public boolean modifyProfile(int userId, Photo photo) {
-        return false;
+        return photoDao.updateProfile(userId, photo)==1;
     }
 
     @Override

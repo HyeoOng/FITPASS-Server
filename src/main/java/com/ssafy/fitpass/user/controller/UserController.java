@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.user.controller;
 
+import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
 import com.ssafy.fitpass.user.service.LoginAttemptService;
 import com.ssafy.fitpass.user.dto.LoginUserDto;
@@ -10,6 +11,7 @@ import com.ssafy.fitpass.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,16 +33,47 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public Map<String, Object> signup(@RequestBody SignupUserDto user) {
+//    public Map<String, Object> signup(@RequestBody SignupUserDto user) {
+    public Map<String, Object> signup(
+            @RequestPart("user") SignupUserDto user,
+            @RequestPart("file") MultipartFile file) {
+
         System.out.println("data 잘 받았는지 확인해보자-------------------");
         System.out.println(user);
+        System.out.println(file.getOriginalFilename());
         System.out.println("------------------------------------------");
         Map<String, Object> map = new HashMap<>();
 
         try {
             boolean result = userService.signup(user);
             if (result) {
-                map.put("msg", "success");
+
+                int userId = userService.getUserId(user.getNn());
+                Photo photo = new Photo();
+
+                if(!file.isEmpty()){
+                    photo.setFile(file);
+                } else {
+                    map.put("msg", "fail to store profile");
+                    return map;
+                }
+
+                String storeName = photoService.generateStoreFileName(photo.getUploadFileName());
+                String saveFolder = "/profile/" + userId + "/" + storeName;
+                photo.setStoreFileName(storeName);
+                photo.setSaveFolder(saveFolder);
+
+                if(userService.createProfile(userId, photo)){
+                    try{
+                        photoService.saveFile(file, userId, storeName, "profile/");
+                    } catch (Exception e){
+                        map.put("msg", "fail to save profile");
+                        return map;
+                    }
+                    map.put("msg", "success");
+                } else {
+                    map.put("msg", "fail to save profile at db");
+                }
             } else {
                 map.put("msg", "fail");
             }
@@ -90,8 +123,9 @@ public class UserController {
         Map<String, Object> map = new HashMap<>();
 
         try {
+            System.out.println("로그인 시도한 정보: " + user);
             RetUser loginedUser = userService.handleLogin(user);
-
+            System.out.println("로그인 결과 정보: " + loginedUser);
             // 로그인 성공 시 세션에 사용자 정보 저장
             request.getSession().setAttribute("user", loginedUser);
 
