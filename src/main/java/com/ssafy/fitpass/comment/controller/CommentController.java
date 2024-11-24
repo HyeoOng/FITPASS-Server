@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.comment.controller;
 
+import com.ssafy.fitpass.ai.service.AiService;
 import com.ssafy.fitpass.comment.dto.RetCommentDto;
 import com.ssafy.fitpass.comment.dto.PostCommentDto;
 import com.ssafy.fitpass.comment.dto.PutCommentDto;
@@ -18,19 +19,36 @@ import java.util.Map;
 public class CommentController {
 
     CommentService commentService;
+    AiService aiService;
 
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, AiService aiService) {
         this.commentService = commentService;
+        this.aiService = aiService;
     }
 
     @PostMapping
     public Map<String, String> createComment(@RequestBody PostCommentDto comment, HttpServletRequest request) {
+        Map<String, String> response = new HashMap<>();
+
+        System.out.println("comment: " + comment);
+
         HttpSession session = request.getSession(false);
+        if(session == null){
+            response.put("msg", "로그인부터 해주세요.");
+            return response;
+        }
         RetUser retUser = (RetUser) session.getAttribute("user");
         comment.setUserId(retUser.getUserId());
+        System.out.println(retUser);
 
-        Map<String, String> response = new HashMap<>();
-        System.out.println("잘 들어옴: " + comment);
+        // Post 객체의 title과 content 검증
+        if (!aiService.isContentAppropriate(comment.getComment())) {
+//            throw new IllegalArgumentException("비난, 혐오, 욕설이 포함된 글은 작성할 수 없습니다.");
+            System.out.println("감지.. 댓글...");
+            response.put("msg", "fail with ai");
+            return response;
+        }
+
         if(commentService.createComment(comment)){
             response.put("msg", "댓글을 성공적으로 등록하였습니다.");
         }else {
