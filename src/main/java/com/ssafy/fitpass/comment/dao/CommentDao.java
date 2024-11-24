@@ -1,5 +1,7 @@
-package com.ssafy.fitpass.comment;
+package com.ssafy.fitpass.comment.dao;
 
+import com.ssafy.fitpass.comment.dto.RetCommentDto;
+import com.ssafy.fitpass.comment.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

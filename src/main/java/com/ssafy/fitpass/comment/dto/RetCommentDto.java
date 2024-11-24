@@ -1,20 +1,20 @@
-package com.ssafy.fitpass.comment;
+package com.ssafy.fitpass.comment.dto;
 
 import java.util.Date;
 
-public class Comment {
+public class RetCommentDto {
     private int commentId, userId, postId;
     private String comment;
     private Date createAt, updateAt;
 
     // 기본 생성자
-    public Comment(){}
+    public RetCommentDto(){}
     // DB에서 등록된 댓글 조회 시 사용
-    public Comment(int commentId, int userId, int postId, String comment) {
+    public RetCommentDto(int commentId, int userId, int postId, String comment) {
 
     }
     // DB에 등록 시 사용
-    public Comment(int userId, int postId, String comment) {
+    public RetCommentDto(int userId, int postId, String comment) {
 
     }
 

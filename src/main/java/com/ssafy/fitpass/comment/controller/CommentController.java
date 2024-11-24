@@ -1,5 +1,9 @@
-package com.ssafy.fitpass.comment;
+package com.ssafy.fitpass.comment.controller;
 
+import com.ssafy.fitpass.comment.dto.RetCommentDto;
+import com.ssafy.fitpass.comment.dto.PostCommentDto;
+import com.ssafy.fitpass.comment.dto.PutCommentDto;
+import com.ssafy.fitpass.comment.service.CommentService;
 import com.ssafy.fitpass.user.dto.RetUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,7 +24,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public Map<String, String> createComment(@RequestBody Comment comment, HttpServletRequest request) {
+    public Map<String, String> createComment(@RequestBody PostCommentDto comment, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         RetUser retUser = (RetUser) session.getAttribute("user");
         comment.setUserId(retUser.getUserId());
@@ -36,12 +40,12 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<Comment> getCommentsbyPost(@RequestParam int postId) {
+    public List<RetCommentDto> getCommentsbyPost(@RequestParam int postId) {
         return commentService.getCommentsByPost(postId);
     }
 
     @PostMapping("/update")
-    public Map<String, String> modifyComment(@RequestBody Comment comment) {
+    public Map<String, String> modifyComment(@RequestBody PutCommentDto comment) {
         Map<String, String> response = new HashMap<>();
         if(commentService.modifyComment(comment)){
             response.put("msg", "댓글을 성공적으로 수정하였습니다.");
