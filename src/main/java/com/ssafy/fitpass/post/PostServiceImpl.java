@@ -112,9 +112,4 @@ public class PostServiceImpl implements PostService {
     public int getPhotoId(Photo photo) {
         return photoDao.selectPhotoId(photo);
     }
-
-    @Override
-    public int getProfileId(int userId) {
-        return photoDao.selectPhotoIdbyUserId(userId);
-    }
 }

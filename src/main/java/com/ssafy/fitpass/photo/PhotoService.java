@@ -14,6 +14,12 @@ import java.util.UUID;
 @Service
 public class PhotoService {
 
+    private final PhotoDao photoDao;
+
+    public PhotoService(PhotoDao photoDao) {
+        this.photoDao = photoDao;
+    }
+
     // 실제 파일을 서버에 저장하는 메서드
     public void saveFile(MultipartFile file, int id, String fileName, String folderName) throws IOException {
         // 1. 파일 저장 경로 생성
@@ -47,5 +53,9 @@ public class PhotoService {
 
         // UUID 기반 새 파일 이름 생성
         return UUID.randomUUID().toString() + formattedDate + extension;
+    }
+
+    public String getProfileFolderNameByUserId(int userId) {
+        return photoDao.selectPhotoIdbyUserId(userId);
     }
 }

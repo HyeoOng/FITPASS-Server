@@ -47,5 +47,5 @@ public interface PhotoDao {
      * @param userId
      * @return
      */
-    int selectPhotoIdbyUserId(int userId);
+    String selectPhotoIdbyUserId(int userId);
 }

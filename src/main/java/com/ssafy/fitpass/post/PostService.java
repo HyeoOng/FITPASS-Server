@@ -24,5 +24,4 @@ public interface PostService {
     boolean createPostPhoto(Photo photo);
     boolean modifyPostPhoto(Photo photo);
     int getPhotoId(Photo photo);
-    int getProfileId(int userId);
 }

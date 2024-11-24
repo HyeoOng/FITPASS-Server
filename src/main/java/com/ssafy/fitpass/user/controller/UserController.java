@@ -230,4 +230,19 @@ public class UserController {
     public List<RetUser> getUsersByNN(@RequestParam String nn) {
         return userService.getUserByNn(nn);
     }
+
+    @GetMapping("/curr")
+    public Map<String, Object> getCurrentUser(HttpServletRequest request){
+        Map<String, Object> map = new HashMap<>();
+        HttpSession session = request.getSession(false);
+
+        if(session != null) {
+            map.put("user", session.getAttribute("user"));
+            map.put("login", true);
+        }else{
+            map.put("login", false);
+        }
+
+        return map;
+    }
 }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.fitpass.user.dto.RetUser;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -24,6 +27,11 @@ import java.nio.file.Paths;
 public class PhotoController {
 
     static private final String BASE_PATH = "src/main/webapp/WEB-INF";
+    private final PhotoService photoService;
+
+    public PhotoController(PhotoService photoService) {
+        this.photoService = photoService;
+    }
 
     @PostMapping
     public ResponseEntity<?> getImage(@RequestBody String imageUrlJson){
@@ -58,6 +66,44 @@ public class PhotoController {
                     throw new RuntimeException(e);
                 }
                 // System.out.println("잘 반환함");
+                return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("server");
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getProfileImage(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("null session");
+        }
+
+        RetUser retUser = (RetUser) session.getAttribute("user");
+        if(retUser == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("null user");
+        }
+        int user_id = retUser.getUserId();
+        String profileUrl = photoService.getProfileFolderNameByUserId(user_id);
+
+        try{
+            Path file = Paths.get(BASE_PATH, profileUrl).normalize();
+            if (!file.startsWith(BASE_PATH)) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("hacker"); // 경로 탈출 방지
+            }
+            Resource resource = null;
+            if (Files.exists(file) && Files.isReadable(file)) {
+                resource = new UrlResource(file.toUri());
+                HttpHeaders headers = new HttpHeaders();
+                try {
+                    headers.add("Content-Type", Files.probeContentType(file));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 return new ResponseEntity<>(resource, headers, HttpStatus.OK);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not found");
