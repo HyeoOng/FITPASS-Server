@@ -1,5 +1,6 @@
-package com.ssafy.fitpass.admin;
+package com.ssafy.fitpass.admin.service;
 
+import com.ssafy.fitpass.admin.dao.AdminDao;
 import com.ssafy.fitpass.user.dto.RetUser;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;

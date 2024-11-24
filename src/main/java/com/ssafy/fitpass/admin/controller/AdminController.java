@@ -1,5 +1,6 @@
-package com.ssafy.fitpass.admin;
+package com.ssafy.fitpass.admin.controller;
 
+import com.ssafy.fitpass.admin.service.AdminService;
 import com.ssafy.fitpass.user.dto.RetUser;
 import org.springframework.web.bind.annotation.*;
 

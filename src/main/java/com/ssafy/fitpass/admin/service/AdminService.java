@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.admin;
+package com.ssafy.fitpass.admin.service;
 
 import com.ssafy.fitpass.user.dto.RetUser;
 

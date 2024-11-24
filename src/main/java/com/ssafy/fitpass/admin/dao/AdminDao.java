@@ -1,4 +1,4 @@
-package com.ssafy.fitpass.admin;
+package com.ssafy.fitpass.admin.dao;
 
 import com.ssafy.fitpass.user.dto.RetUser;
 import org.apache.ibatis.annotations.Mapper;

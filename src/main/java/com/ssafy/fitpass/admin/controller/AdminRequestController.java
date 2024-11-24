@@ -1,5 +1,8 @@
-package com.ssafy.fitpass.admin;
+package com.ssafy.fitpass.admin.controller;
 
+import com.ssafy.fitpass.admin.dto.PostAdminRequestDto;
+import com.ssafy.fitpass.admin.dto.RetAdminRequestDto;
+import com.ssafy.fitpass.admin.service.AdminRequestService;
 import com.ssafy.fitpass.user.dto.RetUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,7 +23,7 @@ public class AdminRequestController {
     }
 
     @PostMapping("/create")
-    public Map<String, String> create(@RequestBody AdminRequest adminRequest, HttpServletRequest request) {
+    public Map<String, String> create(@RequestBody PostAdminRequestDto adminRequest, HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         HttpSession session = request.getSession(false);
         int userId = ((RetUser) session.getAttribute("user")).getUserId();
@@ -36,7 +39,7 @@ public class AdminRequestController {
     }
 
     @GetMapping
-    public List<AdminRequest> getAllAdminRequest() {
+    public List<RetAdminRequestDto> getAllAdminRequest() {
         return adminRequestService.getAllRequests();
     }
 

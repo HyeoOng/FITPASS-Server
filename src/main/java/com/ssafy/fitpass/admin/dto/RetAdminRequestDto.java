@@ -1,26 +1,26 @@
-package com.ssafy.fitpass.admin;
+package com.ssafy.fitpass.admin.dto;
 
-public class AdminRequest {
+public class RetAdminRequestDto {
     private int reqId, userId;
     private String title, content, nn;
 
-    public AdminRequest() {
+    public RetAdminRequestDto() {
     }
 
-    public AdminRequest(int userId, String title, String content) {
+    public RetAdminRequestDto(int userId, String title, String content) {
         setUserId(userId);
         setTitle(title);
         setContent(content);
     }
 
-    public AdminRequest(int reqId, int userId, String title, String content) {
+    public RetAdminRequestDto(int reqId, int userId, String title, String content) {
         setReqId(reqId);
         setUserId(userId);
         setTitle(title);
         setContent(content);
     }
 
-    public AdminRequest(int reqId, int userId, String title, String content, String nn) {
+    public RetAdminRequestDto(int reqId, int userId, String title, String content, String nn) {
         setReqId(reqId);
         setUserId(userId);
         setTitle(title);
