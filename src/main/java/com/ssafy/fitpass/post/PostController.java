@@ -110,13 +110,15 @@ public class PostController {
             HttpServletRequest request
     ){
         HttpSession session = request.getSession(false);
+        if(session==null){
+            return null;
+        }
         RetUser retUser = (RetUser) session.getAttribute("user");
         int userId = retUser.getUserId();
 
         System.out.println("userId: "+userId + ", page: "+page+", size: "+size);
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postPage = postService.getUserPosts(userId, pageable);
-//        return postService.getUserPosts(userId, page, size);
         return postPage;
     }
 
@@ -151,6 +153,9 @@ public class PostController {
             @RequestParam(defaultValue = "16") int size // 페이지당 게시글 개수 (기본값: 16)
     ){
         HttpSession session = request.getSession(false);
+        if(session==null){
+            return null;
+        }
         RetUser retUser = (RetUser) session.getAttribute("user");
         int userId = retUser.getUserId();
 
