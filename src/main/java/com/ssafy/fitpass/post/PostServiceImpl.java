@@ -1,11 +1,11 @@
 package com.ssafy.fitpass.post;
 
 import com.ssafy.fitpass.exception.RegDBException;
+import com.ssafy.fitpass.exception.UserException;
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoDao;
 import com.ssafy.fitpass.place.Place;
 import com.ssafy.fitpass.place.PlaceDao;
-import com.ssafy.fitpass.post.dto.PutPostDto;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public boolean createPost(PutPostDto post) {
+    public boolean createPost(Post post) {
         try{
             return postDao.insertPost(post)==1;
         } catch (DataAccessException e){
@@ -39,6 +39,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getPost(int postId) {
         try{
+            if(postId == 0){
+                throw new UserException("존재하지 않는 게시글입니다.", "NI");
+            }
             return postDao.selectOne(postId);
         }catch (DataAccessException e){
             throw new RegDBException(); // DAL0001
@@ -86,6 +89,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean removePost(int postId) {
         try{
+            if(postId == 0){
+                throw new UserException("존재하지 않는 게시글입니다.", "NI");
+            }
             return postDao.deletePost(postId)==1;
         }catch (DataAccessException e){
             throw new RegDBException(); // DAL0001
@@ -109,6 +115,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getUserAllPosts(int userId) {
         try{
+            if(userId == 0){
+                throw new UserException("존재하지 않는 사용자입니다.", "NI");
+            }
             return postDao.selectUserAllPosts(userId);
         }catch (DataAccessException e){
             throw new RegDBException(); // DAL0001
@@ -127,6 +136,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public Place getPlace(int postId) {
         try{
+            if(postId == 0){
+                throw new UserException("존재하지 않는 게시글입니다.", "NI");
+            }
             return placeDao.selectOne(postId);
         }catch (DataAccessException e){
             throw new RegDBException(); // DAL0001

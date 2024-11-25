@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.post;
 
+import com.ssafy.fitpass.exception.InputException;
+
 import java.util.Date;
 
 public class Post {
@@ -57,12 +59,34 @@ public class Post {
         setPhotoUrl(photoUrl);
     }
 
+    public Post(int userId, int placeId, int sportCode, String title, int exerciseDuration, String content, int isPublic) {
+        setUserId(userId);
+        setPlaceId(placeId);
+        setSportCode(sportCode);
+        setTitle(title);
+        setExerciseDuration(exerciseDuration);
+        setContent(content);
+        setIsPublic(isPublic);
+    }
+
+    public Post(int placeId, int sportCode, String title, int exerciseDuration, String content, int isPublic) {
+        setPlaceId(placeId);
+        setSportCode(sportCode);
+        setTitle(title);
+        setExerciseDuration(exerciseDuration);
+        setContent(content);
+        setIsPublic(isPublic);
+    }
+
     // getter와 setter
     public int getPostId() {
         return postId;
     }
 
     public void setPostId(int postId) {
+        if (postId <= 0) {
+            throw new InputException("postId는 0보다 큰 값이어야 합니다.");
+        }
         this.postId = postId;
     }
 
@@ -71,6 +95,9 @@ public class Post {
     }
 
     public void setUserId(int userId) {
+        if (userId <= 0) {
+            throw new InputException("userId는 0보다 큰 값이어야 합니다.");
+        }
         this.userId = userId;
     }
 
@@ -79,6 +106,9 @@ public class Post {
     }
 
     public void setPlaceId(int placeId) {
+        if (placeId <= 0) {
+            throw new InputException("placeId는 0보다 큰 값이어야 합니다.");
+        }
         this.placeId = placeId;
     }
 
@@ -87,6 +117,9 @@ public class Post {
     }
 
     public void setSportCode(int sportCode) {
+        if (sportCode <= 0) {
+            throw new InputException("sportCode는 0보다 큰 값이어야 합니다.");
+        }
         this.sportCode = sportCode;
     }
 
@@ -95,6 +128,9 @@ public class Post {
     }
 
     public void setTitle(String title) {
+        if (title == null || title.isBlank()) {
+            throw new InputException("제목은 비어 있을 수 없습니다.");
+        }
         this.title = title;
     }
 
@@ -119,6 +155,10 @@ public class Post {
     }
 
     public void setExerciseDuration(int exerciseDuration) {
+        if(exerciseDuration < 0 || exerciseDuration % 30 != 0) {
+            throw new InputException("운동 시간은 0보다 작을 수 없고, 30분 단위로 입력해야 합니다.");
+        }
+
         this.exerciseDuration = exerciseDuration;
     }
 
@@ -127,6 +167,9 @@ public class Post {
     }
 
     public void setContent(String content) {
+        if (content == null || content.isBlank()) {
+            throw new InputException("내용은 비어 있을 수 없습니다.");
+        }
         this.content = content;
     }
 
@@ -143,7 +186,7 @@ public class Post {
     }
 
     public void setIsPublic(int isPublic) {
-        this.isPublic = isPublic;
+        this.isPublic = (isPublic < 0 || isPublic > 2) ? 0 : isPublic;
     }
 
     @Override
