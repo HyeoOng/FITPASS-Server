@@ -149,6 +149,7 @@ public class UserController {
         } catch (Exception e) {
             // SAL0002
         }
+        return null;
     }
 
 
