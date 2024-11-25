@@ -3,6 +3,10 @@ package com.ssafy.fitpass.place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.fitpass.post.Post;
+import com.ssafy.fitpass.user.dto.RetUser;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -23,9 +28,13 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @GetMapping("/{usersId}")
-    public List<Place> getAllPlaces(@PathVariable("usersId") int usersId) {
-        return placeService.getAllPlaces(usersId);
+    @GetMapping("/")
+    public List<Place> getAllPlaces(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if(session == null) return null;
+        RetUser retUser = (RetUser)session.getAttribute("user");
+        int userId = retUser.getUserId();
+        return placeService.getAllPlaces(userId);
     }
 
     @GetMapping("/name/{placeId}")
@@ -87,6 +96,12 @@ public class PlaceController {
             // JSON 파싱 처리 중 에러 발생 시 처리
             throw new RuntimeException("Failed to parse JSON", e);
         }
+    }
+
+    @PostMapping("/list")
+    public List<Place> getPlaces(@RequestBody List<Post> posts) {
+        System.out.println("posts: " + posts);
+        return placeService.getMyPlaces(posts);
     }
 
 }
