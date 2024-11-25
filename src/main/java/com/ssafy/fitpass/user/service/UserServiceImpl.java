@@ -241,7 +241,7 @@ public class UserServiceImpl implements UserService {
         return new RetUser(
             user.getUserId(),
                 user.getEmail(),
-                user.getEmail(),
+                user.getName(),
                 user.getNn(),
                 user.getRegDate(),
                 user.getAdmin(),
