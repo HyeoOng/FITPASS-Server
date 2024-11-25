@@ -12,14 +12,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public Map<String, String> handleIllegalArgumentException(IllegalArgumentException e) {
-        Map<String, String> map = new HashMap<>();
-        map.put("msg", e.getMessage());
-        return map;
-    }
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public Map<String, String> handleIllegalArgumentException(IllegalArgumentException e) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("msg", e.getMessage());
+//        return map;
+//    }
 
-    @ExceptionHandler(IllegalStateException.class)
+    @ExceptionHandler(InputException.class)
     public Map<String, String> handleIllegalStateException(IllegalStateException e) {
         Map<String, String> map = new HashMap<>();
         map.put("msg", e.getMessage());
