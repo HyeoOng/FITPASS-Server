@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.comment.dto;
 
+import com.ssafy.fitpass.exception.InputException;
+
 public class PutCommentDto {
     private int userId;
     private int postId;
@@ -25,7 +27,7 @@ public class PutCommentDto {
 
     public void setUserId(int userId) {
         if (userId < 1) {
-            throw new IllegalArgumentException("userId는 1 이상의 값이어야 합니다.");
+            throw new InputException("userId는 1 이상의 값이어야 합니다.");
         }
         this.userId = userId;
     }
@@ -36,7 +38,7 @@ public class PutCommentDto {
 
     public void setPostId(int postId) {
         if (postId < 1) {
-            throw new IllegalArgumentException("postId는 1 이상의 값이어야 합니다.");
+            throw new InputException("postId는 1 이상의 값이어야 합니다.");
         }
         this.postId = postId;
     }
@@ -47,7 +49,7 @@ public class PutCommentDto {
 
     public void setComment(String comment) {
         if (comment == null || comment.trim().isEmpty()) {
-            throw new IllegalArgumentException("댓글 내용은 비워둘 수 없습니다.");
+            throw new InputException("댓글 내용은 비워둘 수 없습니다.");
         }
         this.comment = comment.trim();
     }
