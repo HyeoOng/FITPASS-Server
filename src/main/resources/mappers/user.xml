@@ -10,7 +10,7 @@
     </insert>
 
     <!--login method-->
-    <select id="login" parameterType="Map" resultType="com.ssafy.fitpass.user.dto.RetUser">
+    <select id="login" parameterType="Map" resultType="com.ssafy.fitpass.user.entity.User">
         SELECT user_id, email, name, nn, admin, reg_date
         FROM user
         WHERE email=#{email} AND password=#{password}
@@ -22,12 +22,12 @@
         WHERE email=#{email};
     </select>
 
-    <select id="selectOne" parameterType="int" resultType="com.ssafy.fitpass.user.dto.RetUser">
+    <select id="selectOne" parameterType="int" resultType="com.ssafy.fitpass.user.entity.User">
         SELECT user_id, email, name, nn, admin, reg_date
         FROM user WHERE user_id=#{userId}
     </select>
 
-    <select id="selectAll" resultType="com.ssafy.fitpass.user.dto.RetUser">
+    <select id="selectAll" resultType="com.ssafy.fitpass.user.entity.User">
         SELECT user_id, email, name, nn, admin, reg_date
         FROM user
     </select>
@@ -50,7 +50,7 @@
         SELECT COUNT(*) FROM user WHERE nn=#{nn}
     </select>
 
-    <select id="selectAllByNn" parameterType="String" resultType="com.ssafy.fitpass.user.dto.RetUser">
+    <select id="selectAllByNn" parameterType="String" resultType="com.ssafy.fitpass.user.entity.User">
         SELECT user_id, email, name, nn, admin, reg_date
         FROM user
         WHERE nn LIKE #{nn};

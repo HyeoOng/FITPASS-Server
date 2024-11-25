@@ -5,14 +5,13 @@ import com.ssafy.fitpass.user.dto.LoginUserDto;
 import com.ssafy.fitpass.user.dto.PutUserDto;
 import com.ssafy.fitpass.user.dto.RetUser;
 import com.ssafy.fitpass.user.dto.SignupUserDto;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
 public interface UserService {
 
     boolean signup(SignupUserDto user);
-    RetUser login(LoginUserDto user);
+    // RetUser login(LoginUserDto user);
     RetUser handleLogin(LoginUserDto user);
     boolean isUserExist(String email);
     List<RetUser> getAllUsers();

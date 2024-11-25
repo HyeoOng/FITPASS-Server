@@ -1,7 +1,5 @@
 package com.ssafy.fitpass.user.dao;
 
-import com.ssafy.fitpass.user.dto.RetUser;
-import com.ssafy.fitpass.user.dto.SignupUserDto;
 import com.ssafy.fitpass.user.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,7 +22,7 @@ public interface UserDao {
      * @param map (이메일, 비밀번호 필요)
      * @return 회원
      */
-    RetUser login(Map<String, String> map);
+    User login(Map<String, String> map);
 
     int selectUserByEmail(String email);
 
@@ -34,14 +32,14 @@ public interface UserDao {
      * @param userId
      * @return userId에 해당하는 회원
      */
-    RetUser selectOne(int userId);
+    User selectOne(int userId);
 
     /**
      * 모든 회원 정보를 조회하는 메서드입니다.
      *
      * @return 모든 회원
      */
-    List<RetUser> selectAll();
+    List<User> selectAll();
 
     /**
      * 회원 정보를 수정하는 메서드입니다.
@@ -81,7 +79,7 @@ public interface UserDao {
      * @param nn
      * @return 닉네임에 관련된 모든 유저
      */
-    List<RetUser> selectAllByNn(String nn);
+    List<User> selectAllByNn(String nn);
 
     int selectUserId(String nn);
 }

@@ -10,7 +10,6 @@ import com.ssafy.fitpass.user.dto.RetUser;
 import com.ssafy.fitpass.user.dto.SignupUserDto;
 import com.ssafy.fitpass.user.entity.User;
 import com.ssafy.fitpass.util.OpenCrypt;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -62,8 +61,8 @@ public class UserServiceImpl implements UserService {
 
     // 로그인 처리 로직을 서비스 계층으로 이동
     @Override
-    public RetUser handleLogin(LoginUserDto user) {
-        String email = user.getEmail();
+    public RetUser handleLogin(LoginUserDto loginUserDto) {
+        String email = loginUserDto.getEmail();
 
         // 1. 이메일 존재 여부 확인
         if (!isUserExist(email)) {
@@ -76,51 +75,51 @@ public class UserServiceImpl implements UserService {
         }
 
         // 3. 비밀번호 체크
-        String salt = userSecuDao.selectSalt(user.getEmail());
+        String salt = userSecuDao.selectSalt(loginUserDto.getEmail());
         if (salt == null) {
             throw new IllegalArgumentException("이메일이 존재하지 않습니다.");
         }
 
-        String hashPw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(user.getPassword(), salt));
+        String hashPw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(loginUserDto.getPassword(), salt));
 
         Map<String, String> info = new HashMap<>();
-        info.put("email", user.getEmail());
+        info.put("email", loginUserDto.getEmail());
         info.put("password", hashPw);
 
-        RetUser retUser = userDao.login(info);
-        if (retUser == null) {
+        User user = userDao.login(info);
+        if (user == null) {
             loginAttemptService.increaseAttempts(email);  // 로그인 실패 시 시도 횟수 증가
             throw new IllegalArgumentException("잘못된 이메일 또는 비밀번호입니다.");
         }
 
         loginAttemptService.resetAttempts(email); // 로그인 성공 시 시도 횟수 초기화
-        return retUser;
+        return convertToDto(user);
     }
 
-    @Override
-    public RetUser login(LoginUserDto user) {
-        try {
-            String salt = userSecuDao.selectSalt(user.getEmail());
-//            if (salt == null) {
-//                throw new IllegalArgumentException("이메일이 존재하지 않습니다.");
+//    @Override
+//    public RetUser login(LoginUserDto user) {
+//        try {
+//            String salt = userSecuDao.selectSalt(user.getEmail());
+////            if (salt == null) {
+////                throw new IllegalArgumentException("이메일이 존재하지 않습니다.");
+////            }
+//
+//            String hashPw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(user.getPassword(), salt));
+//
+//            Map<String, String> info = new HashMap<>();
+//            info.put("email", user.getEmail());
+//            info.put("password", hashPw);
+//
+//            User retUser = userDao.login(info);
+//            if (retUser == null) {
+//                throw new IllegalArgumentException("잘못된 이메일 또는 비밀번호입니다.");
 //            }
-
-            String hashPw = OpenCrypt.byteArrayToHex(OpenCrypt.getSHA256(user.getPassword(), salt));
-
-            Map<String, String> info = new HashMap<>();
-            info.put("email", user.getEmail());
-            info.put("password", hashPw);
-
-            RetUser retUser = userDao.login(info);
-            if (retUser == null) {
-                throw new IllegalArgumentException("잘못된 이메일 또는 비밀번호입니다.");
-            }
-            return retUser;
-        } catch (DataAccessException e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException("로그인 중 데이터베이스 오류가 발생했습니다.");
-        }
-    }
+//            return retUser;
+//        } catch (DataAccessException e) {
+//            System.out.println(e.getMessage());
+//            throw new RuntimeException("로그인 중 데이터베이스 오류가 발생했습니다.");
+//        }
+//    }
 
     @Override
     public boolean isUserExist(String email) {
@@ -134,7 +133,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<RetUser> getAllUsers() {
         try {
-            return userDao.selectAll();
+            List<User> users = userDao.selectAll();
+            return users.stream()
+                    .map(this::convertToDto)
+                    .toList();
         } catch (DataAccessException e) {
             throw new RuntimeException("사용자 목록 조회 중 오류가 발생했습니다.");
         }
@@ -143,7 +145,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public RetUser getUser(int userId) {
         try {
-            return userDao.selectOne(userId);
+            User user = userDao.selectOne(userId);
+            return convertToDto(user);
         } catch (DataAccessException e) {
             throw new RuntimeException("사용자 조회 중 오류가 발생했습니다.");
         }
@@ -214,7 +217,10 @@ public class UserServiceImpl implements UserService {
     public List<RetUser> getUserByNn(String nn) {
         try {
             nn = "%" + nn + "%";
-            return userDao.selectAllByNn(nn);
+            List<User> users = userDao.selectAllByNn(nn);
+            return users.stream()
+                    .map(this::convertToDto)
+                    .toList();
         } catch (DataAccessException e) {
             throw new RuntimeException("닉네임으로 사용자 조회 중 오류가 발생했습니다.");
         }
@@ -227,5 +233,19 @@ public class UserServiceImpl implements UserService {
         } catch (DataAccessException e) {
             throw new RuntimeException("닉네임으로 사용자 ID 조회 중 오류가 발생했습니다.");
         }
+    }
+
+    private RetUser convertToDto(User user) {
+        if (user == null) return null;
+
+        return new RetUser(
+            user.getUserId(),
+                user.getEmail(),
+                user.getEmail(),
+                user.getNn(),
+                user.getRegDate(),
+                user.getAdmin(),
+                user.getProfile()
+        );
     }
 }

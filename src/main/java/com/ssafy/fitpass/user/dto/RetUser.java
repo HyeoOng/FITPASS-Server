@@ -4,12 +4,22 @@ import java.util.Date;
 
 public class RetUser {
     public int userId;
-    public String email, name, nn, password;
+    public String email, name, nn;
     public Date regDate;
     public int admin;
     public String profile;
 
     public RetUser() {}
+
+    public RetUser(int userId, String email, String name, String nn, Date regDate, int admin, String profile) {
+        this.userId = userId;
+        this.email = email;
+        this.name = name;
+        this.nn = nn;
+        this.regDate = regDate;
+        this.admin = admin;
+        this.profile = profile;
+    }
 
     public int getUserId() {
         return userId;
@@ -41,14 +51,6 @@ public class RetUser {
 
     public void setNn(String nn) {
         this.nn = nn;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Date getRegDate() {
