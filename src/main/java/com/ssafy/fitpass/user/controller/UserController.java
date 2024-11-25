@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.user.controller;
 
+import com.ssafy.fitpass.auth.MailService;
+import com.ssafy.fitpass.auth.VerificationCodeService;
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
 import com.ssafy.fitpass.user.service.LoginAttemptService;
@@ -25,11 +27,13 @@ public class UserController {
     private final UserService userService;
     private final PhotoService photoService;
     private final LoginAttemptService loginAttemptService;
+    private final VerificationCodeService verificationCodeService;
 
-    public UserController(UserService userService, PhotoService photoService, LoginAttemptService loginAttemptService) {
+    public UserController(UserService userService, PhotoService photoService, LoginAttemptService loginAttemptService, VerificationCodeService verificationCodeService) {
         this.userService = userService;
         this.photoService = photoService;
         this.loginAttemptService = loginAttemptService;
+        this.verificationCodeService = verificationCodeService;
     }
 
     @PostMapping("/signup")
@@ -45,6 +49,11 @@ public class UserController {
         Map<String, Object> map = new HashMap<>();
 
         try {
+
+            if (!verificationCodeService.isEmailVerified(user.getEmail())) {
+                map.put("msg", "이메일 인증이 완료되지 않았습니다. 인증 후 다시 시도해 주세요.");
+                return map;
+            }
             boolean result = userService.signup(user);
             if (result) {
 

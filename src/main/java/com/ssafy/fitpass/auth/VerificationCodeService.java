@@ -11,6 +11,8 @@ public class VerificationCodeService {
 
     // 이메일에 해당하는 인증 코드를 저장하는 Map 객체
     private final Map<String, String> verificationCodes = new HashMap<>();
+    // 인증이 완료된 이메일을 저장하는 Map 객체
+    private final Map<String, Boolean> verifiedEmails = new HashMap<>();
 
     /**
      * 주어진 이메일에 대해 6자리 랜덤 인증 코드를 생성하여 반환하는 메서드입니다.
@@ -37,15 +39,28 @@ public class VerificationCodeService {
     }
 
     /**
-     * 주어진 이메일과 인증 코드가 일치하는지 확인하는 메서드입니다.
+     * 주어진 이메일과 인증 코드가 일치하는지 확인하고, 일치하면 이메일을 인증된 이메일 목록에 추가합니다.
      *
      * @param email (사용자 입력 이메일)
      * @param code (사용자가 입력한 인증 코드)
-     * @return 같을 경우 true, 다를 경우 false
+     * @return 인증이 성공하면 true, 실패하면 false
      */
     public boolean verifyCode(String email, String code) {
-        // 저장된 인증 코드와 사용자가 입력한 인증 코드가 일치하는지 확인
-        return code.equals(verificationCodes.get(email));
+        // 인증 코드가 일치하면 인증된 이메일 목록에 추가
+        if (code.equals(verificationCodes.get(email))) {
+            verifiedEmails.put(email, true);  // 이메일 인증 완료 처리
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 이메일이 인증된 상태인지 확인하는 메서드입니다.
+     *
+     * @param email (사용자 입력 이메일)
+     * @return 이메일이 인증되었으면 true, 아니면 false
+     */
+    public boolean isEmailVerified(String email) {
+        return verifiedEmails.getOrDefault(email, false);
     }
 }
-
