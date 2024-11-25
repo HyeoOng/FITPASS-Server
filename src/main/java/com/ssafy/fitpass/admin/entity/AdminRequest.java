@@ -1,39 +1,30 @@
-package com.ssafy.fitpass.admin.dto;
+package com.ssafy.fitpass.admin.entity;
 
-public class RetAdminRequestDto {
+import java.util.Date;
+
+public class AdminRequest {
     private int reqId, userId;
     private String title, content, nn;
+    private Date created_at;
 
-    public RetAdminRequestDto() {
+    public AdminRequest() {
     }
 
-    public RetAdminRequestDto(int userId, String title, String content) {
-        setUserId(userId);
-        setTitle(title);
-        setContent(content);
-    }
-
-    public RetAdminRequestDto(int reqId, int userId, String title, String content) {
-        setReqId(reqId);
-        setUserId(userId);
-        setTitle(title);
-        setContent(content);
-    }
-
-    public RetAdminRequestDto(int reqId, int userId, String title, String content, String nn) {
-        setReqId(reqId);
-        setUserId(userId);
-        setTitle(title);
-        setContent(content);
-        setNn(nn);
+    public AdminRequest(int reqId, int userId, String title, String content, String nn, Date created_at) {
+        this.reqId = reqId;
+        this.userId = userId;
+        this.title = title;
+        this.content = content;
+        this.nn = nn;
+        this.created_at = created_at;
     }
 
     public int getReqId() {
         return reqId;
     }
 
-    public void setReqId(int rqId) {
-        this.reqId = rqId;
+    public void setReqId(int reqId) {
+        this.reqId = reqId;
     }
 
     public int getUserId() {
@@ -68,6 +59,14 @@ public class RetAdminRequestDto {
         this.nn = nn;
     }
 
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
     @Override
     public String toString() {
         return "AdminRequest{" +
@@ -75,7 +74,7 @@ public class RetAdminRequestDto {
                 ", userId=" + userId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", nn='" + nn + '\'' +
+                ", created_at=" + created_at +
                 '}';
     }
 }

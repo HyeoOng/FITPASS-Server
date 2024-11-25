@@ -2,6 +2,7 @@ package com.ssafy.fitpass.admin.service;
 
 import com.ssafy.fitpass.admin.dao.AdminDao;
 import com.ssafy.fitpass.user.dto.RetUser;
+import com.ssafy.fitpass.user.entity.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<RetUser> getAllAdmin() {
         try {
-            return adminDao.selectAllAdmin();  // AdminDao에서 모든 관리자 정보를 조회
+            List<User> users = adminDao.selectAllAdmin();
+            return users.stream()
+                    .map(this::convertToDto)
+                    .toList();
         } catch (DataAccessException e) {
             throw new RuntimeException("관리자 목록 조회 중 오류가 발생했습니다.");
         }
@@ -67,5 +71,19 @@ public class AdminServiceImpl implements AdminService {
         } catch (DataAccessException e) {
             throw new RuntimeException("관리자 권한 삭제 중 오류가 발생했습니다.");
         }
+    }
+
+    private RetUser convertToDto(User user) {
+        if (user == null) return null;
+
+        return new RetUser(
+                user.getUserId(),
+                user.getEmail(),
+                user.getName(),
+                user.getNn(),
+                user.getRegDate(),
+                user.getAdmin(),
+                user.getProfile()
+        );
     }
 }

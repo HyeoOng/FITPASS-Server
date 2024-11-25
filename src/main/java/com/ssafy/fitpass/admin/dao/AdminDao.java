@@ -1,6 +1,7 @@
 package com.ssafy.fitpass.admin.dao;
 
 import com.ssafy.fitpass.user.dto.RetUser;
+import com.ssafy.fitpass.user.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface AdminDao {
      *
      * @return 관리자 정보를 반환
      */
-    List<RetUser> selectAllAdmin();
+    List<User> selectAllAdmin();
 
     /**
      * 관리자 권한을 추가하는 메서드입니다.
