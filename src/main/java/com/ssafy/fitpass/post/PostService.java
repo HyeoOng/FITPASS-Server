@@ -15,6 +15,7 @@ public interface PostService {
     boolean modifyPost(Post post);
     boolean removePost(int postId);
     Page<Post> getFriendPosts(int userId, Pageable pageable);
+    List<Post> getUserAllPosts(int userId);
     int getPostId(Post post);
 
     Place getPlace(int postId);

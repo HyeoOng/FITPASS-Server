@@ -75,6 +75,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getUserAllPosts(int userId) {
+        return postDao.selectUserAllPosts(userId);
+    }
+
+    @Override
     public int getPostId(Post post){
         return postDao.selectPostId(post);
     }

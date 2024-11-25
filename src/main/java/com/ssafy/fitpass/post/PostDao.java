@@ -68,4 +68,6 @@ public interface PostDao {
     int totalMyPostNum(int userId);
 
     int totalMyFriendsPostNum(int userId);
+
+    List<Post> selectUserAllPosts(int userId);
 }
