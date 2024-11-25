@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 //    }
 
     @ExceptionHandler(InputException.class)
-    public Map<String, String> handleIllegalStateException(IllegalStateException e) {
+    public Map<String, String> handleIllegalStateException(InputException e) {
         Map<String, String> map = new HashMap<>();
         map.put("msg", e.getMessage());
         return map;

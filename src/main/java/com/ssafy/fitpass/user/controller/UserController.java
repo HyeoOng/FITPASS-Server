@@ -128,7 +128,7 @@ public class UserController {
                 map.put("flag", false);
             }
         } catch (Exception e) {
-            map.put("msg", "SAL0002"); // SAL0002
+            map.put("code", "SAL0002"); // SAL0002
             map.put("flag", false);
         }
 
