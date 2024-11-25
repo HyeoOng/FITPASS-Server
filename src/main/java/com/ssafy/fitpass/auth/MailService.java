@@ -30,8 +30,13 @@ public class MailService {
         // 이메일 본문 텍스트 설정
         message.setText("안녕하세요!\n\n회원가입을 위한 인증 코드는 다음과 같습니다:\n\n"
                 + verificationCode + "\n\n감사합니다.");
-        // 설정된 내용을 기반으로 이메일을 전송
-        mailSender.send(message);
+        try {
+            mailSender.send(message);
+            System.out.println("이메일 전송 성공: " + toEmail);
+        } catch (Exception e) {
+            System.err.println("이메일 전송 실패: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
 
