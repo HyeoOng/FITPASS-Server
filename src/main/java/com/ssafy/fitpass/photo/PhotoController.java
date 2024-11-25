@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.fitpass.exception.UserException;
 import com.ssafy.fitpass.user.dto.RetUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,7 +24,6 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/image")
-//@CrossOrigin(origins = "http://localhost:5173")
 public class PhotoController {
 
     static private final String BASE_PATH = "src/main/webapp/WEB-INF";
@@ -42,10 +42,7 @@ public class PhotoController {
         try {
             JsonNode jsonNode = keywordMapper.readTree(imageUrlJson);
             imageUrl = jsonNode.get("photoUrl").asText(); // "keyword" 값 추출
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse JSON", e);
-        }
-        try{
+
             // 상대 경로 검증
             // 1. resolve : 기본 경로와 추가 경로를 합쳐 새로운 하나의 경로로 만든다.(운영체제에 따라 파일 구분자를 알아서 변경해준다..)
             // 2. normalize : 경로에서 불필요하거나 비정상적인 요소를 제거하여 정규화된 경로를 반환
@@ -53,7 +50,7 @@ public class PhotoController {
 //            Path file = BASE_PATH.resolve(Paths.get(imageUrl)).normalize();
             Path file = Paths.get(BASE_PATH, imageUrl).normalize();
             if (!file.startsWith(BASE_PATH)) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("hacker"); // 경로 탈출 방지
+                return ResponseEntity.ok("HK"); // 경로 탈출 방지
             }
             Resource resource = null;
             if (Files.exists(file) && Files.isReadable(file)) {
@@ -65,41 +62,39 @@ public class PhotoController {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                // System.out.println("잘 반환함");
                 return new ResponseEntity<>(resource, headers, HttpStatus.OK);
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not found");
+                return ResponseEntity.ok("NF");
             }
+        }  catch (JsonProcessingException e) {
+            return ResponseEntity.ok("JAL1");
         } catch (Exception e) {
-            e.printStackTrace();
+            return ResponseEntity.ok("SAL2");
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("server");
     }
 
     @GetMapping("/{user_id}")
     public ResponseEntity<?> getProfileImage(HttpServletRequest request, @PathVariable("user_id") int user_id){
-        System.out.println("누구 사진: "+user_id);
         HttpSession session = request.getSession(false);
         if(session == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("null session");
+            return ResponseEntity.ok("SPL1");
         }
         if(user_id == 0){
             RetUser retUser = (RetUser) session.getAttribute("user");
             if(retUser == null){
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("null user");
+                return ResponseEntity.ok("SPL1");
             }
             user_id = retUser.getUserId();
         }
+        try {
+            String profileUrl = photoService.getProfileFolderNameByUserId(user_id);
+            if (profileUrl == null) {
+                return ResponseEntity.ok("NF");
+            }
 
-        String profileUrl = photoService.getProfileFolderNameByUserId(user_id);
-        if(profileUrl == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("profile not found");
-        }
-
-        try{
             Path file = Paths.get(BASE_PATH, profileUrl).normalize();
             if (!file.startsWith(BASE_PATH)) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("hacker"); // 경로 탈출 방지
+                return ResponseEntity.ok("HK"); // 경로 탈출 방지
             }
             Resource resource = null;
             if (Files.exists(file) && Files.isReadable(file)) {
@@ -112,11 +107,15 @@ public class PhotoController {
                 }
                 return new ResponseEntity<>(resource, headers, HttpStatus.OK);
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not found");
+                return ResponseEntity.ok("NF");
             }
+        } catch (UserException e) {
+            if(e.getErrorCode().equals("NP")){
+                return ResponseEntity.ok("NF");
+            }
+            return ResponseEntity.ok("SAL2");
         } catch (Exception e) {
-            e.printStackTrace();
+           return ResponseEntity.ok("SAL2");
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("server");
     }
 }
