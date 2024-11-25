@@ -41,4 +41,11 @@ public interface PlaceDao {
      * @return 상호명
      */
     String selectPlaceName(int placeId);
+
+    /***
+     * placeId를 통해 장소 정보를 불러오는 메서드
+     * @param placeId
+     * @return
+     */
+    Place selectByid(int placeId);
 }

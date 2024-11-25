@@ -30,4 +30,8 @@
         SELECT place_name FROM place WHERE place_id=#{placeId}
     </select>
 
+    <select id="selectByid" parameterType="int" resultType="Place">
+        SELECT * FROM place WHERE place_id = #{placeId}
+    </select>
+
 </mapper>
