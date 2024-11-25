@@ -30,9 +30,9 @@ public class AdminRequestServiceImpl implements AdminRequestService {
             adminRequest.setContent(postAdminRequestDto.getContent());
             return adminRequestDao.insertRequest(adminRequest) == 1;
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 요청 생성 중 데이터베이스 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 요청 생성 중 데이터베이스 오류가 발생했습니다."); // DAL0001
         } catch (Exception e) {
-            throw new RuntimeException("관리자 요청 생성 중 예상치 못한 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 요청 생성 중 예상치 못한 오류가 발생했습니다."); // SAL0002
         }
     }
 
@@ -44,9 +44,9 @@ public class AdminRequestServiceImpl implements AdminRequestService {
                     .map(this::convertToDto) // 각 AdminRequest를 RetAdminRequestDto로 변환
                     .toList();               // 변환 결과를 리스트로 반환
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 요청 목록 조회 중 데이터베이스 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 요청 목록 조회 중 데이터베이스 오류가 발생했습니다."); // DAL0001
         } catch (Exception e) {
-            throw new RuntimeException("관리자 요청 목록 조회 중 예상치 못한 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 요청 목록 조회 중 예상치 못한 오류가 발생했습니다."); // SAL0002
         }
     }
 
@@ -55,9 +55,9 @@ public class AdminRequestServiceImpl implements AdminRequestService {
         try {
             return adminRequestDao.deleteRequest(requestId) == 1;
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 요청 삭제 중 데이터베이스 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 요청 삭제 중 데이터베이스 오류가 발생했습니다."); // DAL0001
         } catch (Exception e) {
-            throw new RuntimeException("관리자 요청 삭제 중 예상치 못한 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 요청 삭제 중 예상치 못한 오류가 발생했습니다."); // SAL0002
         }
     }
 

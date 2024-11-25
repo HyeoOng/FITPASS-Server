@@ -31,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
                     .map(this::convertToDto)
                     .toList();
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 목록 조회 중 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 목록 조회 중 오류가 발생했습니다."); // DAL0001
         }
     }
 
@@ -46,11 +46,11 @@ public class AdminServiceImpl implements AdminService {
         try {
             int rowsAffected = adminDao.createAdmin(userId);
             if (rowsAffected == 0) {
-                throw new IllegalArgumentException("관리자 권한을 부여할 유저가 존재하지 않거나, 이미 관리자 권한이 부여된 유저입니다.");
+                throw new IllegalArgumentException("관리자 권한을 부여할 유저가 존재하지 않거나, 이미 관리자 권한이 부여된 유저입니다."); // UAL0006
             }
             return rowsAffected == 1;
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 권한 부여 중 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 권한 부여 중 오류가 발생했습니다."); // DAL0001
         }
     }
 
@@ -65,11 +65,11 @@ public class AdminServiceImpl implements AdminService {
         try {
             int rowsAffected = adminDao.deleteAdmin(userId);
             if (rowsAffected == 0) {
-                throw new IllegalArgumentException("관리자 권한을 삭제할 유저가 존재하지 않습니다.");
+                throw new IllegalArgumentException("관리자 권한을 삭제할 유저가 존재하지 않습니다."); // UAL0006
             }
             return rowsAffected == 1;
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 권한 삭제 중 오류가 발생했습니다.");
+            throw new RuntimeException("관리자 권한 삭제 중 오류가 발생했습니다."); // DAL0001
         }
     }
 

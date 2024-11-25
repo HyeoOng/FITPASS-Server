@@ -28,7 +28,7 @@ public class MailService {
         // 이메일 제목 설정
         message.setSubject("FITPASS 가입 인증 코드");
         // 이메일 본문 텍스트 설정
-        message.setText("안녕하세요!\n\n회원가입을 위한 인증 코드는 다음과 같습니다:\n\n"
+        message.setText("안녕하세요!\n\n회원 가입을 위한 인증 코드는 다음과 같습니다:\n\n"
                 + verificationCode + "\n\n감사합니다.");
         try {
             mailSender.send(message);
