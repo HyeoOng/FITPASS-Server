@@ -97,4 +97,8 @@
         AND is_public in (0, 1)
     </select>
 
+    <select id="selectUserAllPosts" resultType="Post" parameterType="int">
+        SELECT * FROM post WHERE user_id=#{userId}
+    </select>
+
 </mapper>

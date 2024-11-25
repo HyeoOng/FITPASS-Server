@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -130,6 +131,18 @@ public class PostController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postPage = postService.getUserPosts(userId, pageable);
         return postPage;
+    }
+
+    @GetMapping("/user-all")
+    public List<Post> getUserAllPosts(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session==null){
+            return null;
+        }
+        RetUser retUser = (RetUser) session.getAttribute("user");
+        int userId = retUser.getUserId();
+        List<Post> posts = postService.getUserAllPosts(userId);
+        return posts;
     }
 
     @PostMapping("/update")
