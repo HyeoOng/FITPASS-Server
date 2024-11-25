@@ -37,14 +37,27 @@ public class PostController {
     
     // 글 등록
     @PostMapping
-    public Map<String, String> createPost(@RequestPart("post") Post post,
+    public Map<String, String> createPost(@RequestPart("post") PutPostDto post,
                                           @RequestPart("place") Place place,
-                                          @RequestPart("file") MultipartFile file) {
+                                          @RequestPart("file") MultipartFile file,
+                                          HttpServletRequest request) {
         System.out.println("data 잘 받았는지 확인해보자-------------------");
         System.out.println(post);
         System.out.println(place);
         // System.out.println(file.getOriginalFilename());
         System.out.println("------------------------------------------");
+        HttpSession session = request.getSession(false);
+        if(session == null){
+            // error
+        }
+
+        RetUser retUser = (RetUser) session.getAttribute("user");
+        if(retUser == null){
+            // error
+        }
+
+        int userId = retUser.getUserId();
+        post.setUserId(userId);
 
         Map<String, String> response = new HashMap<>();
 

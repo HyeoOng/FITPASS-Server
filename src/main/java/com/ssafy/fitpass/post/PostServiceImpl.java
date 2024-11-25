@@ -5,6 +5,7 @@ import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoDao;
 import com.ssafy.fitpass.place.Place;
 import com.ssafy.fitpass.place.PlaceDao;
+import com.ssafy.fitpass.post.dto.PutPostDto;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,7 +28,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public boolean createPost(Post post) {
+    public boolean createPost(PutPostDto post) {
         try{
             return postDao.insertPost(post)==1;
         } catch (DataAccessException e){
