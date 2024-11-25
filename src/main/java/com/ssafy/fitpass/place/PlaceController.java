@@ -3,6 +3,8 @@ package com.ssafy.fitpass.place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.fitpass.exception.RegDBException;
+import com.ssafy.fitpass.exception.UserException;
 import com.ssafy.fitpass.post.Post;
 import com.ssafy.fitpass.user.dto.RetUser;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/loc")
@@ -28,50 +28,102 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @GetMapping("/")
-    public List<Place> getAllPlaces(HttpServletRequest request) {
+    @GetMapping
+    public Map<String, Object> getAllPlaces(HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
         HttpSession session = request.getSession(false);
-        if(session == null) return null;
-        RetUser retUser = (RetUser)session.getAttribute("user");
-        int userId = retUser.getUserId();
-        return placeService.getAllPlaces(userId);
+        if(session == null) {
+            response.put("flag", false);
+            response.put("code", "SPL0001");
+            return response;
+        }
+        try {
+            RetUser retUser = (RetUser) session.getAttribute("user");
+            if(retUser == null) {
+                response.put("flag", false);
+                response.put("code", "SPL0001");
+                return response;
+            }
+            int userId = retUser.getUserId();
+            List<Place> places = placeService.getAllPlaces(userId);
+            response.put("flag", true);
+            response.put("places", places);
+            return response;
+        }catch (RegDBException e){
+            response.put("flag", false);
+            response.put("code", "DAL0001");
+            return response;
+        } catch (Exception e) {
+            response.put("flag", false);
+            response.put("code", "SAL0002");
+            return response;
+        }
     }
 
     @GetMapping("/name/{placeId}")
-    public String getPlaceName(@PathVariable("placeId") int placeId) {
-        return placeService.getPlaceName(placeId);
+    public Map<String, Object> getPlaceName(@PathVariable("placeId") int placeId) {
+        Map<String, Object> response = new HashMap<>();
+        if(placeId <= 0) {
+            response.put("flag", false);
+            response.put("code", "SPL0001");
+            return response;
+        }
+        try{
+            String name = placeService.getPlaceName(placeId);
+            response.put("flag", true);
+            response.put("name", name);
+            return response;
+        }catch(UserException e){
+            response.put("flag", false);
+            if(e.getErrorCode().equals("NI")){
+                response.put("code", "UAL0007");
+            }
+            return response;
+        }catch(RegDBException e){
+            response.put("flag", false);
+            response.put("code", "DAL0001");
+            return response;
+        } catch (Exception e) {
+            response.put("flag", false);
+            response.put("code", "SAL0002");
+            return response;
+        }
     }
 
     @PostMapping("/search")
-    public List<Place> searchPlace(@RequestBody String keywordJson) {
-        // System.out.println("keywordJson: "+keywordJson);
-
-        // keywordJson에서 "keyword" 값을 추출
-        ObjectMapper keywordMapper = new ObjectMapper();
-        String keyword = "";
+    public Map<String, Object> searchPlace(@RequestBody String keywordJson) {
+        Map<String, Object> response = new HashMap<>();
         try {
+            if(keywordJson.isEmpty() || keywordJson.equals("")) {
+                response.put("flag", false);
+                response.put("code", "UAL0007");
+                return response;
+            }
+
+            // keywordJson에서 "keyword" 값을 추출
+            ObjectMapper keywordMapper = new ObjectMapper();
+            String keyword = "";
             JsonNode jsonNode = keywordMapper.readTree(keywordJson);
             keyword = jsonNode.get("keyword").asText(); // "keyword" 값 추출
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse JSON", e);
-        }
 
-        // "keyword" 값만 출력
-        // System.out.println("keyword: " + keyword);
+            if(keyword.isEmpty() || keyword.equals("")) {
+                response.put("flag", false);
+                response.put("code", "UAL0007");
+                return response;
+            }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "KakaoAK 9fef9c43ffd4340c40f0a1e672d06559");
-        HttpEntity<String> entity = new HttpEntity<>("", headers);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "KakaoAK 9fef9c43ffd4340c40f0a1e672d06559");
+            HttpEntity<String> entity = new HttpEntity<>("", headers);
 
-        String baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + keyword;
+            String baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + keyword;
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> resp = restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
 
-        // JSON 문자열을 JsonNode로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode rootNode = objectMapper.readTree(response.getBody());
+            // JSON 문자열을 JsonNode로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(resp.getBody());
 
             // "documents" 배열을 추출하여 Place 객체로 변환
             List<Place> places = new ArrayList<>();
@@ -91,17 +143,42 @@ public class PlaceController {
 
                 places.add(place);
             }
-            return places;
-        } catch (JsonProcessingException e) {
-            // JSON 파싱 처리 중 에러 발생 시 처리
-            throw new RuntimeException("Failed to parse JSON", e);
+            response.put("flag", true);
+            response.put("places", places);
+            return response;
+
+        }catch(JsonProcessingException e){
+            response.put("flag", false);
+            response.put("code", "JAL0001");
+            return response;
+        }catch(RegDBException e){
+            response.put("flag", false);
+            response.put("code", "DAL0001");
+            return response;
+        } catch (Exception e) {
+            response.put("flag", false);
+            response.put("code", "SAL0002");
+            return response;
         }
     }
 
     @PostMapping("/list")
-    public List<Place> getPlaces(@RequestBody List<Post> posts) {
-        System.out.println("posts: " + posts);
-        return placeService.getMyPlaces(posts);
+    public Map<String, Object> getPlaces(@RequestBody List<Post> posts) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<Place> places = placeService.getMyPlaces(posts);
+            response.put("flag", true);
+            response.put("places", places);
+            return response;
+        }catch (RegDBException e){
+            response.put("flag", false);
+            response.put("code", "DAL0001");
+            return response;
+        } catch (Exception e) {
+            response.put("flag", false);
+            response.put("code", "SAL0002");
+            return response;
+        }
     }
 
 }
