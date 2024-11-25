@@ -2,6 +2,10 @@ package com.ssafy.fitpass.user;
 
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
+import com.ssafy.fitpass.user.dto.RetUser;
+import com.ssafy.fitpass.user.entity.User;
+import com.ssafy.fitpass.user.service.LoginAttemptService;
+import com.ssafy.fitpass.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
@@ -51,19 +55,14 @@ public class UserController {
                 String saveFolder = "/profile/" + userId + "/" + storeName;
                 photo.setStoreFileName(storeName);
                 photo.setSaveFolder(saveFolder);
-                
-                if(userService.createProfile(userId, photo)){
-                    try {
-                        photoService.saveFile(file, userId, storeName, "profile/");
-                    } catch (IOException e) {
-                        map.put("msg", "파일 저장에 실패하였습니다. 잠시 후 다시 시도해주세요.");
-                        return map; // 실패 시 바로 반환
-                    }
-                    map.put("msg", "success");
-                }else{
-                    map.put("msg", "프로필 등록 실패");
+
+                try {
+                    photoService.saveFile(file, userId, storeName, "profile/");
+                } catch (IOException e) {
+                    map.put("msg", "파일 저장에 실패하였습니다. 잠시 후 다시 시도해주세요.");
+                    return map; // 실패 시 바로 반환
                 }
-                
+                map.put("msg", "success");
             } else {
                 map.put("msg", "fail");
             }

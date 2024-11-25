@@ -1,7 +1,6 @@
 package com.ssafy.fitpass.friend;
 
-import com.ssafy.fitpass.user.RetUser;
-import com.ssafy.fitpass.user.User;
+import com.ssafy.fitpass.user.dto.RetUser;
 
 import java.util.List;
 

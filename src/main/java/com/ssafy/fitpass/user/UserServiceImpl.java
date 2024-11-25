@@ -153,28 +153,3 @@ public class UserServiceImpl implements UserService {
     public boolean createProfile(int userId, Photo photo) {
         return photoDao.insertProfile(userId, photo) == 1;
     }
-
-    @Override
-    public boolean modifyProfile(int userId, Photo photo) {
-        return false;
-    }
-
-    @Override
-    public List<RetUser> getUserByNn(String nn) {
-        try {
-            nn = "%" + nn + "%";
-            return userDao.selectAllByNn(nn);
-        } catch (DataAccessException e) {
-            throw new RuntimeException("닉네임으로 사용자 조회 중 오류가 발생했습니다.");
-        }
-    }
-
-    @Override
-    public int getUserId(String nn) {
-        try {
-            return userDao.selectUserId(nn);
-        } catch (DataAccessException e) {
-            throw new RuntimeException("닉네임으로 사용자 ID 조회 중 오류가 발생했습니다.");
-        }
-    }
-}

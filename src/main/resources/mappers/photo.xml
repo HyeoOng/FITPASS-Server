@@ -29,6 +29,10 @@
         WHERE id=#{id} AND upload_file_name=#{uploadFileName} AND store_file_name=#{storeFileName} AND save_folder=#{saveFolder}
     </select>
     
-
+    <select id="selectPhotoIdbyUserId" parameterType="int" resultType="string">
+        SELECT save_folder FROM profile WHERE user_id = #{userId}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
 
 </mapper>

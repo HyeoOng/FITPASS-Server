@@ -1,9 +1,11 @@
 package com.ssafy.fitpass.post;
 
+import com.ssafy.fitpass.exception.RegDBException;
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoDao;
 import com.ssafy.fitpass.place.Place;
 import com.ssafy.fitpass.place.PlaceDao;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +28,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean createPost(Post post) {
-        return postDao.insertPost(post)==1;
+        try{
+            return postDao.insertPost(post)==1;
+        } catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
     public Post getPost(int postId) {
-        return postDao.selectOne(postId);
+        try{
+            return postDao.selectOne(postId);
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
@@ -39,9 +49,13 @@ public class PostServiceImpl implements PostService {
         int offset = pageable.getPageNumber() * pageable.getPageSize();
         int size = pageable.getPageSize();
 
-        List<Post> postList = postDao.selectUserPost(userId, offset, size);
-        int total = postDao.totalMyPostNum(userId);
-        return new PageImpl<>(postList, pageable, total);
+        try{
+            List<Post> postList = postDao.selectUserPost(userId, offset, size);
+            int total = postDao.totalMyPostNum(userId);
+            return new PageImpl<>(postList, pageable, total);
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
@@ -49,19 +63,32 @@ public class PostServiceImpl implements PostService {
         int offset = pageable.getPageNumber() * pageable.getPageSize();
         int size = pageable.getPageSize();
 
-        List<Post> postList = postDao.selectAll(offset, size);
-        int total = postDao.totalPostNum();
-        return new PageImpl<>(postList, pageable, total);
+        try{
+            List<Post> postList = postDao.selectAll(offset, size);
+            int total = postDao.totalPostNum();
+            return new PageImpl<>(postList, pageable, total);
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
+
     }
 
     @Override
     public boolean modifyPost(Post post) {
-        return postDao.updatePost(post)==1;
+        try{
+            return postDao.updatePost(post)==1;
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
     public boolean removePost(int postId) {
-        return postDao.deletePost(postId)==1;
+        try{
+            return postDao.deletePost(postId)==1;
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
@@ -69,52 +96,88 @@ public class PostServiceImpl implements PostService {
         int offset = pageable.getPageNumber() * pageable.getPageSize();
         int size = pageable.getPageSize();
 
-        List<Post> postList = postDao.selectFriendPosts(userId, offset, size);
-        int total = postDao.totalMyFriendsPostNum(userId);
-        return new PageImpl<>(postList, pageable, total);
+        try{
+            List<Post> postList = postDao.selectFriendPosts(userId, offset, size);
+            int total = postDao.totalMyFriendsPostNum(userId);
+            return new PageImpl<>(postList, pageable, total);
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
+    }
+
+    @Override
+    public List<Post> getUserAllPosts(int userId) {
+        try{
+            return postDao.selectUserAllPosts(userId);
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
     public int getPostId(Post post){
-        return postDao.selectPostId(post);
+        try{
+            return postDao.selectPostId(post);
+        } catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
     public Place getPlace(int postId) {
-        return placeDao.selectOne(postId);
+        try{
+            return placeDao.selectOne(postId);
+        }catch (DataAccessException e){
+            throw new RegDBException(); // DAL0001
+        }
     }
 
     @Override
     public int getPlaceId(Place place) {
-        Integer result = placeDao.selectPlaceId(place);
-        if(result==null){
-            return -1;
+        try{
+            Integer result = placeDao.selectPlaceId(place);
+            if(result!=null) {
+                return result;
+            }
+        }catch (DataAccessException e){
+            throw new RegDBException();
         }
-        return result;
+        return -1;
     }
 
     @Override
     public boolean createPlace(Place place) {
-        return placeDao.insertPlace(place)==1;
+        try{
+            return placeDao.insertPlace(place)==1;
+        } catch (DataAccessException e){
+            throw new RegDBException();
+        }
     }
 
     @Override
     public boolean createPostPhoto(Photo photo) {
-        return photoDao.insertPostPhoto(photo)==1;
+        try{
+            return photoDao.insertPostPhoto(photo)==1;
+        }catch (DataAccessException e){
+            throw new RegDBException();
+        }
     }
 
     @Override
     public boolean modifyPostPhoto(Photo photo) {
-        return photoDao.updatePostPhoto(photo)==1;
+        try{
+            return photoDao.updatePostPhoto(photo)==1;
+        } catch (DataAccessException e){
+            throw new RegDBException();
+        }
     }
 
     @Override
     public int getPhotoId(Photo photo) {
-        return photoDao.selectPhotoId(photo);
-    }
-
-    @Override
-    public int getProfileId(int userId) {
-        return photoDao.selectPhotoIdbyUserId(userId);
+        try{
+            return photoDao.selectPhotoId(photo);
+        } catch (DataAccessException e){
+            throw new RegDBException();
+        }
     }
 }
