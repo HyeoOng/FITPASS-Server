@@ -24,8 +24,8 @@ public class AdminRequestController {
     }
 
     @PostMapping("/create")
-    public Map<String, String> create(@RequestBody PostAdminRequestDto adminRequest, HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> create(@RequestBody PostAdminRequestDto adminRequest, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
         HttpSession session = request.getSession(false);
 
         try {
@@ -33,52 +33,48 @@ public class AdminRequestController {
 
             adminRequest.setUserId(userId);
             boolean result = adminRequestService.createRequest(adminRequest);
-            if(result) {
-                map.put("msg", "success");
+            if (result) {
+                map.put("flag", true);
             } else {
-                map.put("msg", "fail");
+                map.put("flag", false);
             }
             return map;
         } catch (RegDBException e) {
-            // DAL0001
-
+            map.put("code", "DAL0001"); // DAL0001
+            map.put("flag", false);
         } catch (Exception e) {
-            // SAL0002
+            map.put("code", "SAL0002"); // SAL0002
+            map.put("flag", false);
         }
         return map;
     }
 
     @GetMapping
     public List<RetAdminRequestDto> getAllAdminRequest() {
-
-        try {
-            return adminRequestService.getAllRequests();
-        } catch (RegDBException e) {
-            // DAL0001
-        } catch (Exception e) {
-            // SAL0002
-        }
-        return null;
+        return adminRequestService.getAllRequests();
     }
 
     @PostMapping("/remove")
-    public Map<String, String> remove(@RequestBody Map<String, Integer> requestData) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> remove(@RequestBody Map<String, Integer> requestData) {
+        Map<String, Object> map = new HashMap<>();
         try {
             int requestId = requestData.get("requestId");
             boolean result = adminRequestService.removeRequest(requestId);
             if (result) {
-                map.put("msg", "success");
+                map.put("flag", true);
             } else {
-                map.put("msg", "fail");
+                map.put("flag", false);
             }
             return map;
+        } catch (NullPointerException e) {
+            map.put("flag", false);
+            map.put("code", "UAL0007");
         } catch (RegDBException e) {
-            // DAL0001
-
+            map.put("code", "DAL0001"); // DAL0001
+            map.put("flag", false);
         } catch (Exception e) {
-            // SAL0002
-
+            map.put("code", "SAL0002"); // SAL0002
+            map.put("flag", false);
         }
         return map;
     }

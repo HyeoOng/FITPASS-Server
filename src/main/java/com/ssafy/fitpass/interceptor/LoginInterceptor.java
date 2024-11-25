@@ -26,27 +26,28 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            System.out.println("Session ID: " + session.getId());
-            Object userObject = session.getAttribute("user");
-            if (userObject instanceof RetUser) {
-                RetUser user = (RetUser) userObject;
-                System.out.println("logined 상태입니다. User ID: " + user.getUserId());
+            RetUser user = (RetUser) session.getAttribute("user");
+            if (user != null) {
+                // 로그인한 사용자일 경우 요청을 허용
                 return true;
-            } else {
-                System.out.println("세션이 null입니다");
             }
         }
 
-        System.out.println("logined 상태가 아닙니다.");
-        response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-
-        // 메시지를 맵으로 생성
-        Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("msg", "로그인해주세요");
-
-        // 맵을 JSON 문자열로 변환 후 반환
-        response.getWriter().write(objectMapper.writeValueAsString(responseMap));
+        // 로그인하지 않은 사용자일 경우
+        sendJsonResponse(response, "SPL0001");
         return false;
+    }
+
+    private void sendJsonResponse(HttpServletResponse response, String code) throws Exception {
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK); // 상태 코드를 200으로 설정
+
+        // 응답 맵 준비
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("code", code);
+        responseMap.put("flag", false);
+
+        // 응답을 JSON 형태로 변환하여 출력
+        response.getWriter().write(objectMapper.writeValueAsString(responseMap));
     }
 }

@@ -32,20 +32,21 @@ public class SuperAdminInterceptor implements HandlerInterceptor {
                     return true;
                 }
                 // 권한이 없는 사용자의 경우
-                sendErrorResponse(response, "최고 관리자만 접근 가능합니다.");
+                sendErrorResponse(response, "SPL0002");
                 return false;
             }
         }
         // 세션이 없거나 사용자 정보가 없는 경우
-        sendErrorResponse(response, "로그인이 필요합니다.");
+        sendErrorResponse(response, "SPL0001");
         return false;
     }
 
-    private void sendErrorResponse(HttpServletResponse response, String message) throws Exception {
+    private void sendErrorResponse(HttpServletResponse response, String code) throws Exception {
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("msg", message);
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("code", code);
+        responseMap.put("flag", false);
         response.getWriter().write(objectMapper.writeValueAsString(responseMap));
     }
 }

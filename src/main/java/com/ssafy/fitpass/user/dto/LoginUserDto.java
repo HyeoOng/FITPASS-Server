@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.user.dto;
 
+import com.ssafy.fitpass.exception.InputException;
+
 public class LoginUserDto {
     private String email, password;
 
@@ -14,7 +16,7 @@ public class LoginUserDto {
 
     public void setEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("이메일은 빈 값일 수 없습니다.");
+            throw new InputException("이메일은 빈 값일 수 없습니다.");
         }
         this.email = email;
     }
@@ -25,7 +27,7 @@ public class LoginUserDto {
 
     public void setPassword(String password) {
         if (password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException("비밀번호는 빈 값일 수 없습니다.");
+            throw new InputException("비밀번호는 빈 값일 수 없습니다.");
         }
         this.password = password;
     }

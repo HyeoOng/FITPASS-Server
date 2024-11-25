@@ -35,22 +35,23 @@ public class AdminInterceptor implements HandlerInterceptor {
                     return true; // 요청 허용
                 }
                 // 권한 없는 경우
-                sendJsonResponse(response, "접근 권한이 없습니다.");
+                sendJsonResponse(response, "SPL0002");
                 return false;
             }
         }
 
         // 로그인되지 않은 경우
-        sendJsonResponse(response, "로그인이 필요합니다.");
+        sendJsonResponse(response, "SPL0001");
         return false;
     }
 
-    private void sendJsonResponse(HttpServletResponse response, String message) throws Exception {
+    private void sendJsonResponse(HttpServletResponse response, String code) throws Exception {
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK); // 상태 코드를 항상 200으로 설정
 
-        Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("msg", message);
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("code", code);
+        responseMap.put("flag", false);
 
         response.getWriter().write(objectMapper.writeValueAsString(responseMap));
     }

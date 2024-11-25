@@ -1,6 +1,7 @@
 package com.ssafy.fitpass.admin.service;
 
 import com.ssafy.fitpass.admin.dao.AdminDao;
+import com.ssafy.fitpass.exception.RegDBException;
 import com.ssafy.fitpass.user.dto.RetUser;
 import com.ssafy.fitpass.user.entity.User;
 import org.springframework.dao.DataAccessException;
@@ -31,7 +32,9 @@ public class AdminServiceImpl implements AdminService {
                     .map(this::convertToDto)
                     .toList();
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 목록 조회 중 오류가 발생했습니다."); // DAL0001
+            throw new RegDBException("관리자 목록 조회 중 오류가 발생했습니다."); // DAL0001
+        } catch (Exception e) {
+            throw new RuntimeException("예기치 않은 오류가 발생했습니다.");
         }
     }
 
@@ -50,7 +53,9 @@ public class AdminServiceImpl implements AdminService {
             }
             return rowsAffected == 1;
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 권한 부여 중 오류가 발생했습니다."); // DAL0001
+            throw new RegDBException("관리자 권한 부여 중 오류가 발생했습니다."); // DAL0001
+        } catch (Exception e) {
+            throw new RuntimeException("예기치 않은 오류가 발생했습니다.");
         }
     }
 
@@ -69,7 +74,9 @@ public class AdminServiceImpl implements AdminService {
             }
             return rowsAffected == 1;
         } catch (DataAccessException e) {
-            throw new RuntimeException("관리자 권한 삭제 중 오류가 발생했습니다."); // DAL0001
+            throw new RegDBException("관리자 권한 삭제 중 오류가 발생했습니다."); // DAL0001
+        } catch (Exception e) {
+            throw new RuntimeException("예기치 않은 오류가 발생했습니다.");
         }
     }
 

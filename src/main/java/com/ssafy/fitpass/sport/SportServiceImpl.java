@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.sport;
 
+import com.ssafy.fitpass.exception.RegDBException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -21,9 +22,11 @@ public class SportServiceImpl implements SportService {
         try {
             return sportDao.insertSport(sport) == 1;
         } catch (DuplicateKeyException e) {
-            throw new DuplicateKeyException("이미 존재하는 스포츠 코드입니다.");
+            throw new RegDBException("이미 존재하는 스포츠 코드입니다.");
         } catch (DataAccessException e) {
-            throw new RuntimeException("스포츠 생성 중 오류가 발생했습니다.");
+            throw new RegDBException("스포츠 생성 중 오류가 발생했습니다.");
+        } catch (Exception e) {
+            throw new RuntimeException("스포츠 생성 중 예기치 않은 오류가 발생했습니다.");
         }
     }
 
@@ -36,7 +39,9 @@ public class SportServiceImpl implements SportService {
             }
             return rowsAffected == 1;
         } catch (DataAccessException e) {
-            throw new RuntimeException("스포츠 수정 중 오류가 발생했습니다.");
+            throw new RegDBException("스포츠 수정 중 오류가 발생했습니다.");
+        } catch (Exception e) {
+            throw new RuntimeException("스포츠 수정 중 예기치 않은 오류가 발생했습니다.");
         }
     }
 
@@ -45,7 +50,9 @@ public class SportServiceImpl implements SportService {
         try {
             return sportDao.selectAll();
         } catch (DataAccessException e) {
-            throw new RuntimeException("스포츠 목록 조회 중 오류가 발생했습니다.");
+            throw new RegDBException("스포츠 목록 조회 중 오류가 발생했습니다.");
+        } catch (Exception e) {
+            throw new RuntimeException("스포츠 목록 조회 중 예기치 않은 오류가 발생했습니다.");
         }
     }
 
@@ -58,9 +65,9 @@ public class SportServiceImpl implements SportService {
             }
             return true;
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalStateException("스포츠 코드가 다른 데이터에서 참조 중입니다. 삭제할 수 없습니다.");
-        } catch (DataAccessException e) {
-            throw new RuntimeException("스포츠 삭제 중 오류가 발생했습니다.");
+            throw new RegDBException("스포츠 코드가 다른 데이터에서 참조 중입니다. 삭제할 수 없습니다.");
+        } catch (Exception e) {
+            throw new RuntimeException("스포츠 삭제 중 예기치 않은 오류가 발생했습니다.");
         }
     }
 }

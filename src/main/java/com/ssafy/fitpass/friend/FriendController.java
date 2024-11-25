@@ -1,5 +1,6 @@
 package com.ssafy.fitpass.friend;
 
+import com.ssafy.fitpass.exception.RegDBException;
 import com.ssafy.fitpass.user.dto.RetUser;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +20,26 @@ public class FriendController {
     }
 
     @PostMapping
-    public Map<String, String> sendFriendRequest(@RequestBody Friend friend) {
-        boolean result = friendService.sendFriendRequest(friend.getFromUser(), friend.getToUSer());
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> sendFriendRequest(@RequestBody Friend friend) {
+        Map<String, Object> map = new HashMap<>();
 
-        if (result) {
-            map.put("msg", "success");
-        } else{
-            map.put("msg", "fail");
+        try {
+            boolean result = friendService.sendFriendRequest(friend.getFromUser(), friend.getToUSer());
+
+            if (result) {
+                map.put("flag", true);
+            } else{
+                map.put("flag", false);
+            }
+            return map;
+
+        } catch (RegDBException e) {
+            map.put("flag", false);
+            map.put("code", "DAL0001");
+        } catch (Exception e) {
+            map.put("flag", false);
+            map.put("code", "SAL0002");
         }
-
         return map;
     }
 
@@ -45,26 +56,46 @@ public class FriendController {
     }
 
     @PostMapping("/request/delete")
-    public Map<String, String> deleteFriendRequest(@RequestBody Friend friend) {
-        Map<String, String> map = new HashMap<>();
-        System.out.println("delete from: " + friend.getFromUser());
-        boolean result = friendService.deleteFriendRequest(friend.getFromUser(), friend.getToUSer());
-        if (result) {
-            map.put("msg", "success");
-        } else {
-            map.put("msg", "fail");
+    public Map<String, Object> deleteFriendRequest(@RequestBody Friend friend) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            System.out.println("delete from: " + friend.getFromUser());
+            boolean result = friendService.deleteFriendRequest(friend.getFromUser(), friend.getToUSer());
+            if (result) {
+                map.put("flag", true);
+
+            } else {
+                map.put("flag", false);
+            }
+            return map;
+        } catch (RegDBException e) {
+            map.put("flag", false);
+            map.put("code", "DAL0001");
+        } catch (Exception e) {
+            map.put("flag", false);
+            map.put("code", "SAL0002");
         }
         return map;
     }
 
     @PostMapping("/delete")
-    public Map<String, String> deleteFriend(@RequestBody Friend friend) {
-        Map<String, String> map = new HashMap<>();
-        boolean result = friendService.deleteFriend(friend.getFromUser(), friend.getToUSer());
-        if (result) {
-            map.put("msg", "success");
-        } else {
-            map.put("msg", "fail");
+    public Map<String, Object> deleteFriend(@RequestBody Friend friend) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            boolean result = friendService.deleteFriend(friend.getFromUser(), friend.getToUSer());
+            if (result) {
+                map.put("flag", true);
+
+            } else {
+                map.put("flag", false);
+            }
+            return map;
+        } catch (RegDBException e) {
+            map.put("flag", false);
+            map.put("code", "DAL0001");
+        } catch (Exception e) {
+            map.put("flag", false);
+            map.put("code", "SAL0002");
         }
         return map;
     }
