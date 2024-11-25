@@ -1,5 +1,8 @@
 package com.ssafy.fitpass.photo;
 
+import com.ssafy.fitpass.exception.RegDBException;
+import com.ssafy.fitpass.exception.UserException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,6 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -33,9 +38,6 @@ public class PhotoService {
 
         // 3. 파일을 지정한 경로에 저장
         file.transferTo(filePath);  // 파일을 해당 경로에 저장
-
-        // 4. 저장된 파일의 절대 경로 반환
-        // return filePath.toString();
     }
     
     // 사진을 실제 서버에 저장하는 이름을 생성해주는 메서드
@@ -56,6 +58,14 @@ public class PhotoService {
     }
 
     public String getProfileFolderNameByUserId(int userId) {
-        return photoDao.selectPhotoIdbyUserId(userId);
+        try {
+            String name = photoDao.selectPhotoIdbyUserId(userId);
+            if(name==null){
+                throw new UserException("프로필 사진이 존재하지 않습니다.", "NP");
+            }
+            return name;
+        } catch (DataAccessException e){
+            throw new RegDBException();
+        }
     }
 }
