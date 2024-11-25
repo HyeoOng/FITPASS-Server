@@ -217,8 +217,9 @@ public class UserController {
                 boolean isDuplicate = userService.getEmail(email); // 이메일 중복 체크
                 if(isDuplicate) { // 중복인 경우
                     map.put("code", "UAL0004");
+                    map.put("flag", false);
                 } else { // 아닐 경우
-                    map.put("msg", "success");
+                    map.put("flag", true);
                 }
             }catch (RegDBException e){
                 map.put("flag", false);
