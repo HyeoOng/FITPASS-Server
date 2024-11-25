@@ -2,6 +2,10 @@ package com.ssafy.fitpass.user.controller;
 
 import com.ssafy.fitpass.auth.MailService;
 import com.ssafy.fitpass.auth.VerificationCodeService;
+import com.ssafy.fitpass.exception.InputException;
+import com.ssafy.fitpass.exception.RegDBException;
+import com.ssafy.fitpass.exception.RegFDException;
+import com.ssafy.fitpass.exception.UserException;
 import com.ssafy.fitpass.photo.Photo;
 import com.ssafy.fitpass.photo.PhotoService;
 import com.ssafy.fitpass.user.service.LoginAttemptService;
@@ -75,66 +79,31 @@ public class UserController {
                 if(userService.createProfile(userId, photo)){
                     try{
                         photoService.saveFile(file, userId, storeName, "profile/");
-                    } catch (Exception e){
-                        map.put("msg", "fail to save profile");
+                    } catch (RegFDException e){
+                        map.put("msg", "fail to save profile"); // SAL0001
                         return map;
                     }
                     map.put("msg", "success");
                 } else {
-                    map.put("msg", "fail to save profile at db");
+                    map.put("msg", "fail to save profile at db"); //DAL0001
                 }
-            } else {
-                map.put("msg", "fail");
+            } else { // 로그인 정보가 존재하지 않는 경우
+                map.put("msg", "fail"); // UAL0001
             }
-        } catch (IllegalArgumentException e) {
-            map.put("msg", e.getMessage());
+        } catch (InputException e) {
+            map.put("msg", e.getMessage()); // UAL0003
         } catch (Exception e) {
-            map.put("msg", e.getMessage());
+            map.put("msg", e.getMessage());  // SAL0002
         }
         return map;
     }
-
-//    @PostMapping("/login")
-//    public Map<String, Object> login(@RequestBody LoginUserDto user, HttpServletRequest request) {
-//        Map<String, Object> map = new HashMap<>();
-//        String email = user.getEmail();
-//
-//        // 1. 이메일 존재 여부 확인
-//        if (!userService.isUserExist(email)) {
-//            map.put("msg", "존재하지 않는 이메일입니다.");
-//            return map;
-//        }
-//
-//        if (loginAttemptService.isBlocked(email)) {
-//            map.put("msg", "로그인 시도 횟수 초과로 인해 차단되었습니다.");
-//            return map;
-//        }
-//
-//        RetUser loginedUser = userService.login(user);
-//        if (loginedUser != null) {
-//            request.getSession().setAttribute("user", loginedUser);
-//            map.put("msg", "success");
-//            map.put("userId", loginedUser.getUserId());
-//            map.put("nickname", loginedUser.getNn());
-//            loginAttemptService.resetAttempts(email); // 로그인 성공 시 시도 횟수 초기화
-//        } else {
-//            System.out.println("check:" + email);
-//            loginAttemptService.increaseAttempts(email);
-//            map.put("msg", "fail");
-//            map.put("remainingAttempts",
-//                    loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(email));
-//        }
-//        return map;
-//    }
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody LoginUserDto user, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            System.out.println("로그인 시도한 정보: " + user);
             RetUser loginedUser = userService.handleLogin(user);
-            System.out.println("로그인 결과 정보: " + loginedUser);
             // 로그인 성공 시 세션에 사용자 정보 저장
             request.getSession().setAttribute("user", loginedUser);
 
@@ -142,13 +111,15 @@ public class UserController {
             map.put("userId", loginedUser.getUserId());
             map.put("nickname", loginedUser.getNn());
             map.put("admin", loginedUser.getAdmin());
-        } catch (IllegalArgumentException e) {
+        } catch (UserException e) {
             map.put("msg", e.getMessage());
-            if (e.getMessage().equals("잘못된 이메일 또는 비밀번호입니다.")) {
-                map.put("remainingAttempts", loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(user.getEmail()));
+            if (e.getErrorCode().equals("TC")) {
+                map.put("remainingAttempts", loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(user.getEmail())); // UAL0002
+            }else if(e.getErrorCode().equals("NF")) {
+                // UAL0001
             }
         } catch (Exception e) {
-            map.put("msg", "로그인 중 오류가 발생했습니다.");
+            map.put("msg", "로그인 중 오류가 발생했습니다."); // SAL0002
         }
 
         return map;
@@ -163,7 +134,7 @@ public class UserController {
             session.invalidate();
             map.put("msg", "success");
         } else {
-            map.put("msg", "fail");
+            map.put("msg", "fail"); // SAL0002
         }
         return map;
     }
@@ -171,28 +142,63 @@ public class UserController {
 
     @GetMapping
     public List<RetUser> getAllUsers() {
-        return userService.getAllUsers();
+        try{
+            return userService.getAllUsers();
+        } catch (RegDBException e){
+            // DAL0001
+        } catch (Exception e) {
+            // SAL0002
+        }
     }
 
 
     @GetMapping("/{userId}")
     public RetUser getUser(@PathVariable int userId) {
-        return userService.getUser(userId);
+        try{
+            return userService.getUser(userId);
+        }catch (RegDBException e){
+            // DAL0001
+        } catch (Exception e) {
+            // SAL0002
+        }
+        return null;
     }
 
     @PostMapping("/delete")
-    public boolean removeUser(int userId) {
-        return userService.removeUser(userId);
+    public Map<String, Object> removeUser(int userId) {
+        Map<String, Object> map = new HashMap<>();
+        try{
+            boolean res =  userService.removeUser(userId);
+            if(res){
+                map.put("flag", true);
+            }else{
+                map.put("flag", false);
+                // DAL
+            }
+        }catch (RegDBException e){
+            map.put("flag", false);
+            map.put("msg", e.getMessage());
+            // DAL0001
+        } catch (Exception e) {
+            // SAL0002
+        }
+        return map;
     }
 
     @PostMapping("/update")
     public Map<String, String> modifyUser(@RequestBody PutUserDto user) {
         Map<String, String> map = new HashMap<>();
-        boolean result = userService.modifyUser(user);
-        if(result) {
-            map.put("msg", "success");
-        } else {
-            map.put("msg", "fail");
+        try{
+            boolean result = userService.modifyUser(user);
+            if(result){
+                map.put("msg", "success");
+            }else{
+                // DAL0001
+            }
+        }catch (RegDBException e){
+            // DAL0001
+        } catch (Exception e) {
+            // SAL0002
         }
         return map;
     }
@@ -204,16 +210,21 @@ public class UserController {
         String email = requestData.get("email");
         // 이메일 값이 null이거나 공백일 경우
         if (email == null || email.isBlank()) {
-            map.put("msg", "fail1");
+            map.put("msg", "fail1"); // UAL0001
         } else { // 아닐 경우
-            boolean isDuplicate = userService.getEmail(email); // 이메일 중복 체크
-            if(isDuplicate) { // 중복인 경우
-                map.put("msg", "fail2");
-            } else { // 아닐 경우
-                map.put("msg", "success");
+            try{
+                boolean isDuplicate = userService.getEmail(email); // 이메일 중복 체크
+                if(isDuplicate) { // 중복인 경우
+                    map.put("msg", "fail2");
+                } else { // 아닐 경우
+                    map.put("msg", "success");
+                }
+            }catch (RegDBException e){
+                // DAL0001
+            } catch (Exception e) {
+                // SAL0002
             }
         }
-
         return map;
     }
 
@@ -224,13 +235,19 @@ public class UserController {
         String nickname = requestData.get("nn");
         // nn이 null이거나 공백이라면,
         if (nickname == null || nickname.isBlank()) {
-            map.put("msg", "fail1");
+            map.put("msg", "fail1"); // UAL0001
         } else { // 값이 제대로 존재할 경우
-            boolean isDuplicate = userService.getNN(nickname); // 중복된 닉네임인지 확인
-            if(isDuplicate) { // 중복일 경우
-                map.put("msg", "fail2");
-            } else { // 아닐 경우
-                map.put("msg", "success");
+            try{
+                boolean isDuplicate = userService.getNN(nickname); // 중복된 닉네임인지 확인
+                if(isDuplicate) { // 중복일 경우
+                    map.put("msg", "fail2"); // UAL0004
+                } else { // 아닐 경우
+                    map.put("msg", "success");
+                }
+            } catch (RegDBException e){
+                // DAL0001
+            } catch (Exception e) {
+//                // SAL0002
             }
         }
         return map;
