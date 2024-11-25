@@ -119,7 +119,7 @@ public class UserController {
             map.put("nickname", loginedUser.getNn());
             map.put("admin", loginedUser.getAdmin());
         } catch (UserException e) {
-            map.put("msg", e.getMessage());
+            // map.put("msg", e.getMessage());
             if (e.getErrorCode().equals("TC")) {
                 map.put("code", "UAL0002"); // UAL0002
                 map.put("flag", false);
