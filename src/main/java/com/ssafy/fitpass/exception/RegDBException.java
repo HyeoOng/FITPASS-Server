@@ -6,4 +6,8 @@ public class RegDBException extends RuntimeException {
         super();
     }
 
+    public RegDBException(String message) {
+        super(message);
+    }
+
 }

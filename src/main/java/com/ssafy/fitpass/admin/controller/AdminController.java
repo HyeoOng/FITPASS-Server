@@ -1,6 +1,7 @@
 package com.ssafy.fitpass.admin.controller;
 
 import com.ssafy.fitpass.admin.service.AdminService;
+import com.ssafy.fitpass.exception.RegDBException;
 import com.ssafy.fitpass.user.dto.RetUser;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,38 +35,60 @@ public class AdminController {
      * 유저에게 관리자 권한을 부여하는 API입니다. (최고관리자만 가능)
      *
      * @param requestData (관리자 권한을 부여할 유저의 아이디)
-     * @return 결과 메시지가 담긴 Map("success" 또는 "fail")
+     * @return 결과 메시지가 담긴 Map
      */
     @PostMapping("/create")
-    public Map<String, String> createAdmin(@RequestBody Map<String, String> requestData) {
-        int userId = Integer.parseInt(requestData.get("userId"));
-        boolean result = adminService.createAdmin(userId);  // 서비스에서 관리자 권한을 부여하는 로직 호출
-        Map<String, String> map = new HashMap<>();  // 결과 메시지를 담을 Map 객체 초기화
-        if (result) {
-            map.put("msg", "success");  // 성공 시 "success" 메시지 추가
-        } else {
-            map.put("msg", "fail");  // 실패 시 "fail" 메시지 추가
+    public Map<String, Object> createAdmin(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            int userId = Integer.parseInt(requestData.get("userId"));
+            boolean result = adminService.createAdmin(userId); // 서비스 호출
+            if (result) {
+                map.put("flag", true);
+            } else {
+                map.put("flag", false);
+            }
+        } catch (NullPointerException e) {
+            map.put("flag", false);
+            map.put("code", "UAL0007");
+        } catch (RegDBException e) {
+            map.put("code", "DAL0001"); // DAL0001
+            map.put("flag", false);
+        } catch (Exception e) {
+            map.put("code", "SAL0002"); // SAL0002
+            map.put("flag", false);
         }
-        return map;  // 결과 메시지가 담긴 Map을 반환
+        return map;
     }
 
     /**
      * 유저에게서 관리자 권한을 삭제하는 API입니다. (최고 관리자만 가능)
      *
      * @param requestData (관리자 권한을 삭제할 유저의 아이디)
-     * @return 결과 메시지가 담긴 Map("success" 또는 "fail")
+     * @return 결과 메시지가 담긴 Map
      */
     @PostMapping("/delete")
-    public Map<String, String> deleteAdmin(@RequestBody Map<String, String> requestData) {
-        int userId = Integer.parseInt(requestData.get("userId"));
-        boolean result = adminService.deleteAdmin(userId);  // 서비스에서 관리자 권한을 삭제하는 로직 호출
-        Map<String, String> map = new HashMap<>();  // 결과 메시지를 담을 Map 객체 초기화
-        if (result) {
-            map.put("msg", "success");  // 성공 시 "success" 메시지 추가
-        } else {
-            map.put("msg", "fail");  // 실패 시 "fail" 메시지 추가
+    public Map<String, Object> deleteAdmin(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            int userId = Integer.parseInt(requestData.get("userId"));
+            boolean result = adminService.deleteAdmin(userId); // 서비스 호출
+            if (result) {
+                map.put("flag", true);
+            } else {
+                map.put("flag", false);
+            }
+        } catch (NullPointerException e) {
+            map.put("flag", false);
+            map.put("code", "UAL0007");
+        } catch (RegDBException e) {
+            map.put("code", "DAL0001"); // DAL0001
+            map.put("flag", false);
+        } catch (Exception e) {
+            map.put("code", "SAL0002"); // SAL0002
+            map.put("flag", false);
         }
-        return map;  // 결과 메시지가 담긴 Map을 반환
+        return map;
     }
 
 }

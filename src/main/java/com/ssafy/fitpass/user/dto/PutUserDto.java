@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.user.dto;
 
+import com.ssafy.fitpass.exception.InputException;
+
 public class PutUserDto {
     private int userId;
     private String email, name, nn;
@@ -24,7 +26,7 @@ public class PutUserDto {
 
     public void setUserId(int userId) {
         if (userId <= 0) {
-            throw new IllegalArgumentException("userId는 0보다 큰 값이어야 합니다.");
+            throw new InputException("userId는 0보다 큰 값이어야 합니다.");
         }
         this.userId = userId;
     }
@@ -35,7 +37,7 @@ public class PutUserDto {
 
     public void setEmail(String email) {
         if (email == null || email.isBlank() || !email.matches("^[\\w-\\.]+@[\\w-]+\\.[a-z]{2,4}$")) {
-            throw new IllegalArgumentException("올바르지 않은 이메일 형식입니다.");
+            throw new InputException("올바르지 않은 이메일 형식입니다.");
         }
         this.email = email;
     }
@@ -46,7 +48,7 @@ public class PutUserDto {
 
     public void setName(String name) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("이름은 비어 있을 수 없습니다.");
+            throw new InputException("이름은 비어 있을 수 없습니다.");
         }
         this.name = name;
     }
@@ -57,7 +59,7 @@ public class PutUserDto {
 
     public void setNn(String nn) {
         if (nn == null || nn.isBlank()) {
-            throw new IllegalArgumentException("닉네임은 비어 있을 수 없습니다.");
+            throw new InputException("닉네임은 비어 있을 수 없습니다.");
         }
         this.nn = nn;
     }

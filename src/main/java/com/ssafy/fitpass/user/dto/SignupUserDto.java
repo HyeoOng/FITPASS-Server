@@ -1,6 +1,6 @@
 package com.ssafy.fitpass.user.dto;
 
-import java.util.Date;
+import com.ssafy.fitpass.exception.InputException;
 
 public class SignupUserDto {
     private String name;
@@ -27,7 +27,7 @@ public class SignupUserDto {
 
     public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("이름은 공백이 될 수 없습니다.");
+            throw new InputException("이름은 공백이 될 수 없습니다.");
         }
         this.name = name;
     }
@@ -38,7 +38,7 @@ public class SignupUserDto {
 
     public void setEmail(String email) {
         if (email == null || !email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("올바른 이메일 형식을 입력하세요.");
+            throw new InputException("올바른 이메일 형식을 입력하세요.");
         }
         this.email = email;
     }
@@ -49,23 +49,22 @@ public class SignupUserDto {
 
     public void setPassword(String password) {
         if (password == null) {
-            throw new IllegalArgumentException("비밀번호는 null일 수 없습니다.");
+            throw new InputException("비밀번호는 null일 수 없습니다.");
         }
         if (password.length() < 5) {
-            throw new IllegalArgumentException("비밀번호는 최소 5자리 이상이어야 합니다.");
+            throw new InputException("비밀번호는 최소 5자리 이상이어야 합니다.");
         }
         if (!password.matches(".*[A-Z].*")) {
-            System.out.println(password);
-            throw new IllegalArgumentException("비밀번호는 최소 하나의 대문자를 포함해야 합니다.");
+            throw new InputException("비밀번호는 최소 하나의 대문자를 포함해야 합니다.");
         }
         if (!password.matches(".*[a-z].*")) {
-            throw new IllegalArgumentException("비밀번호는 최소 하나의 소문자를 포함해야 합니다.");
+            throw new InputException("비밀번호는 최소 하나의 소문자를 포함해야 합니다.");
         }
         if (!password.matches(".*\\d.*")) {
-            throw new IllegalArgumentException("비밀번호는 최소 하나의 숫자를 포함해야 합니다.");
+            throw new InputException("비밀번호는 최소 하나의 숫자를 포함해야 합니다.");
         }
         if (!password.matches(".*[!@#$%^&*(),.?:].*")) {
-            throw new IllegalArgumentException("비밀번호는 최소 하나의 특수 문자를 포함해야 합니다.");
+            throw new InputException("비밀번호는 최소 하나의 특수 문자를 포함해야 합니다.");
         }
         this.password = password;
     }
@@ -76,10 +75,10 @@ public class SignupUserDto {
 
     public void setNn(String nn) {
         if (nn == null || nn.trim().isEmpty()) {
-            throw new IllegalArgumentException("닉네임은 공백이 될 수 없습니다.");
+            throw new InputException("닉네임은 공백이 될 수 없습니다.");
         }
         if (nn.length() < 2) {
-            throw new IllegalArgumentException("닉네임은 최소 2글자 이상이어야 합니다.");
+            throw new InputException("닉네임은 최소 2글자 이상이어야 합니다.");
         }
         this.nn = nn;
     }

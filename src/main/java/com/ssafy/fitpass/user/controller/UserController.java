@@ -55,7 +55,7 @@ public class UserController {
         try {
 
             if (!verificationCodeService.isEmailVerified(user.getEmail())) {
-                map.put("msg", "이메일 인증이 완료되지 않았습니다. 인증 후 다시 시도해 주세요.");
+                map.put("code", "UAL0008");
                 return map;
             }
             boolean result = userService.signup(user);
@@ -67,7 +67,8 @@ public class UserController {
                 if(!file.isEmpty()){
                     photo.setFile(file);
                 } else {
-                    map.put("msg", "fail to store profile");
+                    map.put("flag", false);
+                    map.put("code", "UAL0007"); // 파일 데이터를 입력하지 않음
                     return map;
                 }
 
@@ -80,20 +81,25 @@ public class UserController {
                     try{
                         photoService.saveFile(file, userId, storeName, "profile/");
                     } catch (RegFDException e){
-                        map.put("msg", "fail to save profile"); // SAL0001
+                        map.put("code", "SAL0001"); // SAL0001
+                        map.put("flag", false);
                         return map;
                     }
-                    map.put("msg", "success");
+                    map.put("flag", true);
                 } else {
-                    map.put("msg", "fail to save profile at db"); //DAL0001
+                    map.put("code", "DAL0001"); //DAL0001
+                    map.put("flag", false);
                 }
             } else { // 로그인 정보가 존재하지 않는 경우
-                map.put("msg", "fail"); // UAL0001
+                map.put("code", "UAL0001"); // UAL0001
+                map.put("flag", false);
             }
-        } catch (InputException e) {
-            map.put("msg", e.getMessage()); // UAL0003
+        } catch (RegDBException e) {
+            map.put("code", "DAL0001"); // DAL0001
+            map.put("flag", false);
         } catch (Exception e) {
-            map.put("msg", e.getMessage());  // SAL0002
+            map.put("code", "SAL0002");  // SAL0002
+            map.put("flag", false);
         }
         return map;
     }
@@ -107,19 +113,23 @@ public class UserController {
             // 로그인 성공 시 세션에 사용자 정보 저장
             request.getSession().setAttribute("user", loginedUser);
 
-            map.put("msg", "success");
+            map.put("flag", true);
+
             map.put("userId", loginedUser.getUserId());
             map.put("nickname", loginedUser.getNn());
             map.put("admin", loginedUser.getAdmin());
         } catch (UserException e) {
             map.put("msg", e.getMessage());
             if (e.getErrorCode().equals("TC")) {
-                map.put("remainingAttempts", loginAttemptService.getMaxAttempts() - loginAttemptService.getAttempts(user.getEmail())); // UAL0002
+                map.put("code", "UAL0002"); // UAL0002
+                map.put("flag", false);
             }else if(e.getErrorCode().equals("NF")) {
-                // UAL0001
+                map.put("code", "UAL0001"); // UAL0001
+                map.put("flag", false);
             }
         } catch (Exception e) {
-            map.put("msg", "로그인 중 오류가 발생했습니다."); // SAL0002
+            map.put("msg", "SAL0002"); // SAL0002
+            map.put("flag", false);
         }
 
         return map;
@@ -127,14 +137,15 @@ public class UserController {
 
 
     @GetMapping("/logout")
-    public Map<String, String> logout(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> logout(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
-            map.put("msg", "success");
+            map.put("flag", true);
         } else {
-            map.put("msg", "fail"); // SAL0002
+            map.put("code", "SAL0002"); // SAL0002
+            map.put("flag", false);
         }
         return map;
     }
@@ -142,27 +153,13 @@ public class UserController {
 
     @GetMapping
     public List<RetUser> getAllUsers() {
-        try{
-            return userService.getAllUsers();
-        } catch (RegDBException e){
-            // DAL0001
-        } catch (Exception e) {
-            // SAL0002
-        }
-        return null;
+        return userService.getAllUsers();
     }
 
 
     @GetMapping("/{userId}")
     public RetUser getUser(@PathVariable int userId) {
-        try{
-            return userService.getUser(userId);
-        }catch (RegDBException e){
-            // DAL0001
-        } catch (Exception e) {
-            // SAL0002
-        }
-        return null;
+        return userService.getUser(userId);
     }
 
     @PostMapping("/delete")
@@ -174,81 +171,90 @@ public class UserController {
                 map.put("flag", true);
             }else{
                 map.put("flag", false);
-                // DAL
+                map.put("code", "DAL0001"); // DAL
             }
         }catch (RegDBException e){
             map.put("flag", false);
-            map.put("msg", e.getMessage());
-            // DAL0001
+            map.put("code", "DAL0001"); // DAL0001
         } catch (Exception e) {
-            // SAL0002
+            map.put("flag", false);
+            map.put("code", "SAL0002"); // SAL0002
         }
         return map;
     }
 
     @PostMapping("/update")
-    public Map<String, String> modifyUser(@RequestBody PutUserDto user) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> modifyUser(@RequestBody PutUserDto user) {
+        Map<String, Object> map = new HashMap<>();
         try{
             boolean result = userService.modifyUser(user);
             if(result){
-                map.put("msg", "success");
+                map.put("flag", true);
             }else{
-                // DAL0001
+                map.put("flag", false);
+                map.put("code", "DAL0001"); // DAL0001
             }
         }catch (RegDBException e){
-            // DAL0001
+            map.put("flag", false);
+            map.put("code", "DAL0001"); // DAL0001
         } catch (Exception e) {
-            // SAL0002
+            map.put("flag", false);
+            map.put("code", "SAL0002"); // SAL0002
         }
         return map;
     }
 
     @PostMapping("/emailCheck")
-    public Map<String, String> emailCheck(@RequestBody Map<String, String> requestData) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> emailCheck(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> map = new HashMap<>();
         // 프론트에서 받아온 json 형식에서 email 값 꺼내기
         String email = requestData.get("email");
         // 이메일 값이 null이거나 공백일 경우
         if (email == null || email.isBlank()) {
-            map.put("msg", "fail1"); // UAL0001
+            map.put("code", "UAL0001"); // UAL0001
         } else { // 아닐 경우
             try{
                 boolean isDuplicate = userService.getEmail(email); // 이메일 중복 체크
                 if(isDuplicate) { // 중복인 경우
-                    map.put("msg", "fail2");
+                    map.put("code", "UAL0004");
                 } else { // 아닐 경우
                     map.put("msg", "success");
                 }
             }catch (RegDBException e){
-                // DAL0001
+                map.put("flag", false);
+                map.put("code", "DAL0001"); // DAL0001
             } catch (Exception e) {
-                // SAL0002
+                map.put("flag", false);
+                map.put("code", "SAL0002"); // SAL0002
             }
         }
         return map;
     }
 
     @PostMapping("/nnCheck")
-    public Map<String, String> nnCheck(@RequestBody Map<String, String> requestData) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> nnCheck(@RequestBody Map<String, String> requestData) {
+        Map<String, Object> map = new HashMap<>();
         // 프론트에서 받아온 json 형식에서 nn 값 꺼내기
         String nickname = requestData.get("nn");
         // nn이 null이거나 공백이라면,
         if (nickname == null || nickname.isBlank()) {
-            map.put("msg", "fail1"); // UAL0001
+            map.put("code", "UAL0001"); // UAL0001
+            map.put("flag", false);
         } else { // 값이 제대로 존재할 경우
             try{
                 boolean isDuplicate = userService.getNN(nickname); // 중복된 닉네임인지 확인
                 if(isDuplicate) { // 중복일 경우
-                    map.put("msg", "fail2"); // UAL0004
+                    map.put("code", "UAL0004"); // UAL0001
+                    map.put("flag", false);
                 } else { // 아닐 경우
-                    map.put("msg", "success");
+                    map.put("flag", true);
                 }
             } catch (RegDBException e){
-                // DAL0001
+                map.put("flag", false);
+                map.put("code", "DAL0001"); // DAL0001
             } catch (Exception e) {
-//                // SAL0002
+                map.put("flag", false);
+                map.put("code", "SAL0002"); // SAL0002
             }
         }
         return map;

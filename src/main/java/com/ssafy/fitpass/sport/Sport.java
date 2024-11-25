@@ -1,5 +1,7 @@
 package com.ssafy.fitpass.sport;
 
+import com.ssafy.fitpass.exception.InputException;
+
 public class Sport {
     private int sportCode;
     private String sportName;
@@ -31,7 +33,7 @@ public class Sport {
 
     public void setSportName(String sportName) {
         if (sportName == null || sportName.trim().isEmpty()) {
-            throw new IllegalArgumentException("스포츠 이름 오류");
+            throw new InputException("스포츠 이름은 빈 값이 될 수 없습니다.");
         }
         this.sportName = sportName;
     }
