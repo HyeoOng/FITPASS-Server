@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InputException.class)
     public Map<String, String> handleIllegalStateException(InputException e) {
         Map<String, String> map = new HashMap<>();
+        map.put("code", "UAL0003");
         map.put("msg", e.getMessage());
         return map;
     }
