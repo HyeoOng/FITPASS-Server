@@ -25,16 +25,16 @@ public class EmailVerificationController {
      * @return map
      */
     @PostMapping("/send-code")
-    public Map<String, String> sendCode(@RequestBody Map<String, String> request) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> sendCode(@RequestBody Map<String, String> request) {
+        Map<String, Object> map = new HashMap<>();
         String email = request.get("email");
         try {
             String code = codeService.generateCode(email);
             System.out.println("verification code: " + code);
             mailService.sendVerificationCode(email, code);
-            map.put("msg", "success");
+            map.put("flag", true);
         } catch (Exception e) {
-            map.put("msg", "fail");
+            map.put("flag", false);
         }
         return map;
     }
@@ -46,17 +46,17 @@ public class EmailVerificationController {
      * @return map
      */
     @PostMapping("/verify-code")
-    public Map<String, String> verifyCode(@RequestBody Map<String, String> request) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, Object> verifyCode(@RequestBody Map<String, String> request) {
+        Map<String, Object> map = new HashMap<>();
 
         String email = request.get("email");
         String code = request.get("code");
         boolean isValid = codeService.verifyCode(email, code);
 
         if (isValid) {
-            map.put("msg", "success");
+            map.put("flag", true);
         } else {
-            map.put("msg", "fail");
+            map.put("flag", false);
         }
         return map;
     }
