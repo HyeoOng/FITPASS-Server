@@ -42,11 +42,13 @@ public class PostController {
                                           @RequestPart("file") MultipartFile file,
                                           HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
-        System.out.println("data 잘 받았는지 확인해보자-------------------");
-        System.out.println(post);
-        System.out.println(place);
-        System.out.println(file.getOriginalFilename());
-        System.out.println("------------------------------------------");
+
+        if(file.isEmpty()){
+            response.put("flag", false);
+            response.put("code", "UAL0003"); // UAL0003
+            return response;
+        }
+
         HttpSession session = request.getSession(false);
         if(session == null){
             response.put("flag", false);
@@ -66,12 +68,31 @@ public class PostController {
 
 
             Photo photo = new Photo();
-            if(!file.isEmpty())photo.setFile(file);
-            else {
+
+            // 이미지 MIME 타입 검증
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
                 response.put("flag", false);
-                response.put("code", "UAL0003"); // UAL0003
+                response.put("code", "UAL0006"); // 잘못된 시도
                 return response;
             }
+
+            // 파일 확장자 확인
+            String fileName = file.getOriginalFilename();
+            if (fileName == null || !fileName.matches(".*\\.(jpg|jpeg|png|gif|bmp|jfif|PNG)$")) {
+                response.put("flag", false);
+                response.put("code", "UAL0006"); // 잘못된 시도
+                return response;
+            }
+
+            long maxFileSize = 5 * 1024 * 1024; // 5MB
+            if (file.getSize() > maxFileSize) {
+                response.put("flag", false);
+                response.put("code", "UAL0006"); // 잘못된 시도
+                return response;
+            }
+
+            photo.setFile(file);
 
             // Post 객체의 title과 content 검증
             if (!aiService.isContentAppropriate(post.getContent()) || !aiService.isContentAppropriate(post.getTitle())) {
@@ -84,7 +105,6 @@ public class PostController {
             // 1. 장소 먼저 등록
             // 1-1. 장소 테이블에 등록되어 있는지 확인한다.
             int placeId = postService.getPlaceId(place);
-//            System.out.println("placeId: "+placeId);
             if(placeId==-1){ // 등록된 장소가 아닌 경우 -> 장소를 먼저 테이블에 등록
                 if(!postService.createPlace(place)){
                     response.put("flag", false);
@@ -92,7 +112,6 @@ public class PostController {
                     return response;
                 }
                 placeId = postService.getPlaceId(place); // 등록된 placeId 다시 가져오기
-//                System.out.println("내가 등록한 placeId: "+placeId);
             }
             // 2. 글을 등록한다.
             // 2-1. post에 placeId를 등록한다.
@@ -109,7 +128,6 @@ public class PostController {
                 // 2-2-4. photo 객체에 담아 사진 등록
                 photo.setStoreFileName(storeName);
                 photo.setSaveFolder(saveFolder);
-                System.out.println(photo);
 
                 if(postService.createPostPhoto(photo)){
                     // 2-2-5. 실제 서버에 사진 저장(src/main/webapp/WEB-INF/post/postId)
