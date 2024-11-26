@@ -64,36 +64,31 @@ public class UserController {
                 int userId = userService.getUserId(user.getNn());
                 Photo photo = new Photo();
 
-                if(!file.isEmpty()){
+                if(!file.isEmpty()) {
                     photo.setFile(file);
-                } else {
-                    map.put("flag", false);
-                    map.put("code", "UAL0007"); // 파일 데이터를 입력하지 않음
-                    return map;
-                }
 
-                String storeName = photoService.generateStoreFileName(photo.getUploadFileName());
-                String saveFolder = "/profile/" + userId + "/" + storeName;
-                photo.setStoreFileName(storeName);
-                photo.setSaveFolder(saveFolder);
 
-                if(userService.createProfile(userId, photo)){
-                    try{
+                    String storeName = photoService.generateStoreFileName(photo.getUploadFileName());
+                    String saveFolder = "/profile/" + userId + "/" + storeName;
+                    photo.setStoreFileName(storeName);
+                    photo.setSaveFolder(saveFolder);
+
+                    if (userService.createProfile(userId, photo)) {
                         photoService.saveFile(file, userId, storeName, "profile/");
-                    } catch (RegFDException e){
-                        map.put("code", "SAL0001"); // SAL0001
+                    } else {
+                        map.put("code", "DAL0001"); //DAL0001
                         map.put("flag", false);
                         return map;
                     }
                     map.put("flag", true);
-                } else {
-                    map.put("code", "DAL0001"); //DAL0001
-                    map.put("flag", false);
                 }
             } else { // 로그인 정보가 존재하지 않는 경우
                 map.put("code", "UAL0001"); // UAL0001
                 map.put("flag", false);
             }
+        } catch (RegFDException e){
+            map.put("code", "SAL0001"); // SAL0001
+            map.put("flag", false);
         } catch (RegDBException e) {
             map.put("code", "DAL0001"); // DAL0001
             map.put("flag", false);
