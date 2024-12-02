@@ -113,7 +113,7 @@ public class PlaceController {
             }
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "KakaoAK 9fef9c43ffd4340c40f0a1e672d06559");
+            headers.set("Authorization", "KakaoAK {KAKAO_RESTAPI_KEY}");
             HttpEntity<String> entity = new HttpEntity<>("", headers);
 
             String baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + keyword;
